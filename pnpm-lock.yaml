@@ -25,6 +25,7 @@ importers:
       '@types/react-helmet': ^6.1.5
       gatsby: ^4.24.4
       gatsby-plugin-pnpm: ^1.2.10
+      gatsby-plugin-root-import: ^2.0.8
       react: ^18.2.0
       react-dom: ^18.2.0
       react-helmet: ^6.1.0
@@ -38,6 +39,7 @@ importers:
       '@types/react': 18.0.21
       '@types/react-helmet': 6.1.5
       gatsby-plugin-pnpm: 1.2.10_gatsby@4.24.4
+      gatsby-plugin-root-import: 2.0.8_gatsby@4.24.4
 
 packages:
 
@@ -5000,6 +5002,14 @@ packages:
       gatsby: 4.24.4_biqbaboplfbrettd7655fr4n2y
       lodash.get: 4.4.2
       lodash.uniq: 4.5.0
+    dev: true
+
+  /gatsby-plugin-root-import/2.0.8_gatsby@4.24.4:
+    resolution: {integrity: sha512-y07q3c+Pz1qoW3XdkAvl5PbO2+gc0GhcfZYq+Msw2JBe5M+FSByhQVDhZYCVMRVZz0qx6L4qr3w3i04/k4S2HA==}
+    peerDependencies:
+      gatsby: ^2 || ^3 || ^4
+    dependencies:
+      gatsby: 4.24.4_biqbaboplfbrettd7655fr4n2y
     dev: true
 
   /gatsby-plugin-typescript/4.24.0_gatsby@4.24.4:

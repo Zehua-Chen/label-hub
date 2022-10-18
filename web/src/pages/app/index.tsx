@@ -1,9 +1,15 @@
 import React from 'react';
+import { Link } from 'gatsby';
 import { Router, RouteComponentProps } from '@reach/router';
-import Dashboard from '../../components/Dashboard';
+import Dashboard from 'src/components/Dashboard';
 
 const DashboardPage = (props: RouteComponentProps) => <Dashboard />;
-const SettingsPage = (props: RouteComponentProps) => <div>Settings</div>;
+const SettingsPage = (props: RouteComponentProps) => (
+  <div>
+    <h1>Settings</h1>
+    <Link to="/app">Dashboard</Link>
+  </div>
+);
 
 function App() {
   return (
