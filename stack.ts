@@ -5,11 +5,11 @@ export class LableHubStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new Web(this, 'web', {});
+    new Web(this, 'Web', {});
   }
 }
 
 const app = new cdk.App();
-new LableHubStack(app, 'label-hub');
+new LableHubStack(app, 'LabelHub', { stackName: 'label-hub' });
 
 app.synth();

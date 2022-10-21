@@ -6,7 +6,7 @@ export class Web extends Construct {
   constructor(scope: Construct, id: string, props: unknown) {
     super(scope, id);
 
-    const bucket = new cdk.aws_s3.Bucket(this, 'label-hub-hosting', {
+    const bucket = new cdk.aws_s3.Bucket(this, 'LabelHubHosting', {
       bucketName: 'lable-hub-hosting',
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
@@ -20,10 +20,5 @@ export class Web extends Construct {
         principals: [new cdk.aws_iam.AnyPrincipal()],
       })
     );
-
-    new cdk.aws_s3_deployment.BucketDeployment(this, 'lable-hub-hosting', {
-      sources: [cdk.aws_s3_deployment.Source.asset(path.join('web', 'public'))],
-      destinationBucket: bucket,
-    });
   }
 }
