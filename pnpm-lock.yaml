@@ -5,14 +5,12 @@ importers:
   .:
     specifiers:
       '@types/node': ^18.11.0
-      aws-cdk: ^2.46.0
       aws-cdk-lib: ^2.46.0
       constructs: ^10.1.132
       ts-node: ^10.9.1
       typescript: ^4.8.4
     devDependencies:
       '@types/node': 18.11.0
-      aws-cdk: 2.46.0
       aws-cdk-lib: 2.46.0_constructs@10.1.132
       constructs: 10.1.132
       ts-node: 10.9.1_o6ib7qqltxpe7qrskddglns2ga
@@ -2804,14 +2802,6 @@ packages:
       - punycode
       - semver
       - yaml
-
-  /aws-cdk/2.46.0:
-    resolution: {integrity: sha512-5pacxA1zMMxxyJKhTGk22/64lV3Nb4dZMY8RW4KfzZWQz8TnsIipd0Ks37rowQd7O2+VFkITvl86Socjewr5VQ==}
-    engines: {node: '>= 14.15.0'}
-    hasBin: true
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
 
   /axe-core/4.4.3:
     resolution: {integrity: sha512-32+ub6kkdhhWick/UjvEwRchgoetXqTK14INLqbGm5U2TzBkBNF3nQtLYm8ovxSkQWArjEQvftCKryjZaATu3w==}
