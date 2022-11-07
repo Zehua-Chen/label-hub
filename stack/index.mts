@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { Web } from './web';
+import { Web } from './web.mjs';
 
 export class LableHubStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
