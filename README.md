@@ -7,6 +7,14 @@
 - Fatima Dantsoho (fd2508@columbia.edu)
 - Alix Leon (afl2124@columbia.edu)
 
+## Architecture
+
+- [`label_hub`](label_hub)
+  - [`core`](label_hub/core): entities and business rules
+  - [`infrastructure`](label_hub/infrastructure): infrastructure adapters
+  - [`lambdas`](label_hub/lambdas): lambda implementations
+- [`tests`](tests): unit tests
+
 ## Development
 
 ### Installing Dependencies
@@ -22,4 +30,10 @@ Note that PNPM is a next-generation package manager for Node. Please see
 
 ```
 pnpm synth
+```
+
+### Testing
+
+```commandline
+python -m unittest discover tests
 ```
