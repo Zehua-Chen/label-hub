@@ -7,9 +7,7 @@ import {
 import { Construct } from 'constructs';
 import * as path from 'path';
 
-export interface WebProps {
-  webBucketName: string;
-}
+export interface WebProps {}
 
 export class Web extends Construct {
   hosting: s3.Bucket;
@@ -18,7 +16,6 @@ export class Web extends Construct {
     super(scope, id);
 
     this.hosting = new s3.Bucket(this, 'Hosting', {
-      bucketName: props.webBucketName,
       removalPolicy: RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
