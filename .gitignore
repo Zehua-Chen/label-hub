@@ -2,3 +2,4 @@
 node_modules/
 cdk.out/
 .idea/
+__pycache__/
