@@ -23,7 +23,7 @@ export class LabelHubLambda extends Construct {
 
     this.function = new lambda.Function(this, 'Function', {
       runtime: lambda.Runtime.PYTHON_3_9,
-      code: lambda.Code.fromAsset('label_hub', { exclude: ['__pycache__'] }),
+      code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
       handler: `label_hub.lambdas.${module}.handler`,
     });
   }
