@@ -2,7 +2,8 @@
   "name": "label-hub",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "synth": "cdk synth"
+    "synth": "cdk synth",
+    "deploy": "cdk deploy"
   },
   "devDependencies": {
     "@types/node": "^18.11.0",

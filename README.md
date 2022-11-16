@@ -29,7 +29,8 @@ Note that PNPM is a next-generation package manager for Node. Please see
 ### Deploy to AWS
 
 ```
-pnpm synth
+export CODE_STAR_CONNECTION='arn'
+pnpm deploy
 ```
 
 ### Testing
