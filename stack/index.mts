@@ -37,11 +37,16 @@ export class LabelHubPipeline extends cdk.Stack {
             connectionArn: process.env.CODE_STAR_CONNECTION ?? '',
           }
         ),
-        commands: ['npx cdk synth'],
+        installCommands: ['npm install -g pnpm'],
+        commands: [
+          'pip install --target lambdas/vendor -e lambdas',
+          'pnpm install',
+          'pnpm synth',
+        ],
       }),
     });
 
-    pipeline.addStage(new LabelHubStage(this, 'LabelHubStage'));
+    pipeline.addStage(new LabelHubStage(this, 'Production'));
   }
 }
 
