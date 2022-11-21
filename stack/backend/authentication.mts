@@ -3,6 +3,11 @@ import { aws_cognito as cognito } from 'aws-cdk-lib';
 
 export interface AuthenticationProps {
   cognitoDomain: string;
+
+  /**
+   * URL to the web app. Must be https
+   */
+  webURL: string;
 }
 
 export class Authentication extends Construct {
@@ -11,7 +16,7 @@ export class Authentication extends Construct {
   constructor(scope: Construct, id: string, props: AuthenticationProps) {
     super(scope, id);
 
-    const { cognitoDomain } = props;
+    const { cognitoDomain, webURL } = props;
 
     const pool = new cognito.UserPool(this, 'Cognito', {
       selfSignUpEnabled: true,
@@ -21,7 +26,11 @@ export class Authentication extends Construct {
       autoVerify: { email: true },
     });
 
-    this.client = pool.addClient('label-hub-web');
+    this.client = pool.addClient('label-hub-web', {
+      oAuth: {
+        callbackUrls: ['https://localhost:8000', webURL],
+      },
+    });
 
     pool.addDomain('CognitoDomain', {
       cognitoDomain: { domainPrefix: cognitoDomain },
