@@ -4,11 +4,36 @@ export interface User {
 
 export interface UseUserOptions {
   url?: string;
+  getUserFromCache?: () => User | null;
+  setUserToCache?: (user: User) => any;
+}
+
+function getUserFromLocalStorage(): User | null {
+  const json = localStorage.getItem('user');
+
+  if (!json) {
+    return null;
+  }
+
+  return JSON.parse(json) as User;
+}
+
+function setUserToLocalStorage(user: User): void {
+  localStorage.setItem('user', JSON.stringify(user));
+}
+
+export function isLoggedIn(): boolean {
+  return false;
 }
 
 export function useUser(options: UseUserOptions = {}): User {
-  const { url = globalThis.document ? document.URL : 'https://localhost' } =
-    options;
+  const {
+    url = globalThis.document ? document.URL : 'https://localhost',
+    getUserFromCache = getUserFromLocalStorage,
+    setUserToCache = setUserToLocalStorage,
+  } = options;
+
+  let user: User | null = null;
 
   if (url.match(/id_token/)) {
     const queries = url
@@ -20,10 +45,20 @@ export function useUser(options: UseUserOptions = {}): User {
         return previous;
       }, {} as any);
 
-    return {
+    user = {
       token: queries['id_token'],
     };
+
+    setUserToCache(user);
   }
 
-  return { token: '' };
+  if (!user) {
+    user = getUserFromCache();
+  }
+
+  if (!user) {
+    throw new Error('Unable to get user');
+  }
+
+  return user;
 }

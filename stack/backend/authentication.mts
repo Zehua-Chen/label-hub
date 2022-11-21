@@ -28,7 +28,7 @@ export class Authentication extends Construct {
 
     this.client = pool.addClient('label-hub-web', {
       oAuth: {
-        callbackUrls: ['http://localhost:8000', webURL],
+        callbackUrls: ['http://localhost:8000/app', webURL],
       },
     });
 

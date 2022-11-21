@@ -15,7 +15,7 @@ function Index() {
       </div>
       <div>
         <a
-          href={`${process.env.AUTH_DOMAIN}/login?response_type=token&client_id=${process.env.COGNITO_CLIENT_ID}&redirect_uri=${document.URL}`}
+          href={`${process.env.AUTH_DOMAIN}/login?response_type=token&client_id=${process.env.COGNITO_CLIENT_ID}&redirect_uri=${document.URL}app`}
         >
           Login/Signup
         </a>
