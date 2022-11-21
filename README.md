@@ -15,7 +15,12 @@
   - [`lambdas`](label_hub/lambdas): lambda implementations
 - [`tests`](tests): unit tests
 
-## Development
+## Deployment
+
+Before starting deployment, follow the following instructions to build
+components of the app. Leave environment variables during the first deployment.
+
+- [Web Development](web/README.md):
 
 ### Installing Dependencies
 
@@ -38,7 +43,9 @@ cdk deploy "Development/*" --parameters \
 
 - `-O cdk.out/outputs.json`: save outputs to a file for quick reference
 
-### Testing
+After receiving outputs, fill in environment variables and deploy again.
+
+## Testing
 
 ```commandline
 python -m unittest discover tests

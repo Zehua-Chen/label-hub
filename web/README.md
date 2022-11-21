@@ -1,8 +1,16 @@
 # Web
 
-## Get Started
+## Development
 
 1. `pnpm install`
+
+### Environment Variables
+
+1. Duplicate `.env` to `.env.development` and fill values
+
+## Build
+
+1. Duplicate `.env` to `.env.production` and fill values
 
 ## Scripts
 
