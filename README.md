@@ -58,6 +58,7 @@ cdk deploy LabelHubPipeline --parameters \
 ```
 
 - `CODE_STAR_CONNECTION` can't be passed as parameter for some reasons
+- Frontend still has to be deployed separately
 
 ## Testing
 
