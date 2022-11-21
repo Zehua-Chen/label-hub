@@ -17,11 +17,6 @@
 
 ## Deployment
 
-Before starting deployment, follow the following instructions to build
-components of the app. Leave environment variables during the first deployment.
-
-- [Web Development](web/README.md):
-
 ### Installing Dependencies
 
 ```
@@ -43,7 +38,16 @@ cdk deploy "Development/*" --parameters \
 
 - `-O cdk.out/outputs.json`: save outputs to a file for quick reference
 
-After receiving outputs, fill in environment variables and deploy again.
+### Deploy Frontend
+
+As frontend depends on outputs from Cloud Formation, it has to be deployed
+separately.
+
+- [Web Development](web/README.md): fill environment variables using CDK outputs
+
+```
+aws s3 sync aws s3 sync web/public s3://<bucket>
+```
 
 ## Testing
 
