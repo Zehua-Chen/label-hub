@@ -9,11 +9,7 @@ function Index() {
         <title>Label Hub</title>
       </Helmet>
       <h1>Lable Hub</h1>
-      <ul>
-        <li>
-          <Link to="/app">App</Link>
-        </li>
-      </ul>
+      <Link to="/app">App</Link>
     </div>
   );
 }

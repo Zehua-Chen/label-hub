@@ -30,7 +30,9 @@ Note that PNPM is a next-generation package manager for Node. Please see
 
 ```
 export CODE_STAR_CONNECTION='arn'
-cdk deploy "Development/*"
+
+cdk deploy "Development/*" --parameters \
+  CognitoDomain=<unique url>
 ```
 
 ### Testing

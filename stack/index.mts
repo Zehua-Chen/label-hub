@@ -10,8 +10,14 @@ export class LableHubStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const cognitoDomain = new cdk.CfnParameter(this, 'CognitoDomain', {
+      type: 'String',
+    });
+
     new Web(this, 'Web', {});
-    new Backend(this, 'Backend', {});
+    new Backend(this, 'Backend', {
+      cognitoDomain: cognitoDomain.valueAsString,
+    });
     new DevOps(this, 'DevOps', {});
   }
 }
