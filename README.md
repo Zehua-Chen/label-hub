@@ -29,8 +29,6 @@ Note that PNPM is a next-generation package manager for Node. Please see
 ### Deploy Development Stack to AWS
 
 ```
-export CODE_STAR_CONNECTION='arn'
-
 cdk deploy "Development/*" --parameters \
   CognitoDomain=<unique url> \
   -O cdk.out/outputs.json
@@ -48,6 +46,18 @@ separately.
 ```
 aws s3 sync aws s3 sync web/public s3://<bucket>
 ```
+
+### Deploy Production Stack with Pipeline
+
+```
+export CODE_STAR_CONNECTION='arn'
+
+cdk deploy LabelHubPipeline --parameters \
+  CognitoDomain=<unique url> \
+  -O cdk.out/outputs.json
+```
+
+- `CODE_STAR_CONNECTION` can't be passed as parameter for some reasons
 
 ## Testing
 

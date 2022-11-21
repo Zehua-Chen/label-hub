@@ -66,7 +66,7 @@ export class LabelHubPipeline extends cdk.Stack {
 }
 
 const app = new cdk.App();
-// new LabelHubPipeline(app, 'LabelHubPipeline', {});
+new LabelHubPipeline(app, 'LabelHubPipeline', {});
 new LabelHubStage(app, 'Development');
 
 app.synth();
