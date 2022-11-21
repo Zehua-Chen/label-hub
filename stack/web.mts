@@ -24,6 +24,14 @@ export class Web extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
+      websiteRoutingRules: [
+        {
+          condition: {
+            keyPrefixEquals: '/app',
+          },
+          replaceKey: s3.ReplaceKey.with('/app/index.html'),
+        },
+      ],
     });
 
     this.hosting.grantPublicAccess();
