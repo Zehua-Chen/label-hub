@@ -32,8 +32,11 @@ Note that PNPM is a next-generation package manager for Node. Please see
 export CODE_STAR_CONNECTION='arn'
 
 cdk deploy "Development/*" --parameters \
-  CognitoDomain=<unique url>
+  CognitoDomain=<unique url> \
+  -O cdk.out/outputs.json
 ```
+
+- `-O cdk.out/outputs.json`: save outputs to a file for quick reference
 
 ### Testing
 

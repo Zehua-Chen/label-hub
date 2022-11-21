@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 import * as process from 'process';
 import { Construct } from 'constructs';
-import { Backend } from './backend.mjs';
+import { Backend } from './backend/index.mjs';
 import { DevOps } from './devops.mjs';
 import { Web } from './web.mjs';
 
@@ -15,10 +15,16 @@ export class LableHubStack extends cdk.Stack {
     });
 
     new Web(this, 'Web', {});
-    new Backend(this, 'Backend', {
-      cognitoDomain: cognitoDomain.valueAsString,
+    const backend = new Backend(this, 'Backend', {
+      authentication: {
+        cognitoDomain: cognitoDomain.valueAsString,
+      },
     });
     new DevOps(this, 'DevOps', {});
+
+    new cdk.CfnOutput(this, 'CognitoClientId', {
+      value: backend.authentication.client.userPoolClientId,
+    });
   }
 }
 

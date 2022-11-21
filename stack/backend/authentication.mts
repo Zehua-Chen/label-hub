@@ -1,12 +1,14 @@
 import { Construct } from 'constructs';
 import { aws_cognito as cognito } from 'aws-cdk-lib';
 
-export interface BackendProps {
+export interface AuthenticationProps {
   cognitoDomain: string;
 }
 
-export class Backend extends Construct {
-  constructor(scope: Construct, id: string, props: BackendProps) {
+export class Authentication extends Construct {
+  client: cognito.UserPoolClient;
+
+  constructor(scope: Construct, id: string, props: AuthenticationProps) {
     super(scope, id);
 
     const { cognitoDomain } = props;
@@ -19,9 +21,7 @@ export class Backend extends Construct {
       autoVerify: { email: true },
     });
 
-    pool.addClient('label-hub-web');
-
-    this.node.id;
+    this.client = pool.addClient('label-hub-web');
 
     pool.addDomain('CognitoDomain', {
       cognitoDomain: { domainPrefix: cognitoDomain },
