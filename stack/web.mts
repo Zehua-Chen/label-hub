@@ -6,8 +6,11 @@ import {
 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as path from 'path';
+import * as fs from 'fs';
 
-export interface WebProps {}
+export interface WebProps {
+  source?: string;
+}
 
 export class Web extends Construct {
   hosting: s3.Bucket;
@@ -15,23 +18,21 @@ export class Web extends Construct {
   constructor(scope: Construct, id: string, props: WebProps) {
     super(scope, id);
 
+    const { source = path.join('web', 'public') } = props;
+
     this.hosting = new s3.Bucket(this, 'Hosting', {
       removalPolicy: RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
     });
 
-    this.hosting.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['s3:GetObject'],
-        principals: [new iam.AnyPrincipal()],
-      })
-    );
+    this.hosting.grantPublicAccess();
 
-    new deployment.BucketDeployment(this, 'Deployment', {
-      sources: [deployment.Source.asset(path.join('web', 'public'))],
-      destinationBucket: this.hosting,
-    });
+    if (fs.existsSync(source)) {
+      new deployment.BucketDeployment(this, 'Deployment', {
+        sources: [deployment.Source.asset(source)],
+        destinationBucket: this.hosting,
+      });
+    }
   }
 }

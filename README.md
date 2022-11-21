@@ -26,11 +26,11 @@ pnpm install
 Note that PNPM is a next-generation package manager for Node. Please see
 [pnpm.io](https://pnpm.io) for setup instructions
 
-### Deploy to AWS
+### Deploy Development Stack to AWS
 
 ```
 export CODE_STAR_CONNECTION='arn'
-pnpm deploy
+cdk deploy "Development/*"
 ```
 
 ### Testing
