@@ -4,7 +4,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import Dashboard from 'src/components/Dashboard';
 import Settings from 'src/components/Settings';
 import ProtectedRoute from 'src/components/ProtectedRoute';
-import { isLoggedIn } from 'src/services/user';
+import { isLoggedIn } from 'src/services/auth';
 
 const DashboardPage = (props: RouteComponentProps) => (
   <ProtectedRoute condition={isLoggedIn} navigate={navigate}>

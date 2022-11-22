@@ -1,11 +1,11 @@
-import { useUser } from 'src/services/user';
+import { useAuth } from 'src/services/auth';
 
-describe('useUser', () => {
+describe('useAuth', () => {
   it('parse from url', () => {
-    const user = useUser({
+    const user = useAuth({
       url: 'http://localhost:8000/app/#id_token=id&access_token=access&expires_in=expires&token_type=Bearer',
-      setUserToCache: jest.fn(),
-      getUserFromCache: jest.fn(),
+      setAuthToCache: jest.fn(),
+      getAuthFromCache: jest.fn(),
     });
 
     expect(user.token).toBe('id');
