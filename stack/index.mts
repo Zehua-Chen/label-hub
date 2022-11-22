@@ -2,9 +2,9 @@ import * as cdk from 'aws-cdk-lib';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 import * as process from 'process';
 import { Construct } from 'constructs';
-import { Backend } from './backend/index.mjs';
-import { DevOps } from './devops.mjs';
-import { Web } from './web.mjs';
+import Backend from './Backend/index.mjs';
+import DevOps from './DevOps.mjs';
+import Web from './Web.mjs';
 
 export class LableHubStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

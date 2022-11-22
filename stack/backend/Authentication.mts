@@ -10,7 +10,7 @@ export interface AuthenticationProps {
   webURL: string;
 }
 
-export class Authentication extends Construct {
+class Authentication extends Construct {
   client: cognito.UserPoolClient;
 
   constructor(scope: Construct, id: string, props: AuthenticationProps) {
@@ -37,3 +37,5 @@ export class Authentication extends Construct {
     });
   }
 }
+
+export default Authentication;

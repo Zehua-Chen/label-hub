@@ -1,8 +1,10 @@
 import { Construct } from 'constructs';
 import { LabelHubLambda } from './utils.mjs';
 
-export class DevOps extends Construct {
-  constructor(scope: Construct, id: string, props: any) {
+export interface DevOpsProps {}
+
+class DevOps extends Construct {
+  constructor(scope: Construct, id: string, props: DevOpsProps) {
     super(scope, id);
 
     new LabelHubLambda(this, 'TestInfrastructure', {
@@ -10,3 +12,5 @@ export class DevOps extends Construct {
     });
   }
 }
+
+export default DevOps;

@@ -1,12 +1,16 @@
 import { Construct } from 'constructs';
-import { Authentication, AuthenticationProps } from './authentication.mjs';
+import Authentication, { AuthenticationProps } from './Authentication.mjs';
+import Api from './Api.mjs';
+import Lambdas from './Lambdas.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
 }
 
-export class Backend extends Construct {
+class Backend extends Construct {
   authentication: Authentication;
+  api: Api;
+  lambdas: Lambdas;
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);
@@ -16,5 +20,10 @@ export class Backend extends Construct {
       'Authentication',
       props.authentication
     );
+
+    this.api = new Api(this, 'Api', {});
+    this.lambdas = new Lambdas(this, 'Lambdas', {});
   }
 }
+
+export default Backend;

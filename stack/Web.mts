@@ -8,7 +8,7 @@ import { Construct } from 'constructs';
 
 export interface WebProps {}
 
-export class Web extends Construct {
+class Web extends Construct {
   hosting: s3.Bucket;
   distribution: cloudfront.Distribution;
 
@@ -39,3 +39,5 @@ export class Web extends Construct {
     });
   }
 }
+
+export default Web;
