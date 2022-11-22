@@ -1,10 +1,15 @@
 # Web
 
+## Setup
+
+- Node v18
+
 ## Environment Variables
 
 - `AUTH_DOMAIN`:
   - Cognito domain: `https://<COGNITO_DOMAIN>.auth.us-east-1.amazoncognito.com`;
     `COGNITO_DOMAIN` should be the same value as `CognitoDomain` passed to CDK
+- `COGNITO_CLIENT_ID`: cognito client ID
 
 ## Development
 
