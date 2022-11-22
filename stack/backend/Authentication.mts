@@ -12,13 +12,14 @@ export interface AuthenticationProps {
 
 class Authentication extends Construct {
   client: cognito.UserPoolClient;
+  userPool: cognito.UserPool;
 
   constructor(scope: Construct, id: string, props: AuthenticationProps) {
     super(scope, id);
 
     const { cognitoDomain, webURL } = props;
 
-    const pool = new cognito.UserPool(this, 'Cognito', {
+    this.userPool = new cognito.UserPool(this, 'Cognito', {
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,
@@ -26,13 +27,13 @@ class Authentication extends Construct {
       autoVerify: { email: true },
     });
 
-    this.client = pool.addClient('label-hub-web', {
+    this.client = this.userPool.addClient('label-hub-web', {
       oAuth: {
         callbackUrls: ['http://localhost:8000/app', webURL],
       },
     });
 
-    pool.addDomain('CognitoDomain', {
+    this.userPool.addDomain('CognitoDomain', {
       cognitoDomain: { domainPrefix: cognitoDomain },
     });
   }

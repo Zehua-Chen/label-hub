@@ -21,7 +21,10 @@ class Backend extends Construct {
       props.authentication
     );
 
-    this.api = new Api(this, 'Api', {});
+    this.api = new Api(this, 'Api', {
+      cognitoUserPools: [this.authentication.userPool],
+    });
+
     this.lambdas = new Lambdas(this, 'Lambdas', {});
   }
 }
