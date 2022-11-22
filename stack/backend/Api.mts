@@ -26,15 +26,34 @@ class Api extends Construct {
 
     const photos = this.api.root.addResource('photos');
 
-    photos.addMethod('GET', new apigateway.MockIntegration({}), {
-      authorizer: this.authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-      methodResponses: [
-        {
-          statusCode: '200',
+    photos.addMethod(
+      'GET',
+      new apigateway.MockIntegration({
+        requestTemplates: {
+          'application/json': JSON.stringify({ statusCode: 200 }),
         },
-      ],
-    });
+        integrationResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': "'*'",
+            },
+          },
+        ],
+      }),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
 
     photos.addCorsPreflight({
       allowOrigins: ['*'],

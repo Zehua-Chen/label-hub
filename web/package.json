@@ -5,7 +5,8 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "jest"
+    "test": "jest",
+    "openapi": "openapi-generator-cli generate"
   },
   "dependencies": {
     "gatsby": "^4.24.4",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.18.6",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/jest": "^29.2.3",
     "@types/reach__router": "^1.3.11",
     "@types/react": "^18.0.21",
