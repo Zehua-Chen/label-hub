@@ -1,18 +1,22 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-11-22T20:07:22Z'
+  version: '2022-11-22T20:46:43Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
       basePath:
-        default: 'prod'
+        default: '/prod'
 paths:
   /photos:
     get:
       responses:
         '200':
           description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
           content: {}
       security:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
