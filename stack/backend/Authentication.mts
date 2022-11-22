@@ -5,9 +5,11 @@ export interface AuthenticationProps {
   cognitoDomain: string;
 
   /**
-   * URL to the web app. Must be https
+   * URL to the production web app. Must be https
    */
-  webURL: string;
+  webProductionAuthCallbackURL: string;
+
+  webLocalAuthCallbackURL: string;
 }
 
 class Authentication extends Construct {
@@ -17,7 +19,11 @@ class Authentication extends Construct {
   constructor(scope: Construct, id: string, props: AuthenticationProps) {
     super(scope, id);
 
-    const { cognitoDomain, webURL } = props;
+    const {
+      cognitoDomain,
+      webProductionAuthCallbackURL,
+      webLocalAuthCallbackURL,
+    } = props;
 
     this.userPool = new cognito.UserPool(this, 'Cognito', {
       selfSignUpEnabled: true,
@@ -29,7 +35,7 @@ class Authentication extends Construct {
 
     this.client = this.userPool.addClient('label-hub-web', {
       oAuth: {
-        callbackUrls: ['http://localhost:8000/app', webURL],
+        callbackUrls: [webLocalAuthCallbackURL, webProductionAuthCallbackURL],
       },
     });
 
