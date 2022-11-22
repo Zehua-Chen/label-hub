@@ -1,15 +1,32 @@
-import { useAuth } from 'src/services/auth';
+import { Auth, parseAuth, useAuth } from 'src/services/auth';
 
-describe('useAuth', () => {
+describe('parseAuth', () => {
   it('parse from url', () => {
-    const user = useAuth({
-      url: 'http://localhost:8000/app/#id_token=id&access_token=access&expires_in=expires&token_type=Bearer',
-      setAuthToCache: jest.fn(),
-      getAuthFromCache: jest.fn(),
+    let auth: Auth = { token: '', expiresIn: 0, created: 0 };
+
+    parseAuth({
+      url: 'http://localhost:8000/app/#id_token=id&access_token=access&expires_in=3600&token_type=Bearer',
+      setAuthToCache: (a) => {
+        auth = a;
+      },
     });
 
-    expect(user.token).toBe('id');
+    expect(auth.token).toBe('id');
+    expect(auth.expiresIn).toBe(3600000);
+    expect(auth.created).toBeGreaterThan(0);
   });
+});
 
-  // it('load from local storage', () => {});
+describe('useAuth', () => {
+  it('auth expired', () => {
+    expect(() => {
+      useAuth({
+        getAuthFromCache: () => ({
+          token: '',
+          created: 0,
+          expiresIn: 30,
+        }),
+      });
+    }).toThrow();
+  });
 });

@@ -1,14 +1,16 @@
 export interface Auth {
   token: string;
+  /**
+   * Milliseconds
+   */
+  created: number;
+  /**
+   * Milliseconds
+   */
+  expiresIn: number;
 }
 
-export interface UseUserOptions {
-  url?: string;
-  getAuthFromCache?: () => Auth | null;
-  setAuthToCache?: (auth: Auth) => any;
-}
-
-const LOCALSTORAGE_AUTH_KEY = 'auth';
+const LOCALSTORAGE_AUTH_KEY = 'AUTH';
 
 function getAuthFromLocalStorage(): Auth | null {
   const json = localStorage.getItem(LOCALSTORAGE_AUTH_KEY);
@@ -24,18 +26,31 @@ function setAuthToLocalStorage(auth: Auth): void {
   localStorage.setItem(LOCALSTORAGE_AUTH_KEY, JSON.stringify(auth));
 }
 
-export function isLoggedIn(): boolean {
-  return localStorage.getItem(LOCALSTORAGE_AUTH_KEY) !== null;
+export function hasAuthExpired(auth: Auth): boolean {
+  const { created, expiresIn } = auth;
+  return created + expiresIn < Date.now();
 }
 
-export function useAuth(options: UseUserOptions = {}): Auth {
+export function isLoggedIn(): boolean {
+  const auth = getAuthFromLocalStorage();
+
+  if (!auth) {
+    return false;
+  }
+
+  return !hasAuthExpired(auth);
+}
+
+export interface ParseAuthOptions {
+  url?: string;
+  setAuthToCache?: (auth: Auth) => any;
+}
+
+export function parseAuth(options: ParseAuthOptions = {}): void {
   const {
     url = globalThis.document ? document.URL : 'https://localhost',
-    getAuthFromCache: getUserFromCache = getAuthFromLocalStorage,
     setAuthToCache: setUserToCache = setAuthToLocalStorage,
   } = options;
-
-  let user: Auth | null = null;
 
   if (url.match(/id_token/)) {
     const queries = url
@@ -47,20 +62,36 @@ export function useAuth(options: UseUserOptions = {}): Auth {
         return previous;
       }, {} as any);
 
-    user = {
+    const auth: Auth = {
       token: queries['id_token'],
+      created: Date.now(),
+      expiresIn: Number.parseInt(queries['expires_in']) * 1000,
     };
 
-    setUserToCache(user);
+    setUserToCache(auth);
   }
 
-  if (!user) {
-    user = getUserFromCache();
-  }
+  // TODO: clear url after parsing
+}
 
-  if (!user) {
+export interface UseAuthOptions {
+  url?: string;
+  getAuthFromCache?: () => Auth | null;
+}
+
+export function useAuth(options: UseAuthOptions = {}): Auth {
+  const { getAuthFromCache: getUserFromCache = getAuthFromLocalStorage } =
+    options;
+
+  const auth = getUserFromCache();
+
+  if (!auth) {
     throw new Error('Unable to get user');
   }
 
-  return user;
+  if (hasAuthExpired(auth)) {
+    throw new Error('auth ahs expired');
+  }
+
+  return auth;
 }
