@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 import * as process from 'process';
+import * as path from 'path';
 import { Construct } from 'constructs';
 import Backend from './Backend/index.mjs';
 import DevOps from './DevOps.mjs';
@@ -12,13 +13,40 @@ export class LableHubStack extends cdk.Stack {
 
     const cognitoDomain = new cdk.CfnParameter(this, 'CognitoDomain', {
       type: 'String',
+      description: 'Cognito Domain for hosted Authentication UI',
     });
 
+    const webLocalURL = new cdk.CfnParameter(this, 'WebLocalURL', {
+      type: 'String',
+      default: 'http://localhost:8000',
+      description: 'Address at which to access the local development server',
+    });
+
+    const webAuthCallBackPath = new cdk.CfnParameter(
+      this,
+      'WebAuthCallbackPath',
+      {
+        type: 'String',
+        default: 'app',
+        description:
+          'the URL path (not scheme or host) at which hosted authentication UI will callback at',
+      }
+    );
+
     const web = new Web(this, 'Web', {});
+
     const backend = new Backend(this, 'Backend', {
+      api: {},
       authentication: {
         cognitoDomain: cognitoDomain.valueAsString,
-        webURL: `https://${web.distribution.distributionDomainName}`,
+        webProductionAuthCallbackURL: path.join(
+          `https://${web.distribution.distributionDomainName}`,
+          webAuthCallBackPath.valueAsString
+        ),
+        webLocalAuthCallbackURL: path.join(
+          webLocalURL.valueAsString,
+          webAuthCallBackPath.valueAsString
+        ),
       },
     });
 

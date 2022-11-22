@@ -1,10 +1,11 @@
 import { Construct } from 'constructs';
 import Authentication, { AuthenticationProps } from './Authentication.mjs';
-import Api from './Api.mjs';
+import Api, { ApiProps } from './Api.mjs';
 import Lambdas from './Lambdas.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
+  api: Omit<ApiProps, 'cognitoUserPools'>;
 }
 
 class Backend extends Construct {
@@ -21,7 +22,11 @@ class Backend extends Construct {
       props.authentication
     );
 
-    this.api = new Api(this, 'Api', {});
+    this.api = new Api(this, 'Api', {
+      cognitoUserPools: [this.authentication.userPool],
+      ...props.api,
+    });
+
     this.lambdas = new Lambdas(this, 'Lambdas', {});
   }
 }
