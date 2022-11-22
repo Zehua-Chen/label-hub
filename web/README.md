@@ -1,12 +1,15 @@
 # Web
 
+## Environment Variables
+
+- `AUTH_DOMAIN`:
+  - Cognito domain: `https://<COGNITO_DOMAIN>.auth.us-east-1.amazoncognito.com`;
+    `COGNITO_DOMAIN` should be the same value as `CognitoDomain` passed to CDK
+
 ## Development
 
 1. `pnpm install`
-
-### Environment Variables
-
-1. Duplicate `.env` to `.env.development` and fill values
+2. Duplicate `.env` to `.env.development` and fill values
 
 ## Build
 

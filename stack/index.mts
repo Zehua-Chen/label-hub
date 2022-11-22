@@ -14,16 +14,22 @@ export class LableHubStack extends cdk.Stack {
       type: 'String',
     });
 
-    new Web(this, 'Web', {});
+    const web = new Web(this, 'Web', {});
     const backend = new Backend(this, 'Backend', {
       authentication: {
         cognitoDomain: cognitoDomain.valueAsString,
+        webURL: `https://${web.distribution.distributionDomainName}`,
       },
     });
+
     new DevOps(this, 'DevOps', {});
 
     new cdk.CfnOutput(this, 'CognitoClientId', {
       value: backend.authentication.client.userPoolClientId,
+    });
+
+    new cdk.CfnOutput(this, 'WebURL', {
+      value: `https://${web.distribution.distributionDomainName}`,
     });
   }
 }
