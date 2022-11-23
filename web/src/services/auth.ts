@@ -43,7 +43,7 @@ export function isLoggedIn(): boolean {
 
 export interface ParseAuthOptions {
   url?: string;
-  setAuthToCache?: (auth: Auth) => any;
+  setAuthToCache?: (auth: Auth) => unknown;
 }
 
 export function parseAuth(options: ParseAuthOptions = {}): void {
@@ -60,7 +60,7 @@ export function parseAuth(options: ParseAuthOptions = {}): void {
         const segments = current.split('=');
         previous[segments[0]] = segments[1];
         return previous;
-      }, {} as any);
+      }, {} as Record<string, string>);
 
     const auth: Auth = {
       token: queries['id_token'],
