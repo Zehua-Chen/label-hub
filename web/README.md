@@ -15,10 +15,13 @@
 
 1. `pnpm install`
 2. Duplicate `.env` to `.env.development` and fill values
+3. `gatsby develop`
 
 ## Build
 
-1. Duplicate `.env` to `.env.production` and fill values
+1. `pnpm install --prod`
+2. Duplicate `.env` to `.env.production` and fill values
+3. `gatsby build`
 
 ## Scripts
 
