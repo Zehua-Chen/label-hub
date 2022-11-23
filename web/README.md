@@ -11,6 +11,7 @@
     `COGNITO_DOMAIN` should be the same value as `CognitoDomain` passed to CDK
 - `COGNITO_CLIENT_ID`: cognito client ID
 - `AUTH_ENABLED`: whether to enable authentication
+- `API_BASE_PATH`: base path for API
 
 ## Development
 

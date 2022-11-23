@@ -1,14 +1,11 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import { useAuth } from 'src/services/auth';
-import { DefaultApi, Configuration } from 'src/services/api';
+import { useApi } from 'src/services/api/utils';
 
 function ProducerDashboard() {
-  const auth = useAuth();
+  const api = useApi();
 
   async function test() {
-    const api = new DefaultApi(new Configuration({ apiKey: auth.token }));
-
     await api.photosGet();
     console.log('response received');
   }
