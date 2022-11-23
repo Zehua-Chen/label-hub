@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, StrictMode } from 'react';
 import { navigate } from 'gatsby';
 import { Router, RouteComponentProps, Link } from '@reach/router';
 import ProducerDashboard from 'src/components/ProducerDashboard';
@@ -55,16 +55,18 @@ const AppPage = makePage(
 
 function App() {
   return (
-    <AuthContext.Provider value={getAuth()}>
-      <ApiProvider>
-        <Router basepath="/app">
-          <AppPage path="/"></AppPage>
-          <ProducerDashboardPage path="/producer"></ProducerDashboardPage>
-          <ConsumerDashboardPage path="/consumer"></ConsumerDashboardPage>
-          <SettingsPage path="settings"></SettingsPage>
-        </Router>
-      </ApiProvider>
-    </AuthContext.Provider>
+    <StrictMode>
+      <AuthContext.Provider value={getAuth()}>
+        <ApiProvider>
+          <Router basepath="/app">
+            <AppPage path="/"></AppPage>
+            <ProducerDashboardPage path="/producer"></ProducerDashboardPage>
+            <ConsumerDashboardPage path="/consumer"></ConsumerDashboardPage>
+            <SettingsPage path="settings"></SettingsPage>
+          </Router>
+        </ApiProvider>
+      </AuthContext.Provider>
+    </StrictMode>
   );
 }
 
