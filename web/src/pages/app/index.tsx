@@ -11,17 +11,34 @@ function protectedRouteCondition(): () => boolean {
   return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : () => true;
 }
 
-function makePage(children: JSX.Element): FC<RouteComponentProps> {
-  return () => (
-    <ProtectedRoute condition={protectedRouteCondition()} navigate={navigate}>
-      {children}
-    </ProtectedRoute>
-  );
+function makePage(
+  children: JSX.Element,
+  displayName: string
+): FC<RouteComponentProps> {
+  function Page() {
+    return (
+      <ProtectedRoute condition={protectedRouteCondition()} navigate={navigate}>
+        {children}
+      </ProtectedRoute>
+    );
+  }
+
+  Page.displayName = displayName;
+
+  return Page;
 }
 
-const ProducerDashboardPage = makePage(<ProducerDashboard />);
-const ConsumerDashboardPage = makePage(<ConsumerDashboard />);
-const SettingsPage = makePage(<Settings />);
+const ProducerDashboardPage = makePage(
+  <ProducerDashboard />,
+  'ProducerDashboardPage'
+);
+
+const ConsumerDashboardPage = makePage(
+  <ConsumerDashboard />,
+  'ConsumerDashboardPage'
+);
+
+const SettingsPage = makePage(<Settings />, 'SettingsPage');
 
 const AppPage = makePage(
   <ul>
@@ -31,7 +48,8 @@ const AppPage = makePage(
     <li>
       <Link to="consumer">Consumer</Link>
     </li>
-  </ul>
+  </ul>,
+  'AppPage'
 );
 
 function App() {
