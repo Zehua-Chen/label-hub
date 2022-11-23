@@ -4,7 +4,7 @@ import { useAuth } from 'src/services/auth';
 
 export const ApiContext = createContext(new DefaultApi());
 
-export function ApiProvider(props: PropsWithChildren<{}>) {
+export function ApiProvider(props: PropsWithChildren<unknown>) {
   const auth = useAuth();
 
   return (
