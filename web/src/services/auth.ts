@@ -83,14 +83,14 @@ export function useAuth(options: UseAuthOptions = {}): Auth {
   const { getAuthFromCache: getUserFromCache = getAuthFromLocalStorage } =
     options;
 
-  const auth = getUserFromCache();
+  let auth = getUserFromCache();
 
-  if (!auth) {
-    throw new Error('Unable to get user');
-  }
-
-  if (hasAuthExpired(auth)) {
-    throw new Error('auth ahs expired');
+  if (!auth || hasAuthExpired(auth)) {
+    auth = {
+      token: 'test',
+      created: 0,
+      expiresIn: 0,
+    };
   }
 
   return auth;

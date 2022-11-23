@@ -3,7 +3,7 @@ import { Link } from 'gatsby';
 import { useAuth } from 'src/services/auth';
 import { DefaultApi, Configuration } from 'src/services/api';
 
-function Dashboard() {
+function ProducerDashboard() {
   const auth = useAuth();
 
   async function test() {
@@ -22,4 +22,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default ProducerDashboard;

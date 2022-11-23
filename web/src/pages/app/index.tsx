@@ -1,21 +1,37 @@
 import React, { FC } from 'react';
 import { navigate } from 'gatsby';
-import { Router, RouteComponentProps } from '@reach/router';
-import Dashboard from 'src/components/Dashboard';
+import { Router, RouteComponentProps, Link } from '@reach/router';
+import ProducerDashboard from 'src/components/ProducerDashboard';
+import ConsumerDashboard from 'src/components/ConsumerDashboard';
 import Settings from 'src/components/Settings';
 import ProtectedRoute from 'src/components/ProtectedRoute';
 import { isLoggedIn, parseAuth } from 'src/services/auth';
 
-const DashboardPage: FC<RouteComponentProps> = () => (
-  <ProtectedRoute condition={isLoggedIn} navigate={navigate}>
-    <Dashboard />
-  </ProtectedRoute>
-);
+function protectedRouteCondition(): () => boolean {
+  return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : () => true;
+}
 
-const SettingsPage: FC<RouteComponentProps> = () => (
-  <ProtectedRoute condition={isLoggedIn} navigate={navigate}>
-    <Settings />
-  </ProtectedRoute>
+function makePage(children: JSX.Element): FC<RouteComponentProps> {
+  return () => (
+    <ProtectedRoute condition={protectedRouteCondition()} navigate={navigate}>
+      {children}
+    </ProtectedRoute>
+  );
+}
+
+const ProducerDashboardPage = makePage(<ProducerDashboard />);
+const ConsumerDashboardPage = makePage(<ConsumerDashboard />);
+const SettingsPage = makePage(<Settings />);
+
+const AppPage = makePage(
+  <ul>
+    <li>
+      <Link to="producer">Producer</Link>
+    </li>
+    <li>
+      <Link to="consumer">Consumer</Link>
+    </li>
+  </ul>
 );
 
 function App() {
@@ -23,7 +39,9 @@ function App() {
 
   return (
     <Router basepath="/app">
-      <DashboardPage path="/"></DashboardPage>
+      <AppPage path="/"></AppPage>
+      <ProducerDashboardPage path="/producer"></ProducerDashboardPage>
+      <ConsumerDashboardPage path="/consumer"></ConsumerDashboardPage>
       <SettingsPage path="settings"></SettingsPage>
     </Router>
   );
