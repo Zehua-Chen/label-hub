@@ -48,12 +48,12 @@ const SettingsPage = makePage(<Settings />, 'SettingsPage');
 
 const AppPage = makePage(
   <Layout>
-    <ul>
-      <li>
-        <Link to="producer">Producer</Link>
+    <ul className='list-group'>
+      <li className='list-group-item'>
+        <Link to='producer'>Producer</Link>
       </li>
-      <li>
-        <Link to="consumer">Consumer</Link>
+      <li className='list-group-item'>
+        <Link to='consumer'>Consumer</Link>
       </li>
     </ul>
   </Layout>,
@@ -65,12 +65,12 @@ function App() {
     <StrictMode>
       <AuthContext.Provider value={getAuth()}>
         <ApiProvider>
-          <Router basepath="/app">
-            <AppPage path="/"></AppPage>
-            <ProducerDashboardPage path="producer"></ProducerDashboardPage>
-            <ProducerUploadPage path="producer/upload" />
-            <ConsumerDashboardPage path="consumer"></ConsumerDashboardPage>
-            <SettingsPage path="settings"></SettingsPage>
+          <Router basepath='/app'>
+            <AppPage path='/'></AppPage>
+            <ProducerDashboardPage path='producer'></ProducerDashboardPage>
+            <ProducerUploadPage path='producer/upload' />
+            <ConsumerDashboardPage path='consumer'></ConsumerDashboardPage>
+            <SettingsPage path='settings'></SettingsPage>
           </Router>
         </ApiProvider>
       </AuthContext.Provider>
@@ -79,7 +79,7 @@ function App() {
 }
 
 export function Head() {
-  return <HeadContent title="Label Hub" />;
+  return <HeadContent title='Label Hub' />;
 }
 
 export default App;
