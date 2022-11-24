@@ -1,6 +1,8 @@
 import React, { FC, StrictMode } from 'react';
 import { navigate } from 'gatsby';
 import { Router, RouteComponentProps, Link } from '@reach/router';
+import HeadContent from 'src/components/HeadContent';
+import Layout from 'src/components/Layout';
 import ProducerDashboard from 'src/components/ProducerDashboard';
 import ConsumerDashboard from 'src/components/ConsumerDashboard';
 import Settings from 'src/components/Settings';
@@ -42,14 +44,16 @@ const ConsumerDashboardPage = makePage(
 const SettingsPage = makePage(<Settings />, 'SettingsPage');
 
 const AppPage = makePage(
-  <ul>
-    <li>
-      <Link to="producer">Producer</Link>
-    </li>
-    <li>
-      <Link to="consumer">Consumer</Link>
-    </li>
-  </ul>,
+  <Layout>
+    <ul>
+      <li>
+        <Link to="producer">Producer</Link>
+      </li>
+      <li>
+        <Link to="consumer">Consumer</Link>
+      </li>
+    </ul>
+  </Layout>,
   'AppPage'
 );
 
@@ -68,6 +72,10 @@ function App() {
       </AuthContext.Provider>
     </StrictMode>
   );
+}
+
+export function Head() {
+  return <HeadContent title="Label Hub" />;
 }
 
 export default App;

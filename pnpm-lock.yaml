@@ -30,6 +30,7 @@ importers:
       '@typescript-eslint/parser': ^5.44.0
       babel-jest: ^29.3.1
       babel-preset-gatsby: ^3.1.0
+      bootstrap: ^5.2.3
       dotenv: ^16.0.3
       eslint: ^8.28.0
       eslint-plugin-jest: ^27.1.5
@@ -45,6 +46,7 @@ importers:
       react-helmet: ^6.1.0
       typescript: ^4.8.4
     dependencies:
+      bootstrap: 5.2.3
       dotenv: 16.0.3
       gatsby: 5.1.0_vhwc4p7w675fafavuxdssr46o4
       gatsby-plugin-pnpm: 1.2.10_gatsby@5.1.0
@@ -5152,6 +5154,12 @@ packages:
 
   /boolbase/1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
+    dev: false
+
+  /bootstrap/5.2.3:
+    resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}
+    peerDependencies:
+      '@popperjs/core': ^2.11.6
     dev: false
 
   /boxen/4.2.0:

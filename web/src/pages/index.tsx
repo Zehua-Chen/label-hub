@@ -1,15 +1,12 @@
 import React, { StrictMode } from 'react';
 import { Link } from 'gatsby';
-import { Helmet } from 'react-helmet';
+import HeadContent from 'src/components/HeadContent';
+import Layout from 'src/components/Layout';
 
 function Index() {
   return (
     <StrictMode>
-      <div>
-        <Helmet>
-          <title>Label Hub</title>
-        </Helmet>
-
+      <Layout>
         <h1>Lable Hub</h1>
         <div>
           <Link to="/app">App</Link>
@@ -21,9 +18,13 @@ function Index() {
             Login/Signup
           </a>
         </div>
-      </div>
+      </Layout>
     </StrictMode>
   );
+}
+
+export function Head() {
+  return <HeadContent title="Label Hub" />;
 }
 
 export default Index;

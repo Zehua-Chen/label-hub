@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import DashboardLayout from 'src/components/DashboardLayout';
 import { useApi } from 'src/services/api/utils';
 
 function ProducerDashboard() {
@@ -11,11 +12,11 @@ function ProducerDashboard() {
   }
 
   return (
-    <div>
+    <DashboardLayout>
       <button onClick={test}>Test API</button>
       <h1>Dashboard</h1>
       <Link to="settings">Settings</Link>
-    </div>
+    </DashboardLayout>
   );
 }
 
