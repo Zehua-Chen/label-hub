@@ -12,8 +12,8 @@ function ProducerDashboard() {
   }
 
   return (
-    <DashboardLayout mode="Producer" sidebar={<div>Sidebar</div>}>
-      <Link className="btn btn-primary" to="/app/producer/upload">
+    <DashboardLayout mode='Producer' sidebar={<div>Sidebar</div>}>
+      <Link className='btn btn-primary' to='/app/producer/upload'>
         Upload
       </Link>
     </DashboardLayout>

@@ -9,7 +9,7 @@ function Index() {
       <Layout>
         <h1>Lable Hub</h1>
         <div>
-          <Link to="/app">App</Link>
+          <Link to='/app'>App</Link>
         </div>
         <div>
           <a
@@ -24,7 +24,7 @@ function Index() {
 }
 
 export function Head() {
-  return <HeadContent title="Label Hub" />;
+  return <HeadContent title='Label Hub' />;
 }
 
 export default Index;

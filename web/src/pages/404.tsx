@@ -12,7 +12,7 @@ function NotFound() {
 }
 
 export function Head(): JSX.Element {
-  return <HeadContent title="Page Not Found" />;
+  return <HeadContent title='Page Not Found' />;
 }
 
 export default NotFound;

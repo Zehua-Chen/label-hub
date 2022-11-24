@@ -13,7 +13,7 @@ function Layout(props: PropsWithChildren<LayoutProps>): JSX.Element {
   return (
     <>
       {navigation}
-      {container ? <div className="container">{children}</div> : children}
+      {container ? <div className='container'>{children}</div> : children}
     </>
   );
 }

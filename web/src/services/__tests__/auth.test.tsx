@@ -35,7 +35,7 @@ describe('useAuth', () => {
   it('default', () => {
     function TestComponent() {
       const auth = useAuth();
-      return <div aria-label="token">{auth.token}</div>;
+      return <div aria-label='token'>{auth.token}</div>;
     }
 
     render(

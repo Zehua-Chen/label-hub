@@ -23,7 +23,7 @@ describe('ProtectedRoute', () => {
       <ProtectedRoute
         condition={() => false}
         navigate={navigate}
-        fallback="/fallback"
+        fallback='/fallback'
       >
         <div>Content</div>
       </ProtectedRoute>
