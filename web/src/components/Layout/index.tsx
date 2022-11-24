@@ -4,15 +4,16 @@ import 'bootstrap';
 
 export interface LayoutProps {
   navigation?: JSX.Element;
+  container?: boolean;
 }
 
 function Layout(props: PropsWithChildren<LayoutProps>): JSX.Element {
-  const { navigation, children } = props;
+  const { navigation, children, container = true } = props;
 
   return (
     <>
       {navigation}
-      <div className="container">{children}</div>
+      {container ? <div className="container">{children}</div> : children}
     </>
   );
 }

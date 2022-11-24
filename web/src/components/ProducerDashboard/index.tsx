@@ -12,7 +12,7 @@ function ProducerDashboard() {
   }
 
   return (
-    <DashboardLayout mode="Producer">
+    <DashboardLayout mode="Producer" sidebar={<div>Sidebar</div>}>
       <button onClick={test}>Test API</button>
       <h1>Dashboard</h1>
       <Link to="settings">Settings</Link>
