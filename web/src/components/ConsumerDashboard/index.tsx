@@ -1,7 +1,12 @@
 import React from 'react';
+import DashboardLayout from 'src/components/DashboardLayout';
 
-function ConsumerDashboard() {
-  return <div>Consumer</div>;
+function ConsumerDashboard(): JSX.Element {
+  return (
+    <DashboardLayout mode="Consumer">
+      <div>Consumer</div>
+    </DashboardLayout>
+  );
 }
 
 export default ConsumerDashboard;

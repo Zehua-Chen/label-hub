@@ -1,10 +1,20 @@
 import React, { PropsWithChildren } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 
-function Layout(props: PropsWithChildren<unknown>): JSX.Element {
-  const { children } = props;
+export interface LayoutProps {
+  navigation?: JSX.Element;
+}
 
-  return <div className="container">{children}</div>;
+function Layout(props: PropsWithChildren<LayoutProps>): JSX.Element {
+  const { navigation, children } = props;
+
+  return (
+    <>
+      {navigation}
+      <div className="container">{children}</div>
+    </>
+  );
 }
 
 export default Layout;

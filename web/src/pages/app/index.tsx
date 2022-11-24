@@ -64,8 +64,8 @@ function App() {
         <ApiProvider>
           <Router basepath="/app">
             <AppPage path="/"></AppPage>
-            <ProducerDashboardPage path="/producer"></ProducerDashboardPage>
-            <ConsumerDashboardPage path="/consumer"></ConsumerDashboardPage>
+            <ProducerDashboardPage path="producer"></ProducerDashboardPage>
+            <ConsumerDashboardPage path="consumer"></ConsumerDashboardPage>
             <SettingsPage path="settings"></SettingsPage>
           </Router>
         </ApiProvider>
