@@ -13,9 +13,9 @@ function ProducerDashboard() {
 
   return (
     <DashboardLayout mode="Producer" sidebar={<div>Sidebar</div>}>
-      <button onClick={test}>Test API</button>
-      <h1>Dashboard</h1>
-      <Link to="settings">Settings</Link>
+      <Link className="btn btn-primary" to="/app/producer/upload">
+        Upload
+      </Link>
     </DashboardLayout>
   );
 }

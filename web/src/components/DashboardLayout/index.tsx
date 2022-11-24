@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Link } from '@reach/router';
+import { Link } from 'gatsby';
 import Layout from 'src/components/Layout';
 import NavItem from './NavItem';
 import * as classes from './index.module.css';
