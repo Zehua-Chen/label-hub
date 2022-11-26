@@ -9,11 +9,9 @@
 
 ## Architecture
 
-- [`label_hub`](label_hub)
-  - [`core`](label_hub/core): entities and business rules
-  - [`infrastructure`](label_hub/infrastructure): infrastructure adapters
-  - [`lambdas`](label_hub/lambdas): lambda implementations
-- [`tests`](tests): unit tests
+- [`lambdas`](lambdas/README.md): Lambda functions
+- [`web`](web/README.md): Web frontend
+- [`stack`](stack/README.md): CDK
 
 ## Deployment
 
@@ -41,10 +39,11 @@ cdk deploy "Development/*" --parameters \
 As frontend depends on outputs from Cloud Formation, it has to be deployed
 separately.
 
-- [Web Development](web/README.md): fill environment variables using CDK outputs
+- [Web Development](web/README.md): follow instructions on how to build frontend
+  first
 
 ```
-aws s3 sync aws s3 sync web/public s3://<bucket>
+aws s3 sync web/public s3://<bucket>
 ```
 
 ### Deploy Production Stack with Pipeline

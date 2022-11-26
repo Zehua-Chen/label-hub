@@ -25,6 +25,9 @@ export class LabelHubLambda extends Construct {
       runtime: lambda.Runtime.PYTHON_3_9,
       code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
       handler: `label_hub.lambdas.${module}.handler`,
+      environment: {
+        PYTHONPATH: '/var/task/vendor',
+      },
     });
   }
 }
