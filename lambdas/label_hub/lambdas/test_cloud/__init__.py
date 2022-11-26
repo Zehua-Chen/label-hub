@@ -2,7 +2,6 @@
 A lambda function for tests that must run in the cloud
 """
 import json
-import os
 from unittest import TestCase, TestSuite, TextTestRunner, defaultTestLoader
 
 
