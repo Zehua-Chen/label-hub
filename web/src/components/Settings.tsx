@@ -5,7 +5,7 @@ function Settings() {
   return (
     <div>
       <h1>Settings</h1>
-      <Link to="/app">Dashboard</Link>
+      <Link to='/app'>Dashboard</Link>
     </div>
   );
 }

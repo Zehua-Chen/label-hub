@@ -1,3 +1,5 @@
+import { createContext, useContext } from 'react';
+
 export interface Auth {
   token: string;
   /**
@@ -11,6 +13,9 @@ export interface Auth {
 }
 
 const LOCALSTORAGE_AUTH_KEY = 'AUTH';
+const INVALID_AUTH: Auth = { token: 'invalid', created: 0, expiresIn: 0 };
+
+export const AuthContext = createContext<Auth>(INVALID_AUTH);
 
 function getAuthFromLocalStorage(): Auth | null {
   const json = localStorage.getItem(LOCALSTORAGE_AUTH_KEY);
@@ -43,14 +48,11 @@ export function isLoggedIn(): boolean {
 
 export interface ParseAuthOptions {
   url?: string;
-  setAuthToCache?: (auth: Auth) => unknown;
 }
 
-export function parseAuth(options: ParseAuthOptions = {}): void {
-  const {
-    url = globalThis.document ? document.URL : 'https://localhost',
-    setAuthToCache: setUserToCache = setAuthToLocalStorage,
-  } = options;
+export function parseAuth(options: ParseAuthOptions = {}): Auth | null {
+  const { url = globalThis.document ? document.URL : 'https://localhost' } =
+    options;
 
   if (url.match(/id_token/)) {
     const queries = url
@@ -68,29 +70,30 @@ export function parseAuth(options: ParseAuthOptions = {}): void {
       expiresIn: Number.parseInt(queries['expires_in']) * 1000,
     };
 
-    setUserToCache(auth);
+    return auth;
   }
+
+  return null;
 
   // TODO: clear url after parsing
 }
 
-export interface UseAuthOptions {
-  url?: string;
-  getAuthFromCache?: () => Auth | null;
+export function useAuth(): Auth {
+  return useContext(AuthContext);
 }
 
-export function useAuth(options: UseAuthOptions = {}): Auth {
-  const { getAuthFromCache: getUserFromCache = getAuthFromLocalStorage } =
-    options;
+export function getAuth(): Auth {
+  let auth = parseAuth();
 
-  const auth = getUserFromCache();
-
-  if (!auth) {
-    throw new Error('Unable to get user');
+  if (auth) {
+    setAuthToLocalStorage(auth);
+    return auth;
   }
 
-  if (hasAuthExpired(auth)) {
-    throw new Error('auth ahs expired');
+  auth = getAuthFromLocalStorage();
+
+  if (!auth || hasAuthExpired(auth)) {
+    auth = INVALID_AUTH;
   }
 
   return auth;
