@@ -49,7 +49,13 @@ function UploadButton(
 
   return (
     <>
-      <input ref={inputRef} type='file' hidden onChange={onInputChange} />
+      <input
+        ref={inputRef}
+        type='file'
+        hidden
+        onChange={onInputChange}
+        data-testid='input-upload'
+      />
       <button className='btn btn-primary' onClick={onUploadClick}>
         {children}
       </button>
