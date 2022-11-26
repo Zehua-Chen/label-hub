@@ -9,6 +9,12 @@ export interface UploadButtonProps {
   onChange?: (file: File) => unknown;
 }
 
+/**
+ * Upload button
+ *
+ * @param props
+ * @returns
+ */
 function UploadButton(
   props: PropsWithChildren<UploadButtonProps>
 ): JSX.Element {

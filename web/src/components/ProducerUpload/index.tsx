@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEvent } from 'react';
 import { navigate } from 'gatsby';
 import Layout from 'src/components/Layout';
 import Navbar from 'src/components/Navbar';
@@ -27,7 +27,8 @@ function Upload(): JSX.Element {
     setImage(file);
   }
 
-  function onSaveClick() {
+  function onSaveClick(event: MouseEvent) {
+    event.preventDefault();
     navigate('/app/producer/');
   }
 
