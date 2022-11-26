@@ -1,0 +1,9 @@
+web/.cache
+
+# OpenAPI generated files
+web/src/services/api/apis
+web/src/services/api/index.ts
+web/src/services/api/runtime.ts
+
+# Gatsby Build Directory
+web/public
