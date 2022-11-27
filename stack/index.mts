@@ -36,7 +36,6 @@ export class LableHubStack extends cdk.Stack {
     const web = new Web(this, 'Web', {});
 
     const backend = new Backend(this, 'Backend', {
-      api: {},
       authentication: {
         cognitoDomain: cognitoDomain.valueAsString,
         webProductionAuthCallbackURL: path.join(

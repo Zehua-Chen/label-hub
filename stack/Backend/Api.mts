@@ -8,6 +8,10 @@ import {
 
 export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
+
+  photosGetFunction: lambda.Function;
+
+  incomeGetFunction: lambda.Function;
 }
 
 class Api extends Construct {
@@ -17,7 +21,7 @@ class Api extends Construct {
   constructor(scope: Construct, id: string, props: ApiProps) {
     super(scope, id);
 
-    const { cognitoUserPools } = props;
+    const { cognitoUserPools, photosGetFunction, incomeGetFunction } = props;
 
     this.api = new apigateway.RestApi(this, 'Api');
     this.authorizer = new apigateway.CognitoUserPoolsAuthorizer(
@@ -110,13 +114,7 @@ class Api extends Construct {
 
     income.addMethod(
       'GET',
-      new apigateway.LambdaIntegration(
-        new lambda.Function(this, 'income', {
-          runtime: lambda.Runtime.PYTHON_3_9,
-          code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
-          handler: 'label_hub.lambdas.income.handler',
-        })
-      ),
+      new apigateway.LambdaIntegration(incomeGetFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,

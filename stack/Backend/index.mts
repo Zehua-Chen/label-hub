@@ -5,7 +5,6 @@ import Lambdas from './Lambdas.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
-  api: Omit<ApiProps, 'cognitoUserPools'>;
 }
 
 class Backend extends Construct {
@@ -22,12 +21,13 @@ class Backend extends Construct {
       props.authentication
     );
 
+    this.lambdas = new Lambdas(this, 'Lambdas', {});
+
     this.api = new Api(this, 'Api', {
       cognitoUserPools: [this.authentication.userPool],
-      ...props.api,
+      photosGetFunction: this.lambdas.photosGet.function,
+      incomeGetFunction: this.lambdas.incomeGet.function,
     });
-
-    this.lambdas = new Lambdas(this, 'Lambdas', {});
   }
 }
 
