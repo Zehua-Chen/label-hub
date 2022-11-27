@@ -6,8 +6,6 @@ import {
   aws_lambda as lambda,
 } from 'aws-cdk-lib';
 
-
-
 export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
 }
@@ -76,7 +74,7 @@ class Api extends Construct {
           }),
           requestParameters: {
             'integration.request.path.bucket': 'method.request.path.folder',
-            'integration.request.path.key': 'method.request.path.object'
+            'integration.request.path.key': 'method.request.path.object',
           },
           requestTemplates: {
             'application/json': JSON.stringify({ statusCode: 200 }),
@@ -89,13 +87,17 @@ class Api extends Construct {
               },
             },
           ],
-        }
-      })
-    );    
+        },
+      }),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
+    );
 
     object.addCorsPreflight({
       allowOrigins: ['*'],
-      allowMethods: ["PUT"],
+      allowMethods: ['PUT'],
       allowHeaders: ['*'],
     });
 
@@ -114,7 +116,11 @@ class Api extends Construct {
           code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
           handler: 'label_hub.lambdas.income.handler',
         })
-      )
+      ),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
 
     income.addCorsPreflight({
@@ -131,8 +137,13 @@ class Api extends Construct {
           code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
           handler: 'label_hub.lambdas.projects.handler',
         })
-      )
+      ),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
+
     projects.addCorsPreflight({
       allowOrigins: ['*'],
     });
@@ -145,9 +156,12 @@ class Api extends Construct {
           code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
           handler: 'label_hub.lambdas.projects.handler',
         })
-      )
+      ),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
-
   }
 }
 
