@@ -12,6 +12,10 @@ export interface ApiProps {
   photosGetFunction: lambda.Function;
 
   incomeGetFunction: lambda.Function;
+
+  projectsGetFunction: lambda.Function;
+
+  projectsPutFunction: lambda.Function;
 }
 
 class Api extends Construct {
@@ -21,7 +25,13 @@ class Api extends Construct {
   constructor(scope: Construct, id: string, props: ApiProps) {
     super(scope, id);
 
-    const { cognitoUserPools, photosGetFunction, incomeGetFunction } = props;
+    const {
+      cognitoUserPools,
+      photosGetFunction,
+      incomeGetFunction,
+      projectsGetFunction,
+      projectsPutFunction,
+    } = props;
 
     this.api = new apigateway.RestApi(this, 'Api');
     this.authorizer = new apigateway.CognitoUserPoolsAuthorizer(
@@ -129,13 +139,7 @@ class Api extends Construct {
 
     projects.addMethod(
       'GET',
-      new apigateway.LambdaIntegration(
-        new lambda.Function(this, 'get_projects', {
-          runtime: lambda.Runtime.PYTHON_3_9,
-          code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
-          handler: 'label_hub.lambdas.projects.handler',
-        })
-      ),
+      new apigateway.LambdaIntegration(projectsGetFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
@@ -148,13 +152,7 @@ class Api extends Construct {
 
     projects.addMethod(
       'PUT',
-      new apigateway.LambdaIntegration(
-        new lambda.Function(this, 'put_projects', {
-          runtime: lambda.Runtime.PYTHON_3_9,
-          code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
-          handler: 'label_hub.lambdas.projects.handler',
-        })
-      ),
+      new apigateway.LambdaIntegration(projectsPutFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,

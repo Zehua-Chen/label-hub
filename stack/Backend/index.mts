@@ -27,6 +27,8 @@ class Backend extends Construct {
       cognitoUserPools: [this.authentication.userPool],
       photosGetFunction: this.lambdas.photosGet.function,
       incomeGetFunction: this.lambdas.incomeGet.function,
+      projectsGetFunction: this.lambdas.projectsGet.function,
+      projectsPutFunction: this.lambdas.projectsPut.function,
     });
   }
 }
