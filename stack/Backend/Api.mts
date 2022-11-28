@@ -125,6 +125,14 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
       }
     );
 
@@ -140,6 +148,14 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
       }
     );
 
@@ -149,6 +165,14 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
       }
     );
 
