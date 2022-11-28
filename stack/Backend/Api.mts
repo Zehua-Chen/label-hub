@@ -49,19 +49,7 @@ class Api extends Construct {
 
     photos.addMethod(
       'GET',
-      new apigateway.MockIntegration({
-        requestTemplates: {
-          'application/json': JSON.stringify({ statusCode: 200 }),
-        },
-        integrationResponses: [
-          {
-            statusCode: '200',
-            responseParameters: {
-              'method.response.header.access-control-allow-origin': "'*'",
-            },
-          },
-        ],
-      }),
+      new apigateway.LambdaIntegration(photosGetFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
