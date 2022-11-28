@@ -4,6 +4,7 @@ import {
   aws_cognito as cognito,
   aws_iam as iam,
   aws_lambda as lambda,
+  aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 export interface ApiProps {
@@ -16,6 +17,8 @@ export interface ApiProps {
   projectsGetFunction: lambda.Function;
 
   projectsPutFunction: lambda.Function;
+
+  photosBucket: s3.Bucket;
 }
 
 class Api extends Construct {
@@ -31,6 +34,7 @@ class Api extends Construct {
       incomeGetFunction,
       projectsGetFunction,
       projectsPutFunction,
+      photosBucket,
     } = props;
 
     this.api = new apigateway.RestApi(this, 'Api');
@@ -72,44 +76,59 @@ class Api extends Construct {
       }
     );
 
-    const upload = photos.addResource('upload');
-    const folder = upload.addResource('{folder}');
-    const object = folder.addResource('{object}');
+    const photosId = photos.addResource('{id}');
 
-    object.addMethod(
+    photosId.addMethod(
       'PUT',
-      new apigateway.AwsIntegration({
-        service: 's3',
-        path: '{bucket}/{key}',
-        integrationHttpMethod: 'PUT',
-        options: {
-          credentialsRole: new iam.Role(this, 'Role', {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-          }),
-          requestParameters: {
-            'integration.request.path.bucket': 'method.request.path.folder',
-            'integration.request.path.key': 'method.request.path.object',
-          },
-          requestTemplates: {
-            'application/json': JSON.stringify({ statusCode: 200 }),
-          },
-          integrationResponses: [
-            {
-              statusCode: '200',
-              responseParameters: {
-                'method.response.header.access-control-allow-origin': "'*'",
-              },
-            },
-          ],
+      new apigateway.MockIntegration({
+        requestTemplates: {
+          'application/json': JSON.stringify({ statusCode: 200 }),
         },
+        integrationResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': "'*'",
+            },
+          },
+        ],
       }),
+      // new apigateway.AwsIntegration({
+      //   service: 's3',
+      //   path: `${photosBucket.bucketName}/{id}`,
+      //   integrationHttpMethod: 'PUT',
+      //   options: {
+      //     credentialsRole: new iam.Role(this, 'Role', {
+      //       assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+      //     }),
+      //     requestParameters: {
+      //       'integration.request.path.id': 'method.request.path.id',
+      //     },
+      //     integrationResponses: [
+      //       {
+      //         statusCode: '200',
+      //         responseParameters: {
+      //           'method.response.header.access-control-allow-origin': "'*'",
+      //         },
+      //       },
+      //     ],
+      //   },
+      // }),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
       }
     );
 
-    object.addCorsPreflight({
+    photosId.addCorsPreflight({
       allowOrigins: ['*'],
       allowMethods: ['PUT'],
       allowHeaders: ['*'],
