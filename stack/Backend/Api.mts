@@ -76,47 +76,41 @@ class Api extends Construct {
       }
     );
 
-    const photosId = photos.addResource('{id}');
+    photos.addCorsPreflight({
+      allowOrigins: ['*'],
+    });
+
+    const photosId = photos.addResource('{photo_id}');
 
     photosId.addMethod(
       'PUT',
-      new apigateway.MockIntegration({
-        requestTemplates: {
-          'application/json': JSON.stringify({ statusCode: 200 }),
-        },
-        integrationResponses: [
-          {
-            statusCode: '200',
-            responseParameters: {
-              'method.response.header.access-control-allow-origin': "'*'",
-            },
+      new apigateway.AwsIntegration({
+        service: 's3',
+        path: `${photosBucket.bucketName}/{photo_id}`,
+        integrationHttpMethod: 'PUT',
+        options: {
+          credentialsRole: new iam.Role(this, 'Role', {
+            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+          }),
+          requestParameters: {
+            'integration.request.path.photo_id': 'method.request.path.photo_id',
           },
-        ],
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseParameters: {
+                'method.response.header.access-control-allow-origin': "'*'",
+              },
+            },
+          ],
+        },
       }),
-      // new apigateway.AwsIntegration({
-      //   service: 's3',
-      //   path: `${photosBucket.bucketName}/{id}`,
-      //   integrationHttpMethod: 'PUT',
-      //   options: {
-      //     credentialsRole: new iam.Role(this, 'Role', {
-      //       assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-      //     }),
-      //     requestParameters: {
-      //       'integration.request.path.id': 'method.request.path.id',
-      //     },
-      //     integrationResponses: [
-      //       {
-      //         statusCode: '200',
-      //         responseParameters: {
-      //           'method.response.header.access-control-allow-origin': "'*'",
-      //         },
-      //       },
-      //     ],
-      //   },
-      // }),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestParameters: {
+          'method.request.path.photo_id': true,
+        },
         methodResponses: [
           {
             statusCode: '200',
@@ -132,10 +126,6 @@ class Api extends Construct {
       allowOrigins: ['*'],
       allowMethods: ['PUT'],
       allowHeaders: ['*'],
-    });
-
-    photos.addCorsPreflight({
-      allowOrigins: ['*'],
     });
 
     // Income API
@@ -165,10 +155,6 @@ class Api extends Construct {
       }
     );
 
-    projects.addCorsPreflight({
-      allowOrigins: ['*'],
-    });
-
     projects.addMethod(
       'PUT',
       new apigateway.LambdaIntegration(projectsPutFunction),
@@ -177,6 +163,10 @@ class Api extends Construct {
         authorizationType: apigateway.AuthorizationType.COGNITO,
       }
     );
+
+    projects.addCorsPreflight({
+      allowOrigins: ['*'],
+    });
   }
 }
 
