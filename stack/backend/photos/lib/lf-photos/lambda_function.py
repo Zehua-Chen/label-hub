@@ -6,7 +6,8 @@ from datetime import datetime
 import os
 
 s3 = boto3.client('s3')
-
+USERID = 'dfsdfds111111'
+PRICE = 100
 
 def lambda_handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
@@ -28,6 +29,8 @@ def lambda_handler(event, context):
         json_obj = {"objectKey": key,
                     "bucket": bucket,
                     "createdTimestamp": timestamp,
+                    "producerID": USERID,
+                    "price": PRICE,
                     "labels": labels}
         
         # upload the data to opensearch

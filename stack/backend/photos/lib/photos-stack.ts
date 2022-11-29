@@ -67,5 +67,16 @@ export class PhotosStack extends cdk.Stack {
       },
     });
 
+    const lfProducerGet = new lambda.Function(this, 'photos-producer-get', {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      memorySize: 1024,
+      timeout: cdk.Duration.seconds(30),
+      handler: 'lambda_function.lambda_handler',
+      role: executeRole,
+      code: lambda.Code.fromAsset(path.join(__dirname, '/get-producer-photos')),
+      environment: {
+        opensearchEndpoint: openSearch.domainEndpoint,
+      },
+    });
   }
 }
