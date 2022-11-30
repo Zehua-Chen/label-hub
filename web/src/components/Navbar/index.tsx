@@ -1,14 +1,20 @@
 import React, { PropsWithChildren } from 'react';
+import classnames from 'classnames';
 
 export interface NavbarProps {
   title: string;
+  sticky?: boolean;
 }
 
 function Navbar(props: PropsWithChildren<NavbarProps>): JSX.Element {
-  const { title, children } = props;
+  const { title, sticky = true, children } = props;
 
   return (
-    <nav className='navbar navbar-expand-lg bg-light'>
+    <nav
+      className={classnames('navbar', 'navbar-expand-lg', 'bg-light', {
+        'sticky-top': sticky,
+      })}
+    >
       <div className='container-fluid'>
         <a className='navbar-brand' href='#'>
           {title}

@@ -33,6 +33,7 @@ importers:
       babel-jest: ^29.3.1
       babel-preset-gatsby: ^3.1.0
       bootstrap: ^5.2.3
+      classnames: ^2.3.2
       dotenv: ^16.0.3
       eslint: ^8.28.0
       eslint-plugin-jest: ^27.1.5
@@ -51,6 +52,7 @@ importers:
     dependencies:
       '@popperjs/core': 2.11.6
       bootstrap: 5.2.3_@popperjs+core@2.11.6
+      classnames: 2.3.2
       dotenv: 16.0.3
       gatsby: 5.1.0_vhwc4p7w675fafavuxdssr46o4
       gatsby-plugin-pnpm: 1.2.10_gatsby@5.1.0
@@ -5449,6 +5451,10 @@ packages:
 
   /cjs-module-lexer/1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /cli-boxes/2.2.1:
     resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}
