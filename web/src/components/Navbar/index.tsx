@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 export interface NavbarProps {
   title: string;
@@ -11,7 +11,7 @@ function Navbar(props: PropsWithChildren<NavbarProps>): JSX.Element {
 
   return (
     <nav
-      className={classnames('navbar', 'navbar-expand-lg', 'bg-light', {
+      className={classNames('navbar', 'navbar-expand-lg', 'bg-light', {
         'sticky-top': sticky,
       })}
     >

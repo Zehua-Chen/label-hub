@@ -3,6 +3,7 @@ import { Link } from 'gatsby';
 import Layout from 'src/components/Layout';
 import Navbar, { NavItem } from 'src/components/Navbar';
 import * as classes from './index.module.css';
+import classNames from 'classnames';
 
 export interface DashboardLayoutProps {
   mode: string;
@@ -57,7 +58,9 @@ function DashboardLayout(
         }
       >
         <div className='flex-grow-1 d-flex flex-row'>
-          <div className={`bg-secondary ${classes.sidebar}`}>{sidebar}</div>
+          <div className={classNames('border-end', classes.sidebar)}>
+            {sidebar}
+          </div>
           <div className='container'>{props.children}</div>
         </div>
       </Layout>

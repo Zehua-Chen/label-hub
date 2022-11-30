@@ -24,11 +24,77 @@ function useMockPhotos(): Photo[] {
   return photos;
 }
 
+interface Tag {
+  displayName: string;
+}
+
+function useTags(): Tag[] {
+  return [
+    {
+      displayName: 'Cat',
+    },
+    {
+      displayName: 'Dog',
+    },
+  ];
+}
+
 function ProducerDashboard() {
   const photos = useMockPhotos();
+  const tags = useTags();
 
   return (
-    <DashboardLayout mode='Producer' sidebar={<div>Sidebar</div>}>
+    <DashboardLayout
+      mode='Producer'
+      sidebar={
+        <div className='sticky-top' style={{ top: '56px' }}>
+          <form className='container'>
+            <div className='row'>
+              <div className='col'>
+                <label className='form-label'>Date</label>
+                <div className='form-check'>
+                  <input className='form-check-input' type='radio' id='today' />
+                  <label className='form-check-label' htmlFor='today'>
+                    Today
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col'>
+                <label className='form-label'>Income</label>
+                <div className='form-check'>
+                  <input className='form-check-input' type='radio' id='today' />
+                  <label className='form-check-label' htmlFor='today'>
+                    $0-30
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col'>
+                <label className='form-label'>Labels</label>
+                {tags.map((tag, index) => (
+                  <div className='form-check' key={index}>
+                    <input
+                      className='form-check-input'
+                      type='checkbox'
+                      id={tag.displayName}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor={tag.displayName}
+                    >
+                      {tag.displayName}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </form>
+        </div>
+      }
+    >
       <div className='container'>
         <div className='row pt-3'>
           <div className='col-10'>
