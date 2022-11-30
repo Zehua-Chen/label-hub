@@ -47,7 +47,7 @@ function ProducerDashboard() {
     <DashboardLayout
       mode='Producer'
       sidebar={
-        <div className='sticky-top' style={{ top: '56px' }}>
+        <div>
           <form className='container'>
             <div className='row'>
               <div className='col'>
