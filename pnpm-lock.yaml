@@ -24,6 +24,7 @@ importers:
       '@popperjs/core': ^2.11.6
       '@testing-library/react': ^13.4.0
       '@testing-library/user-event': ^14.4.3
+      '@types/bootstrap': ^5.2.6
       '@types/jest': ^29.2.3
       '@types/reach__router': ^1.3.11
       '@types/react': ^18.0.25
@@ -33,6 +34,7 @@ importers:
       babel-jest: ^29.3.1
       babel-preset-gatsby: ^3.1.0
       bootstrap: ^5.2.3
+      classnames: ^2.3.2
       dotenv: ^16.0.3
       eslint: ^8.28.0
       eslint-plugin-jest: ^27.1.5
@@ -42,6 +44,7 @@ importers:
       gatsby-plugin-pnpm: ^1.2.10
       gatsby-plugin-root-import: ^2.0.9
       identity-obj-proxy: ^3.0.0
+      immer: ^9.0.16
       jest: ^29.3.1
       jest-environment-jsdom: ^29.3.1
       react: ^18.2.0
@@ -51,10 +54,12 @@ importers:
     dependencies:
       '@popperjs/core': 2.11.6
       bootstrap: 5.2.3_@popperjs+core@2.11.6
+      classnames: 2.3.2
       dotenv: 16.0.3
       gatsby: 5.1.0_vhwc4p7w675fafavuxdssr46o4
       gatsby-plugin-pnpm: 1.2.10_gatsby@5.1.0
       gatsby-plugin-root-import: 2.0.9_gatsby@5.1.0
+      immer: 9.0.16
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-helmet: 6.1.0_react@18.2.0
@@ -64,6 +69,7 @@ importers:
       '@openapitools/openapi-generator-cli': 2.5.2
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
       '@testing-library/user-event': 14.4.3
+      '@types/bootstrap': 5.2.6
       '@types/jest': 29.2.3
       '@types/reach__router': 1.3.11
       '@types/react': 18.0.25
@@ -3605,7 +3611,6 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
-    dev: false
 
   /@sideway/address/4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
@@ -3783,6 +3788,12 @@ packages:
     resolution: {integrity: sha512-FcFaxOr2V5KZCviw1TnutEMVUVsGt4D2hP1TAfXZAMKuHYW3xQhe3jTxNPWutgCJ3/X1c5yX8ZoGVEItxKbwBg==}
     dependencies:
       '@babel/types': 7.20.2
+
+  /@types/bootstrap/5.2.6:
+    resolution: {integrity: sha512-BlAc3YATdasbHoxMoBWODrSF6qwQO/E9X8wVxCCSa6rWjnaZfpkr2N6pUMCY6jj2+wf0muUtLySbvU9etX6YqA==}
+    dependencies:
+      '@popperjs/core': 2.11.6
+    dev: true
 
   /@types/cacheable-request/6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
@@ -5449,6 +5460,10 @@ packages:
 
   /cjs-module-lexer/1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /cli-boxes/2.2.1:
     resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}

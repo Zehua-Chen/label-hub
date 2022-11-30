@@ -1,8 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useRef, useEffect } from 'react';
 import { Link } from 'gatsby';
 import Layout from 'src/components/Layout';
 import Navbar, { NavItem } from 'src/components/Navbar';
+import DropDown, { DropDownItem } from 'src/components/DropDown';
 import * as classes from './index.module.css';
+import classNames from 'classnames';
+import { Dropdown } from 'bootstrap';
 
 export interface DashboardLayoutProps {
   mode: string;
@@ -14,6 +17,13 @@ function DashboardLayout(
   props: PropsWithChildren<DashboardLayoutProps>
 ): JSX.Element {
   const { mode, sidebar, navigationItems } = props;
+  const dropDown = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (dropDown.current) {
+      new Dropdown(dropDown.current, {});
+    }
+  }, []);
 
   return (
     <div className='min-vh-100 d-flex flex-column'>
@@ -22,42 +32,32 @@ function DashboardLayout(
         navigation={
           <Navbar title='Label Hub'>
             <NavItem className='dropdown'>
-              <Link
-                className='nav-link dropdown-toggle'
-                to='#'
-                role='button'
-                data-bs-toggle='dropdown'
-                aria-expanded='false'
-              >
-                {mode}
-              </Link>
-              <ul className='dropdown-menu'>
-                <li>
+              <DropDown title={mode}>
+                <DropDownItem>
                   <Link className='dropdown-item' to='/app/producer'>
                     Producer
                   </Link>
-                </li>
-                <li>
+                </DropDownItem>
+                <DropDownItem>
                   <Link className='dropdown-item' to='/app/consumer'>
                     Consumer
                   </Link>
-                </li>
-                <li>
-                  <hr className='dropdown-divider'></hr>
-                </li>
-                <li>
+                </DropDownItem>
+                <DropDownItem>
                   <Link className='dropdown-item' to='/app/settings'>
                     Settings
                   </Link>
-                </li>
-              </ul>
+                </DropDownItem>
+              </DropDown>
             </NavItem>
             {navigationItems}
           </Navbar>
         }
       >
         <div className='flex-grow-1 d-flex flex-row'>
-          <div className={`bg-secondary ${classes.sidebar}`}>{sidebar}</div>
+          <div className={classNames('border-end', classes.sidebar)}>
+            {sidebar}
+          </div>
           <div className='container'>{props.children}</div>
         </div>
       </Layout>
