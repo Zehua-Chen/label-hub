@@ -1,6 +1,5 @@
 import React, { PropsWithChildren } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
 
 export interface LayoutProps {
   navigation?: JSX.Element;
