@@ -29,10 +29,10 @@ class Backend extends Construct {
 
     this.api = new Api(this, 'Api', {
       cognitoUserPools: [this.authentication.userPool],
-      photosGetFunction: this.lambdas.photosGet.function,
-      incomeGetFunction: this.lambdas.incomeGet.function,
-      projectsGetFunction: this.lambdas.projectsGet.function,
-      projectsPutFunction: this.lambdas.projectsPut.function,
+      photosGetFunction: this.lambdas.photosGet,
+      incomeGetFunction: this.lambdas.incomeGet,
+      projectsGetFunction: this.lambdas.projectsGet,
+      projectsPutFunction: this.lambdas.projectsPut,
       photosBucket: this.storage.photos,
     });
   }

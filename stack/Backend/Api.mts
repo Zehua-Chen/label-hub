@@ -10,13 +10,13 @@ import {
 export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
 
-  photosGetFunction: lambda.Function;
+  photosGetFunction: lambda.IFunction;
 
-  incomeGetFunction: lambda.Function;
+  incomeGetFunction: lambda.IFunction;
 
-  projectsGetFunction: lambda.Function;
+  projectsGetFunction: lambda.IFunction;
 
-  projectsPutFunction: lambda.Function;
+  projectsPutFunction: lambda.IFunction;
 
   photosBucket: s3.Bucket;
 }

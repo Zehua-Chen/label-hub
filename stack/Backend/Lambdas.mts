@@ -1,30 +1,30 @@
 import { Construct } from 'constructs';
-import { LabelHubLambdaFunction } from '../utils.mjs';
+import { LabelHubFunction } from '../utils.mjs';
 
 export interface LambdasProps {}
 
 class Lambdas extends Construct {
-  photosGet: LabelHubLambdaFunction;
-  incomeGet: LabelHubLambdaFunction;
-  projectsGet: LabelHubLambdaFunction;
-  projectsPut: LabelHubLambdaFunction;
+  photosGet: LabelHubFunction;
+  incomeGet: LabelHubFunction;
+  projectsGet: LabelHubFunction;
+  projectsPut: LabelHubFunction;
 
   constructor(scope: Construct, id: string, props: LambdasProps) {
     super(scope, id);
 
-    this.photosGet = new LabelHubLambdaFunction(this, 'PhotosGet', {
+    this.photosGet = new LabelHubFunction(this, 'PhotosGet', {
       module: 'photos_get',
     });
 
-    this.incomeGet = new LabelHubLambdaFunction(this, 'IncomeGet', {
+    this.incomeGet = new LabelHubFunction(this, 'IncomeGet', {
       module: 'income_get',
     });
 
-    this.projectsGet = new LabelHubLambdaFunction(this, 'ProjectsGet', {
+    this.projectsGet = new LabelHubFunction(this, 'ProjectsGet', {
       module: 'projects_get',
     });
 
-    this.projectsPut = new LabelHubLambdaFunction(this, 'ProjectsPut', {
+    this.projectsPut = new LabelHubFunction(this, 'ProjectsPut', {
       module: 'projects_put',
     });
   }
