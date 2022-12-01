@@ -2,16 +2,17 @@ import { Construct } from 'constructs';
 import Authentication, { AuthenticationProps } from './Authentication.mjs';
 import Api, { ApiProps } from './Api.mjs';
 import Lambdas from './Lambdas.mjs';
+import Storage from './Storage.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
-  api: Omit<ApiProps, 'cognitoUserPools'>;
 }
 
 class Backend extends Construct {
   authentication: Authentication;
   api: Api;
   lambdas: Lambdas;
+  storage: Storage;
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);
@@ -22,12 +23,18 @@ class Backend extends Construct {
       props.authentication
     );
 
-    this.api = new Api(this, 'Api', {
-      cognitoUserPools: [this.authentication.userPool],
-      ...props.api,
-    });
+    this.storage = new Storage(this, 'Storage');
 
     this.lambdas = new Lambdas(this, 'Lambdas', {});
+
+    this.api = new Api(this, 'Api', {
+      cognitoUserPools: [this.authentication.userPool],
+      photosGetFunction: this.lambdas.photosGet,
+      incomeGetFunction: this.lambdas.incomeGet,
+      projectsGetFunction: this.lambdas.projectsGet,
+      projectsPutFunction: this.lambdas.projectsPut,
+      photosBucket: this.storage.photos,
+    });
   }
 }
 
