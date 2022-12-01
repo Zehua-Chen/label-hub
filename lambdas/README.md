@@ -6,8 +6,12 @@ Install dependencies into `vendor/` folder.
 pip install --target vendor/
 ```
 
-Lambdas will have their `PYTHONPATH` environment variable configured to
-`/var/task/vendor/` so that Python can load dependencies from `vendor/`
+In Python code, add /var/task/vendor to `sys.path`
+
+```py
+import sys
+sys.path.append("/var/task/vendor")
+```
 
 # Functions
 
