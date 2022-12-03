@@ -1,4 +1,6 @@
-import { createContext, useContext } from 'react';
+import * as React from 'react';
+import { createContext, useContext, PropsWithChildren } from 'react';
+import { navigate } from 'gatsby';
 
 export interface Auth {
   token: string;
@@ -74,19 +76,30 @@ export function parseAuth(options: ParseAuthOptions = {}): Auth | null {
   }
 
   return null;
-
-  // TODO: clear url after parsing
 }
 
 export function useAuth(): Auth {
   return useContext(AuthContext);
 }
 
-export function getAuth(): Auth {
+/**
+ * Try parse auth.
+ * - If auth exists in URL, store auth in local storage and clear URL.
+ * - If auth exists in storage, returns auth
+ * @returns
+ */
+function getAuth(): Auth {
   let auth = parseAuth();
 
   if (auth) {
     setAuthToLocalStorage(auth);
+
+    // Remove sensitive data from URL
+    window.location.href = document.URL.substring(
+      0,
+      document.URL.indexOf('id_token')
+    );
+
     return auth;
   }
 
@@ -97,4 +110,12 @@ export function getAuth(): Auth {
   }
 
   return auth;
+}
+
+export function AuthProvider(props: PropsWithChildren<unknown>) {
+  const { children } = props;
+
+  return (
+    <AuthContext.Provider value={getAuth()}>{children}</AuthContext.Provider>
+  );
 }
