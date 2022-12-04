@@ -1,4 +1,4 @@
-name: Pull Request Checks
+name: Pull Request
 
 on:
   pull_request:
@@ -31,9 +31,11 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key:
+            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml')
+            }}-pr-lint
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-store-pr-lint
 
       - name: Install Node Dependencies
         run: |
@@ -70,9 +72,11 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key:
+            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml')
+            }}-pr-test
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-store-pr-test
 
       - name: Install Node Dependencies
         run: |
@@ -115,9 +119,11 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key:
+            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml')
+            }}-pr-style
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-store-pr-style
 
       - name: Install Node Dependencies
         run: |
