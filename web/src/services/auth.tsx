@@ -95,10 +95,7 @@ function getAuth(): Auth {
     setAuthToLocalStorage(auth);
 
     // Remove sensitive data from URL
-    window.location.href = document.URL.substring(
-      0,
-      document.URL.indexOf('id_token')
-    );
+    navigate(window.location.pathname, { replace: true });
 
     return auth;
   }
