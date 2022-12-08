@@ -1,11 +1,10 @@
-import React, { PropsWithChildren, useRef, useEffect } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Link } from 'gatsby';
 import Layout from 'src/components/Layout';
 import Navbar, { NavItem } from 'src/components/Navbar';
 import DropDown, { DropDownItem } from 'src/components/DropDown';
 import * as classes from './index.module.css';
 import classNames from 'classnames';
-import { Dropdown } from 'bootstrap';
 
 export interface DashboardLayoutProps {
   mode: string;
@@ -17,13 +16,6 @@ function DashboardLayout(
   props: PropsWithChildren<DashboardLayoutProps>
 ): JSX.Element {
   const { mode, sidebar, navigationItems } = props;
-  const dropDown = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (dropDown.current) {
-      new Dropdown(dropDown.current, {});
-    }
-  }, []);
 
   return (
     <div className='min-vh-100 d-flex flex-column'>
