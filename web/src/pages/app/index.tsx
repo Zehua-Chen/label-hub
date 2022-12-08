@@ -5,7 +5,7 @@ import loadable from '@loadable/component';
 import HeadContent from 'src/components/HeadContent';
 import Layout from 'src/components/Layout';
 import ProtectedRoute from 'src/components/ProtectedRoute';
-import { isLoggedIn, AuthProvider } from 'src/services/auth';
+import { isLoggedIn } from 'src/services/auth';
 import { ApiProvider } from 'src/services/api/utils';
 
 const ProducerDashboard = loadable(
@@ -14,6 +14,10 @@ const ProducerDashboard = loadable(
 
 const ConsumerDashboard = loadable(
   () => import('src/components/ConsumerDashboard')
+);
+
+const AuthProvider = loadable(() =>
+  import('src/services/auth').then((module) => module.AuthProvider)
 );
 
 const Settings = loadable(() => import('src/components/Settings'));
