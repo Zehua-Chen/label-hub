@@ -2,6 +2,7 @@ import React, { StrictMode } from 'react';
 import { Link } from 'gatsby';
 import HeadContent from 'src/components/HeadContent';
 import Layout from 'src/components/Layout';
+import LoginLink from 'src/components/LoginLink';
 
 function Index() {
   return (
@@ -12,11 +13,7 @@ function Index() {
           <Link to='/app'>App</Link>
         </div>
         <div>
-          <a
-            href={`${process.env.AUTH_DOMAIN}/login?response_type=token&client_id=${process.env.COGNITO_CLIENT_ID}&redirect_uri=${document.URL}app`}
-          >
-            Login/Signup
-          </a>
+          <LoginLink />
         </div>
       </Layout>
     </StrictMode>
