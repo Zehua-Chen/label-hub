@@ -1,15 +1,23 @@
 import React, { FC, StrictMode } from 'react';
 import { navigate } from 'gatsby';
 import { Router, RouteComponentProps, Link } from '@reach/router';
+import loadable from '@loadable/component';
 import HeadContent from 'src/components/HeadContent';
 import Layout from 'src/components/Layout';
-import ProducerDashboard from 'src/components/ProducerDashboard';
-import ConsumerDashboard from 'src/components/ConsumerDashboard';
-import Settings from 'src/components/Settings';
-import ProducerUpload from 'src/components/ProducerUpload';
 import ProtectedRoute from 'src/components/ProtectedRoute';
 import { isLoggedIn, AuthProvider } from 'src/services/auth';
 import { ApiProvider } from 'src/services/api/utils';
+
+const ProducerDashboard = loadable(
+  () => import('src/components/ProducerDashboard')
+);
+
+const ConsumerDashboard = loadable(
+  () => import('src/components/ConsumerDashboard')
+);
+
+const Settings = loadable(() => import('src/components/Settings'));
+const ProducerUpload = loadable(() => import('src/components/ProducerUpload'));
 
 function protectedRouteCondition(): () => boolean {
   return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : () => true;
