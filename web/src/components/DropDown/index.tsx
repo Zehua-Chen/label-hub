@@ -1,5 +1,4 @@
 import React, { PropsWithChildren, useRef, useEffect } from 'react';
-import { Dropdown } from 'bootstrap';
 
 export interface DropDownProps {
   title: string;
@@ -10,9 +9,11 @@ function DropDown(props: PropsWithChildren<DropDownProps>) {
   const dropDown = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    if (dropDown.current) {
-      new Dropdown(dropDown.current, {});
-    }
+    import('bootstrap').then(({ Dropdown }) => {
+      if (dropDown.current) {
+        new Dropdown(dropDown.current, {});
+      }
+    });
   }, []);
 
   return (

@@ -10,7 +10,6 @@
     "openapi": "openapi-generator-cli generate"
   },
   "dependencies": {
-    "@loadable/component": "^5.15.2",
     "@popperjs/core": "^2.11.6",
     "@types/bootstrap": "^5.2.6",
     "@types/loadable__component": "^5.13.4",
