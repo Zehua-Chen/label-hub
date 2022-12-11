@@ -116,3 +116,7 @@ export function AuthProvider(props: PropsWithChildren<unknown>) {
     <AuthContext.Provider value={getAuth()}>{children}</AuthContext.Provider>
   );
 }
+
+export function authRouteGuard(): () => boolean {
+  return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : () => true;
+}
