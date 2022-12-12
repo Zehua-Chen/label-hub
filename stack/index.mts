@@ -37,14 +37,17 @@ export class LableHubStack extends cdk.Stack {
     const backend = new Backend(this, 'Backend', {
       authentication: {
         cognitoDomain: cognitoDomain.valueAsString,
-        webProductionAuthCallbackURL: path.join(
-          `https://${web.distribution.distributionDomainName}`,
-          webAuthCallBackPath.valueAsString
-        ),
-        webLocalAuthCallbackURL: path.join(
+        webProductionAuthCallbackURL: cdk.Fn.join('/', [
+          cdk.Fn.join('', [
+            'https://',
+            web.distribution.distributionDomainName,
+          ]),
+          webAuthCallBackPath.valueAsString,
+        ]),
+        webLocalAuthCallbackURL: cdk.Fn.join('/', [
           webLocalURL.valueAsString,
-          webAuthCallBackPath.valueAsString
-        ),
+          webAuthCallBackPath.valueAsString,
+        ]),
       },
     });
 
