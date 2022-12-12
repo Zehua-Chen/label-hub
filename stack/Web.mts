@@ -22,9 +22,11 @@ class Web extends Construct {
       websiteRoutingRules: [
         {
           condition: {
-            keyPrefixEquals: '/app',
+            keyPrefixEquals: '/app/consumer/projects/',
           },
-          replaceKey: s3.ReplaceKey.with('/app/index.html'),
+          replaceKey: s3.ReplaceKey.with(
+            '/app/consumer/projects/[project]/index.html'
+          ),
         },
       ],
     });
