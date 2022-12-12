@@ -118,5 +118,7 @@ export function AuthProvider(props: PropsWithChildren<unknown>) {
 }
 
 export function authRouteGuard(): () => boolean {
-  return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : () => true;
+  const disabled = () => true;
+
+  return process.env.AUTH_ENABLED === 'true' ? isLoggedIn : disabled;
 }

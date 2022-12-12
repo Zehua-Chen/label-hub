@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import ProtectedRoute from '.';
 
 describe('ProtectedRoute', () => {
@@ -16,7 +16,7 @@ describe('ProtectedRoute', () => {
     expect(screen.getByText('Content')).toBeTruthy();
   });
 
-  it('fallback', () => {
+  it('fallback', async () => {
     const navigate = jest.fn();
 
     render(
@@ -30,6 +30,5 @@ describe('ProtectedRoute', () => {
     );
 
     expect(navigate).toHaveBeenCalledWith('/fallback');
-    expect(() => screen.getByText('Content')).toThrow();
   });
 });
