@@ -29,11 +29,11 @@ def lambda_handler(event, context):
         json_obj = {"objectKey": key,
                     "bucket": bucket,
                     "createdTimestamp": timestamp,
-<<<<<<< HEAD
+                    "year": metadata['LastModified'].strftime("%Y"), 
+                    "month": metadata['LastModified'].strftime("%m"),
+                    "day": metadata['LastModified'].strftime("%d"),
                     "producerID": USERID,
                     "price": PRICE,
-=======
->>>>>>> 22e9e217c69a02fd29626245ae5825d524129047
                     "labels": labels}
         
         # upload the data to opensearch

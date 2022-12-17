@@ -17,17 +17,32 @@ def lambda_handler(event, context):
     #get userid
     # cog = boto3.client("cognito-idp", region_name=region)
     # producerid = cog.get_user(AccessToken=idtoken)['Username']
-    producerid = '%$#^&%$&%$$'
-
+    producerid = 'dfsdfds111111'
+    filter_month = '12'
+    filter_label = None
+    amount_high = None
+    amount_low = None
     query = {
         "query": {
-            "term": {
-                "producerID.keyword": {
-                    "value": producerid
+            "bool":{
+                "must":[
+                    {"term": {
+                        "producerID.keyword": {"value": producerid}
+                        }
                     }
+                ]
             }
         }
     }
+
+    if filter_label:
+        query["query"]["bool"]["must"].append({"match": {"labels": filter_label}})
+    if amount_low and amount_high:
+        query["query"]["bool"]["must"].append(\
+            {"range": {"price": {"gte": amount_low,"lte": amount_high}}})
+    if filter_month:
+        query["query"]["bool"]["must"].append({"term": {"month.keyword": {"value": filter_month}}})
+
     headers = { "Content-Type": "application/json" }
     r = requests.get(url, auth=awsauth, headers=headers, data=json.dumps(query))
     response = r.json()['hits']['hits']
