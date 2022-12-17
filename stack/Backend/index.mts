@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import Authentication, { AuthenticationProps } from './Authentication.mjs';
-import Api, { ApiProps } from './Api.mjs';
+import Api from './Api.mjs';
 import Lambdas from './Lambdas.mjs';
 import Storage from './Storage.mjs';
 
@@ -13,7 +13,6 @@ class Backend extends Construct {
   storage: Storage;
   api: Api;
   lambdas: Lambdas;
-  storage: Storage;
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);

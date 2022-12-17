@@ -4,6 +4,8 @@ import { aws_s3 as s3 } from 'aws-cdk-lib';
 export interface StorageProps {}
 
 class Storage extends Construct {
+  photos: s3.Bucket;
+
   constructor(scope: Construct, id: string, props: StorageProps) {
     super(scope, id);
 
