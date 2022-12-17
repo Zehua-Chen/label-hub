@@ -4,7 +4,7 @@ jest.mock('gatsby');
 import { navigate } from 'gatsby';
 import userEvent from '@testing-library/user-event';
 import { render, screen, act } from '@testing-library/react';
-import ProducerUpload from '.';
+import ProducerUpload from '../upload';
 import { getInputElement } from 'src/components/UploadButton/test-utils';
 
 Object.defineProperty(globalThis, 'URL', {

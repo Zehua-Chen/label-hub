@@ -49,9 +49,8 @@ aws s3 sync web/public s3://<bucket>
 ### Deploy Production Stack with Pipeline
 
 ```
-export CODE_STAR_CONNECTION='arn'
-
 cdk deploy LabelHubPipeline --parameters \
+  CodeStarConnection=<arn> \
   CognitoDomain=<unique url> \
   -O cdk.out/outputs.json
 ```

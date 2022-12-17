@@ -6,7 +6,6 @@ import Storage from './Storage.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
-  api: Omit<ApiProps, 'cognitoUserPools'>;
 }
 
 class Backend extends Construct {
@@ -14,6 +13,7 @@ class Backend extends Construct {
   storage: Storage;
   api: Api;
   lambdas: Lambdas;
+  storage: Storage;
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);
@@ -25,13 +25,16 @@ class Backend extends Construct {
     );
 
     this.storage = new Storage(this, 'Storage', {});
+    this.lambdas = new Lambdas(this, 'Lambdas', {});
 
     this.api = new Api(this, 'Api', {
       cognitoUserPools: [this.authentication.userPool],
-      ...props.api,
+      photosGetFunction: this.lambdas.photosGet,
+      incomeGetFunction: this.lambdas.incomeGet,
+      projectsGetFunction: this.lambdas.projectsGet,
+      projectsPutFunction: this.lambdas.projectsPut,
+      photosBucket: this.storage.photos,
     });
-
-    this.lambdas = new Lambdas(this, 'Lambdas', {});
   }
 }
 

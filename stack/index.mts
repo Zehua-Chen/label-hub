@@ -1,6 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
 import * as pipelines from 'aws-cdk-lib/pipelines';
-import * as process from 'process';
 import * as path from 'path';
 import { Construct } from 'constructs';
 import Backend from './Backend/index.mjs';
@@ -36,17 +35,19 @@ export class LableHubStack extends cdk.Stack {
     const web = new Web(this, 'Web', {});
 
     const backend = new Backend(this, 'Backend', {
-      api: {},
       authentication: {
         cognitoDomain: cognitoDomain.valueAsString,
-        webProductionAuthCallbackURL: path.join(
-          `https://${web.distribution.distributionDomainName}`,
-          webAuthCallBackPath.valueAsString
-        ),
-        webLocalAuthCallbackURL: path.join(
+        webProductionAuthCallbackURL: cdk.Fn.join('/', [
+          cdk.Fn.join('', [
+            'https://',
+            web.distribution.distributionDomainName,
+          ]),
+          webAuthCallBackPath.valueAsString,
+        ]),
+        webLocalAuthCallbackURL: cdk.Fn.join('/', [
           webLocalURL.valueAsString,
-          webAuthCallBackPath.valueAsString
-        ),
+          webAuthCallBackPath.valueAsString,
+        ]),
       },
     });
 
@@ -77,13 +78,22 @@ export class LabelHubPipeline extends cdk.Stack {
   constructor(scope: Construct, id: string, props: cdk.StackProps) {
     super(scope, id, props);
 
+    const codeStarConnection = new cdk.CfnParameter(
+      this,
+      'CodeStarConnection',
+      {
+        type: 'String',
+        description: 'Used to access source code',
+      }
+    );
+
     const pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
       synth: new pipelines.ShellStep('Synth', {
         input: pipelines.CodePipelineSource.connection(
           'Zehua-Chen/label-hub',
           'main',
           {
-            connectionArn: process.env.CODE_STAR_CONNECTION ?? '',
+            connectionArn: codeStarConnection.valueAsString,
           }
         ),
         installCommands: ['npm install -g pnpm'],
