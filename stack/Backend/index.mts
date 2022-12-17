@@ -2,6 +2,7 @@ import { Construct } from 'constructs';
 import Authentication, { AuthenticationProps } from './Authentication.mjs';
 import Api, { ApiProps } from './Api.mjs';
 import Lambdas from './Lambdas.mjs';
+import Storage from './Storage.mjs';
 
 export interface BackendProps {
   authentication: AuthenticationProps;
@@ -10,6 +11,7 @@ export interface BackendProps {
 
 class Backend extends Construct {
   authentication: Authentication;
+  storage: Storage;
   api: Api;
   lambdas: Lambdas;
 
@@ -21,6 +23,8 @@ class Backend extends Construct {
       'Authentication',
       props.authentication
     );
+
+    this.storage = new Storage(this, 'Storage', {});
 
     this.api = new Api(this, 'Api', {
       cognitoUserPools: [this.authentication.userPool],

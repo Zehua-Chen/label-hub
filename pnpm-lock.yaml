@@ -21,7 +21,10 @@ importers:
       '@babel/preset-env': ^7.20.2
       '@babel/preset-typescript': ^7.18.6
       '@openapitools/openapi-generator-cli': ^2.5.2
+      '@popperjs/core': ^2.11.6
       '@testing-library/react': ^13.4.0
+      '@testing-library/user-event': ^14.4.3
+      '@types/bootstrap': ^5.2.6
       '@types/jest': ^29.2.3
       '@types/reach__router': ^1.3.11
       '@types/react': ^18.0.25
@@ -30,6 +33,8 @@ importers:
       '@typescript-eslint/parser': ^5.44.0
       babel-jest: ^29.3.1
       babel-preset-gatsby: ^3.1.0
+      bootstrap: ^5.2.3
+      classnames: ^2.3.2
       dotenv: ^16.0.3
       eslint: ^8.28.0
       eslint-plugin-jest: ^27.1.5
@@ -38,6 +43,8 @@ importers:
       gatsby: ^5.1.0
       gatsby-plugin-pnpm: ^1.2.10
       gatsby-plugin-root-import: ^2.0.9
+      identity-obj-proxy: ^3.0.0
+      immer: ^9.0.16
       jest: ^29.3.1
       jest-environment-jsdom: ^29.3.1
       react: ^18.2.0
@@ -45,10 +52,14 @@ importers:
       react-helmet: ^6.1.0
       typescript: ^4.8.4
     dependencies:
+      '@popperjs/core': 2.11.6
+      bootstrap: 5.2.3_@popperjs+core@2.11.6
+      classnames: 2.3.2
       dotenv: 16.0.3
       gatsby: 5.1.0_vhwc4p7w675fafavuxdssr46o4
       gatsby-plugin-pnpm: 1.2.10_gatsby@5.1.0
       gatsby-plugin-root-import: 2.0.9_gatsby@5.1.0
+      immer: 9.0.16
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-helmet: 6.1.0_react@18.2.0
@@ -57,6 +68,8 @@ importers:
       '@babel/preset-typescript': 7.18.6
       '@openapitools/openapi-generator-cli': 2.5.2
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+      '@testing-library/user-event': 14.4.3
+      '@types/bootstrap': 5.2.6
       '@types/jest': 29.2.3
       '@types/reach__router': 1.3.11
       '@types/react': 18.0.25
@@ -69,6 +82,7 @@ importers:
       eslint-plugin-jest: 27.1.5_z6oz26moudzpkh2whtpx5ugd64
       eslint-plugin-react: 7.31.11_eslint@8.28.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.28.0
+      identity-obj-proxy: 3.0.0
       jest: 29.3.1
       jest-environment-jsdom: 29.3.1
       typescript: 4.8.4
@@ -3595,6 +3609,9 @@ packages:
       config-chain: 1.1.13
     dev: false
 
+  /@popperjs/core/2.11.6:
+    resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+
   /@sideway/address/4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
     dependencies:
@@ -3694,6 +3711,13 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: true
 
+  /@testing-library/user-event/14.4.3:
+    resolution: {integrity: sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==}
+    engines: {node: '>=12', npm: '>=6'}
+    peerDependencies:
+      '@testing-library/dom': '>=7.21.4'
+    dev: true
+
   /@tokenizer/token/0.3.0:
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
@@ -3764,6 +3788,12 @@ packages:
     resolution: {integrity: sha512-FcFaxOr2V5KZCviw1TnutEMVUVsGt4D2hP1TAfXZAMKuHYW3xQhe3jTxNPWutgCJ3/X1c5yX8ZoGVEItxKbwBg==}
     dependencies:
       '@babel/types': 7.20.2
+
+  /@types/bootstrap/5.2.6:
+    resolution: {integrity: sha512-BlAc3YATdasbHoxMoBWODrSF6qwQO/E9X8wVxCCSa6rWjnaZfpkr2N6pUMCY6jj2+wf0muUtLySbvU9etX6YqA==}
+    dependencies:
+      '@popperjs/core': 2.11.6
+    dev: true
 
   /@types/cacheable-request/6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
@@ -5154,6 +5184,14 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: false
 
+  /bootstrap/5.2.3_@popperjs+core@2.11.6:
+    resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}
+    peerDependencies:
+      '@popperjs/core': ^2.11.6
+    dependencies:
+      '@popperjs/core': 2.11.6
+    dev: false
+
   /boxen/4.2.0:
     resolution: {integrity: sha512-eB4uT9RGzg2odpER62bBwSLvUeGC+WbRjjyyFhGsKnc8wp/m0+hQsMUvUe3H2V0D5vw0nBdO1hCJoZo5mKeuIQ==}
     engines: {node: '>=8'}
@@ -5422,6 +5460,10 @@ packages:
 
   /cjs-module-lexer/1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /cli-boxes/2.2.1:
     resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}
@@ -8169,6 +8211,10 @@ packages:
       duplexer: 0.1.2
     dev: false
 
+  /harmony-reflect/1.6.2:
+    resolution: {integrity: sha512-HIp/n38R9kQjDEziXyDTuW3vvoxxyxjxFzXLrBr18uB47GnSt+G9D29fqrpM5ZkspMcPICud3XsBJQ4Y2URg8g==}
+    dev: true
+
   /has-bigints/1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
 
@@ -8330,6 +8376,13 @@ packages:
     dependencies:
       postcss: 8.4.19
     dev: false
+
+  /identity-obj-proxy/3.0.0:
+    resolution: {integrity: sha512-00n6YnVHKrinT9t0d9+5yZC6UBNJANpYEQvL2LlX6Ab9lnmxzIRcEmTPuyGScvl1+jKuCICX1Z0Ab1pPKKdikA==}
+    engines: {node: '>=4'}
+    dependencies:
+      harmony-reflect: 1.6.2
+    dev: true
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}

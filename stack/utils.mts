@@ -1,7 +1,8 @@
 import { Construct } from 'constructs';
-import { aws_lambda as lambda } from 'aws-cdk-lib';
+import { Function, FunctionProps, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 
-export interface LabelHubLambdaProps {
+export interface LabelHubLambdaProps
+  extends Omit<FunctionProps, 'runtime' | 'code' | 'handler'> {
   /**
    * The module containing the lambda function
    *
@@ -13,18 +14,15 @@ export interface LabelHubLambdaProps {
 /**
  * Wrapper for lambda function using label_hub root module
  */
-export class LabelHubLambda extends Construct {
-  function: lambda.Function;
-
+export class LabelHubFunction extends Function {
   constructor(scope: Construct, id: string, props: LabelHubLambdaProps) {
-    super(scope, id);
+    const { module, ...others } = props;
 
-    const { module } = props;
-
-    this.function = new lambda.Function(this, 'Function', {
-      runtime: lambda.Runtime.PYTHON_3_9,
-      code: lambda.Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
+    super(scope, id, {
+      runtime: Runtime.PYTHON_3_9,
+      code: Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
       handler: `label_hub.lambdas.${module}.handler`,
+      ...others,
     });
   }
 }
