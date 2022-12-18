@@ -7,6 +7,7 @@ class Lambdas extends Construct {
   photosGet: LabelHubFunction;
   photosPut: LabelHubFunction;
   photosProducerGet: LabelHubFunction;
+  photosToS3: LabelHubFunction;
   incomeGet: LabelHubFunction;
   projectsGet: LabelHubFunction;
   projectsPut: LabelHubFunction;
@@ -24,6 +25,10 @@ class Lambdas extends Construct {
 
     this.photosProducerGet = new LabelHubFunction(this, 'PhotosProducerGet', {
       module: 'photos_producer_get',
+    });
+
+    this.photosToS3 = new LabelHubFunction(this, 'PhotosToS3', {
+      module: 'photos_to_s3',
     });
 
     this.incomeGet = new LabelHubFunction(this, 'IncomeGet', {
