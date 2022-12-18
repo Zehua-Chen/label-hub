@@ -18,6 +18,8 @@ export interface ApiProps {
 
   projectsPutFunction: lambda.IFunction;
 
+  buyGetFunction: lambda.IFunction;
+
   photosBucket: s3.Bucket;
 }
 
@@ -34,6 +36,7 @@ class Api extends Construct {
       incomeGetFunction,
       projectsGetFunction,
       projectsPutFunction,
+      buyGetFunction,
       photosBucket,
     } = props;
 
@@ -140,6 +143,7 @@ class Api extends Construct {
       allowOrigins: ['*'],
     });
 
+    // Projects API
     const projects = this.api.root.addResource('projects');
 
     projects.addMethod(
@@ -179,6 +183,69 @@ class Api extends Construct {
     projects.addCorsPreflight({
       allowOrigins: ['*'],
     });
+
+    // Buy API
+    const buy = this.api.root.addResource('buy');
+
+    buy.addMethod(
+      'GET',
+      new apigateway.LambdaIntegration(buyGetFunction),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
+
+    buy.addCorsPreflight({
+      allowOrigins: ['*'],
+    });
+
+    // Download API
+    const download = buy.addResource('download');
+
+    download.addMethod(
+      'GET',
+      new apigateway.AwsIntegration({
+        service: 's3',
+        path: `${photosBucket.bucketName}/{project_id}`,
+        integrationHttpMethod: 'GET',
+        options: {
+          credentialsRole: new iam.Role(this, 'Role', {
+            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+          }),
+          requestParameters: {
+            'integration.request.path.project_id': 'method.request.path.project_id',
+          },
+          integrationResponses: [
+            {
+              statusCode: '200',
+              responseParameters: {
+                'method.response.header.access-control-allow-origin': "'*'",
+              },
+            },
+          ],
+        },
+      })
+    );
+
+    download.addCorsPreflight({
+      allowOrigins: ['*'],
+      allowMethods: ['GET'],
+      allowHeaders: ['*'],
+    });
+
+
+
+
+    
   }
 }
 

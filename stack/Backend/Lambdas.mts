@@ -8,6 +8,7 @@ class Lambdas extends Construct {
   incomeGet: LabelHubFunction;
   projectsGet: LabelHubFunction;
   projectsPut: LabelHubFunction;
+  buyGet: LabelHubFunction;
 
   constructor(scope: Construct, id: string, props: LambdasProps) {
     super(scope, id);
@@ -26,6 +27,10 @@ class Lambdas extends Construct {
 
     this.projectsPut = new LabelHubFunction(this, 'ProjectsPut', {
       module: 'projects_put',
+    });
+
+    this.buyGet = new LabelHubFunction(this, 'BuyGet', {
+      module: 'buy_get',
     });
   }
 }
