@@ -5,6 +5,8 @@ export interface LambdasProps {}
 
 class Lambdas extends Construct {
   photosGet: LabelHubFunction;
+  photosPut: LabelHubFunction;
+  photosProducerGet: LabelHubFunction;
   incomeGet: LabelHubFunction;
   projectsGet: LabelHubFunction;
   projectsPut: LabelHubFunction;
@@ -14,6 +16,14 @@ class Lambdas extends Construct {
 
     this.photosGet = new LabelHubFunction(this, 'PhotosGet', {
       module: 'photos_get',
+    });
+
+    this.photosPut = new LabelHubFunction(this, 'PhotosPut', {
+      module: 'photos_put',
+    });
+
+    this.photosProducerGet = new LabelHubFunction(this, 'PhotosProducerGet', {
+      module: 'photos_producer_get',
     });
 
     this.incomeGet = new LabelHubFunction(this, 'IncomeGet', {
