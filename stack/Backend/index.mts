@@ -74,6 +74,7 @@ class Backend extends Construct {
       incomeGetFunction: this.lambdas.incomeGet,
       projectsGetFunction: this.lambdas.projectsGet,
       projectsPutFunction: this.lambdas.projectsPut,
+      buyGetFunction: this.lambdas.buyGet,
       photosBucket: this.storage.photos,
     });
   }
