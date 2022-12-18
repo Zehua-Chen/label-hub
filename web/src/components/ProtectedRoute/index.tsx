@@ -27,7 +27,7 @@ function ProtectedRoute(
     if (!condition()) {
       navigate(fallback);
     }
-  }, []);
+  }, [condition, navigate, fallback]);
 
   return children as JSX.Element;
 }
