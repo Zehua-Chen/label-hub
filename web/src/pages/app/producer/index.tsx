@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
 import DashboardLayout from 'src/components/DashboardLayout';
+import Checkbox from 'src/components/Checkbox';
 
 interface Photo {
   name: string;
@@ -75,19 +76,10 @@ function ProducerDashboard() {
               <div className='col'>
                 <label className='form-label'>Labels</label>
                 {tags.map((tag, index) => (
-                  <div className='form-check' key={index}>
-                    <input
-                      className='form-check-input'
-                      type='checkbox'
-                      id={tag.displayName}
-                    />
-                    <label
-                      className='form-check-label'
-                      htmlFor={tag.displayName}
-                    >
-                      {tag.displayName}
-                    </label>
-                  </div>
+                  <Checkbox
+                    key={tag.displayName}
+                    label={tag.displayName}
+                  ></Checkbox>
                 ))}
               </div>
             </div>
