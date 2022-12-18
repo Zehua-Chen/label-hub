@@ -4,7 +4,7 @@ import DashboardLayout from 'src/components/DashboardLayout';
 import ProtectedRoute from 'src/components/ProtectedRoute';
 import { authRouteGuard } from 'src/services/auth';
 
-function Project(props: PageProps): JSX.Element {
+function Buy(props: PageProps) {
   const { params } = props;
   const { project } = params;
 
@@ -14,7 +14,7 @@ function Project(props: PageProps): JSX.Element {
         <div className='container'>
           <div className='row'>
             <div className='col'>
-              <h1>Project {project}</h1>
+              <h1>Buy For Project {project}</h1>
             </div>
           </div>
         </div>
@@ -23,4 +23,4 @@ function Project(props: PageProps): JSX.Element {
   );
 }
 
-export default Project;
+export default Buy;
