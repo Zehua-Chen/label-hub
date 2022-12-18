@@ -16,7 +16,7 @@ describe('ProtectedRoute', () => {
     expect(screen.getByText('Content')).toBeTruthy();
   });
 
-  it('fallback', () => {
+  it('fallback', async () => {
     const navigate = jest.fn();
 
     render(
@@ -30,6 +30,5 @@ describe('ProtectedRoute', () => {
     );
 
     expect(navigate).toHaveBeenCalledWith('/fallback');
-    expect(() => screen.getByText('Content')).toThrow();
   });
 });
