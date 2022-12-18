@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { navigate as gatsbyNavgiate } from 'gatsby';
 import { NavigateFn } from '@reach/router';
 
@@ -14,7 +14,7 @@ export interface ProtectedRouteProps {
 
 function ProtectedRoute(
   props: PropsWithChildren<ProtectedRouteProps>
-): JSX.Element | null {
+): JSX.Element {
   const {
     condition,
     navigate = gatsbyNavgiate,
@@ -22,13 +22,14 @@ function ProtectedRoute(
     children,
   } = props;
 
-  if (condition()) {
-    return children as JSX.Element;
-  }
+  useEffect(() => {
+    // Only protect route on client side
+    if (!condition()) {
+      navigate(fallback);
+    }
+  }, [condition, navigate, fallback]);
 
-  navigate(fallback);
-
-  return null;
+  return children as JSX.Element;
 }
 
 export default ProtectedRoute;

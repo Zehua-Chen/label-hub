@@ -8,7 +8,7 @@ import classNames from 'classnames';
 
 export interface DashboardLayoutProps {
   mode: string;
-  sidebar: JSX.Element;
+  sidebar?: JSX.Element;
   navigationItems?: JSX.Element[];
 }
 
@@ -47,9 +47,11 @@ function DashboardLayout(
         }
       >
         <div className='flex-grow-1 d-flex flex-row'>
-          <div className={classNames('border-end', classes.sidebar)}>
-            {sidebar}
-          </div>
+          {sidebar ? (
+            <div className={classNames('border-end', classes.sidebar)}>
+              {sidebar}
+            </div>
+          ) : null}
           <div className='container'>{props.children}</div>
         </div>
       </Layout>
