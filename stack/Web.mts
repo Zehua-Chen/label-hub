@@ -19,16 +19,6 @@ class Web extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
-      websiteRoutingRules: [
-        {
-          condition: {
-            keyPrefixEquals: '/app/consumer/projects/',
-          },
-          replaceKey: s3.ReplaceKey.with(
-            '/app/consumer/projects/[project]/index.html'
-          ),
-        },
-      ],
     });
 
     this.hosting.grantPublicAccess();
