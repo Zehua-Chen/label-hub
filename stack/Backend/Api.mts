@@ -206,8 +206,9 @@ class Api extends Construct {
 
     // Download API
     const download = this.api.root.addResource('download');
+    const downloadProject = download.addResource('{project_id}');
 
-    download.addMethod(
+    downloadProject.addMethod(
       'GET',
       new apigateway.AwsIntegration({
         service: 's3',
@@ -230,10 +231,23 @@ class Api extends Construct {
             },
           ],
         },
-      })
+      }),
+      {
+        requestParameters: {
+          'method.request.path.project_id': true,
+        },
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
     );
 
-    download.addCorsPreflight({
+    downloadProject.addCorsPreflight({
       allowOrigins: ['*'],
       allowMethods: ['GET'],
       allowHeaders: ['*'],
