@@ -1,14 +1,52 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-11-22T20:46:43Z'
+  version: '2022-12-19T22:15:23Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
       basePath:
         default: '/prod'
 paths:
-  /photos:
+  /projects:
+    get:
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content: {}
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    put:
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content: {}
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /buy:
     get:
       responses:
         '200':
@@ -35,7 +73,247 @@ paths:
               schema:
                 type: 'string'
           content: {}
+  /photos:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPhotosRequest'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPhotosResponse'
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /photos/{photo_id}:
+    put:
+      parameters:
+        - name: 'photo_id'
+          in: 'path'
+          required: true
+          schema:
+            type: 'string'
+        - name: 'access-token'
+          in: 'header'
+          required: true
+          schema:
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeveloBackexzVcVyRuqsda'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content: {}
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      parameters:
+        - name: 'photo_id'
+          in: 'path'
+          required: true
+          schema:
+            type: 'string'
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /photos/producer:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPhotosProducerRequest'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPhotosProducerResponse'
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+  /income:
+    get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetIncomeRequest'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIncomeResponse'
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /download/{project_id}:
+    get:
+      parameters:
+        - name: 'project_id'
+          in: 'path'
+          required: true
+          schema:
+            type: 'string'
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content: {}
+    options:
+      parameters:
+        - name: 'project_id'
+          in: 'path'
+          required: true
+          schema:
+            type: 'string'
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
 components:
+  schemas:
+    GetIncomeRequest:
+      type: 'object'
+      properties:
+        idtoken:
+          type: 'string'
+    GetIncomeResponse:
+      type: 'object'
+      properties:
+        income:
+          type: 'number'
+    DeveloBackexzVcVyRuqsda:
+      type: 'object'
+    GetPhotosRequest:
+      type: 'object'
+      properties:
+        labels:
+          type: 'array'
+          items:
+            type: 'string'
+    GetPhotosResponse:
+      type: 'object'
+      properties:
+        url:
+          type: 'string'
+        labels:
+          type: 'array'
+          items:
+            type: 'string'
+    GetPhotosProducerRequest:
+      type: 'object'
+      properties:
+        filter_label:
+          type: 'string'
+        amount_high:
+          type: 'number'
+        idtoken:
+          type: 'string'
+        filter_month:
+          type: 'string'
+        amount_low:
+          type: 'number'
+    GetPhotosProducerResponse:
+      type: 'object'
+      properties:
+        photos_list:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              amount:
+                type: 'number'
+              filename:
+                type: 'string'
+              time:
+                type: 'string'
+              tags:
+                type: 'array'
+                items:
+                  type: 'string'
   securitySchemes:
     DevelopmentLabelHubBackendApiAuthorizerF478BBAE:
       type: 'apiKey'

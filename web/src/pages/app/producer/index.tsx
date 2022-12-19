@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
+import { useQuery } from '@tanstack/react-query';
 import DashboardLayout from 'src/components/DashboardLayout';
 import Checkbox from 'src/components/Checkbox';
 
@@ -43,6 +44,14 @@ function useTags(): Tag[] {
 function ProducerDashboard() {
   const photos = useMockPhotos();
   const tags = useTags();
+
+  // const { isLoading, error, data } = useQuery({
+  //   queryKey: ['repoData'],
+  //   queryFn: () =>
+  //     fetch('https://api.github.com/repos/tanstack/query').then((res) =>
+  //       res.json()
+  //     ),
+  // });
 
   return (
     <DashboardLayout
