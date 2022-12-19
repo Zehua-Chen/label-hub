@@ -1,2 +1,1 @@
-def handler(event, context):
-    pass
+from .lambda_function import lambda_handler as handler
