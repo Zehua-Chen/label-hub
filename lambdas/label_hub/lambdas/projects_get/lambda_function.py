@@ -15,6 +15,7 @@ awsauth = AWS4Auth(credentials.access_key,
                    service,
                    session_token=credentials.token)
 
+
 def open_search(projectID, consumerID):
     print("FUNCTION: Open_Search...")
     # The OpenSearch domain endpoint with https://
@@ -23,17 +24,9 @@ def open_search(projectID, consumerID):
     os_url = os_host + '/' + os_index + '/_search'
 
     print("open_serch message")
-    results = {'photos': []}  
+    results = {'photos': []}
 
-    query = {
-        "query": {
-            "term": {
-                "projectID.keyword": {
-                    "value": projectID
-                    }
-            }
-        }
-    }
+    query = {"query": {"term": {"projectID.keyword": {"value": projectID}}}}
     print("SENDING query ...")
     print(query)
 
@@ -50,7 +43,7 @@ def open_search(projectID, consumerID):
         print(photos)
 
         for photo in photos:
-            if(consumerID==photo['_source']['consumerID']):
+            if (consumerID == photo['_source']['consumerID']):
                 print("yes")
                 d = {}
                 d['purchaseID'] = photo['_source']['objectKey'],
@@ -69,7 +62,8 @@ def open_search(projectID, consumerID):
     print(results)
 
     return results
-    
+
+
 def lambda_handler(event, context):
     # TODO implement
     projectID = 'projectID-123'
@@ -78,9 +72,6 @@ def lambda_handler(event, context):
     # cog = boto3.client("cognito-idp", region_name=region)
     # producerID = cog.get_user(AccessToken=idtoken)['Username']
     consumerID = '8765-4321'
-    
+
     results = open_search(projectID, consumerID)
-    return {
-        'statusCode': 200,
-        'body': json.dumps(results)
-    }
+    return {'statusCode': 200, 'body': json.dumps(results)}

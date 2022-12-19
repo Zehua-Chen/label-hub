@@ -5,7 +5,6 @@ import requests
 from requests_aws4auth import AWS4Auth
 import os
 
-
 OPENSEARCH_consumer = os.environ['opensearchEndpoint_consumer']
 OPENSEARCH_producer = os.environ['opensearchEndpoint_producer']
 region = 'us-east-1'
@@ -18,17 +17,17 @@ awsauth = AWS4Auth(credentials.access_key,
                    service,
                    session_token=credentials.token)
 
-#producer Open Serch variables               
+#producer Open Serch variables
 host = 'https://' + OPENSEARCH_producer
 index = 'photos'
 url = host + '/' + index + '/_search'
 
 #Consumer Open Seacrh variables
-os_host ='https://'+ OPENSEARCH_consumer
+os_host = 'https://' + OPENSEARCH_consumer
 os_index = 'projects'
 os_type = '_doc'
 
-    
+
 def upload_to_os(photo_obj, key):
     print("FUNCTION: Open_Search...")
     os_url = os_host + '/' + os_index + '/' + os_type + '/' + key
@@ -47,21 +46,17 @@ def upload_to_os(photo_obj, key):
         print("OPEN SEARCH STORE ERROR")
         print(e)
 
+
 def valid_purchase(key):
-    query = {
-        "query": {
-            "term": {
-                "objectKey.keyword": {
-                    "value": key
-                    }
-            }
-        }
-    }
+    query = {"query": {"term": {"objectKey.keyword": {"value": key}}}}
     valid_url = os_host + '/' + os_index + '/_search'
-    headers = { "Content-Type": "application/json" }
-    
+    headers = {"Content-Type": "application/json"}
+
     try:
-        r = requests.get(valid_url, auth=awsauth, headers=headers, data=json.dumps(query))
+        r = requests.get(valid_url,
+                         auth=awsauth,
+                         headers=headers,
+                         data=json.dumps(query))
         response = r.json()
         print(response)
         if 'hits' in response and response['hits']['hits']:
@@ -70,10 +65,10 @@ def valid_purchase(key):
             return True
     except Exception as e:
         print(e)
-        
+
         return False
-    
-    
+
+
 def lambda_handler(event, context):
     # TODO implement
     idtoken = 'string'
@@ -85,26 +80,21 @@ def lambda_handler(event, context):
     #key = 'asdakdfasd' #photoID
     PhotoID = 'wallup-259665.jpg'
     key = consumerID + "-" + PhotoID
-    
-    query = {
-        "query": {
-            "term": {
-                "objectKey.keyword": {
-                    "value": PhotoID
-                    }
-            }
-        }
-    }
-    
-    headers = { "Content-Type": "application/json" }
+
+    query = {"query": {"term": {"objectKey.keyword": {"value": PhotoID}}}}
+
+    headers = {"Content-Type": "application/json"}
     try:
-        r = requests.get(url, auth=awsauth, headers=headers, data=json.dumps(query))
+        r = requests.get(url,
+                         auth=awsauth,
+                         headers=headers,
+                         data=json.dumps(query))
         response = r.json()['hits']['hits']
         print("response from producer")
         print(response)
     except Exception as e:
         print("unable to query producer endpoint")
-        return { 'statusCode': 404 }
+        return {'statusCode': 404}
     """
     response = [{
         '_source':{
@@ -117,27 +107,27 @@ def lambda_handler(event, context):
         }
     }]
     """
-   
-    
+
     for doc in response:
         if valid_purchase(key):
-            json_obj = {"objectKey": key,
-                        "photoID": doc['_source']['objectKey'],
-                        "bucket": doc['_source']['bucket'],
-                        "createdTimestamp": doc['_source']['createdTimestamp'],
-                        "producerID": doc['_source']['producerID'],
-                        "price": doc['_source']['price'],
-                        "consumerID": consumerID,
-                        "projectID": projectID,
-                        "labels": doc['_source']['labels']}
+            json_obj = {
+                "objectKey": key,
+                "photoID": doc['_source']['objectKey'],
+                "bucket": doc['_source']['bucket'],
+                "createdTimestamp": doc['_source']['createdTimestamp'],
+                "producerID": doc['_source']['producerID'],
+                "price": doc['_source']['price'],
+                "consumerID": consumerID,
+                "projectID": projectID,
+                "labels": doc['_source']['labels']
+            }
             print("created json object")
             print(json_obj)
-            
+
             upload_to_os(json_obj, key)
         else:
             print("No")
-            
-        
+
     return {
         'statusCode': 200,
         'body': json.dumps('New Photo added to Project: ' + key)
