@@ -11,6 +11,7 @@ export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
 
   photosGetFunction: lambda.IFunction;
+  photosToS3: lambda.IFunction;
 
   incomeGetFunction: lambda.IFunction;
 
@@ -33,6 +34,7 @@ class Api extends Construct {
     const {
       cognitoUserPools,
       photosGetFunction,
+      photosToS3,
       incomeGetFunction,
       projectsGetFunction,
       projectsPutFunction,
@@ -40,7 +42,18 @@ class Api extends Construct {
       photosBucket,
     } = props;
 
-    this.api = new apigateway.RestApi(this, 'Api');
+    this.api = new apigateway.RestApi(this, 'Api', {
+      binaryMediaTypes: ['application/octet-stream'],
+    });
+
+    const photoModel = this.api.addModel('Photo', {
+      modelName: 'Photo',
+      schema: {
+        type: apigateway.JsonSchemaType.STRING,
+        format: 'binary',
+      },
+    });
+
     this.authorizer = new apigateway.CognitoUserPoolsAuthorizer(
       this,
       'Authorizer',
@@ -73,45 +86,25 @@ class Api extends Construct {
 
     const photosId = photos.addResource('{photo_id}');
 
-    photosId.addMethod(
-      'PUT',
-      new apigateway.AwsIntegration({
-        service: 's3',
-        path: `${photosBucket.bucketName}/{photo_id}`,
-        integrationHttpMethod: 'PUT',
-        options: {
-          credentialsRole: new iam.Role(this, 'PhotosGetRole', {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-          }),
-          requestParameters: {
-            'integration.request.path.photo_id': 'method.request.path.photo_id',
+    photosId.addMethod('PUT', new apigateway.LambdaIntegration(photosToS3), {
+      authorizer: this.authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      requestParameters: {
+        'method.request.path.photo_id': true,
+        'method.request.header.access-token': true,
+      },
+      requestModels: {
+        'application/octet-stream': photoModel,
+      },
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.access-control-allow-origin': true,
           },
-          integrationResponses: [
-            {
-              statusCode: '200',
-              responseParameters: {
-                'method.response.header.access-control-allow-origin': "'*'",
-              },
-            },
-          ],
         },
-      }),
-      {
-        authorizer: this.authorizer,
-        authorizationType: apigateway.AuthorizationType.COGNITO,
-        requestParameters: {
-          'method.request.path.photo_id': true,
-        },
-        methodResponses: [
-          {
-            statusCode: '200',
-            responseParameters: {
-              'method.response.header.access-control-allow-origin': true,
-            },
-          },
-        ],
-      }
-    );
+      ],
+    });
 
     photosId.addCorsPreflight({
       allowOrigins: ['*'],
