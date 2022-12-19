@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
-import { useQuery } from '@tanstack/react-query';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
 import Checkbox from 'src/components/Checkbox';
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 interface Photo {
   name: string;
@@ -32,12 +34,12 @@ interface Tag {
 
 function useTags(): Tag[] {
   return [
-    {
-      displayName: 'Cat',
-    },
-    {
-      displayName: 'Dog',
-    },
+    // {
+    //   displayName: 'Cat',
+    // },
+    // {
+    //   displayName: 'Dog',
+    // },
   ];
 }
 
@@ -45,13 +47,26 @@ function ProducerDashboard() {
   const photos = useMockPhotos();
   const tags = useTags();
 
-  // const { isLoading, error, data } = useQuery({
-  //   queryKey: ['repoData'],
-  //   queryFn: () =>
-  //     fetch('https://api.github.com/repos/tanstack/query').then((res) =>
-  //       res.json()
-  //     ),
-  // });
+  const auth = useAuth();
+  const api = useApi();
+
+  const {
+    data: income,
+    error,
+    isLoading: isIncomeLoading,
+  } = useSWR('/app/producer/income', () =>
+    api.incomeGet({
+      getIncomeRequest: { idtoken: auth.accessToken },
+    })
+  );
+
+  React.useEffect(() => {
+    api.incomeGet({
+      getIncomeRequest: { idtoken: auth.accessToken },
+    });
+  }, []);
+
+  console.log(error);
 
   return (
     <DashboardLayout
@@ -100,7 +115,7 @@ function ProducerDashboard() {
         <div className='row pt-3'>
           <div className='col-10'>
             <h1>Income</h1>
-            <h2>$32.68</h2>
+            {isIncomeLoading ? <h2>...</h2> : <h2>${income?.income}</h2>}
           </div>
           <div className='col'>
             <Link className='btn btn-primary' to='/app/producer/upload'>

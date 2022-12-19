@@ -59,4 +59,7 @@ def lambda_handler(event, context):
         print("Unable to connect to Open Search Consumer Instance")
         print(e)
 
-    return {'income': income}
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'income': income})
+    }

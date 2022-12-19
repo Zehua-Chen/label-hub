@@ -168,6 +168,8 @@ class Api extends Construct {
 
     income.addCorsPreflight({
       allowOrigins: ['*'],
+      allowMethods: ['GET'],
+      allowHeaders: ['*'],
     });
 
     // Projects API
