@@ -71,6 +71,7 @@ class Backend extends Construct {
     this.api = new Api(this, 'Api', {
       cognitoUserPools: [this.authentication.userPool],
       photosGetFunction: this.lambdas.photosGet,
+      photosProducerGetFunction: this.lambdas.photosProducerGet,
       photosToS3: this.lambdas.photosToS3,
       incomeGetFunction: this.lambdas.incomeGet,
       projectsGetFunction: this.lambdas.projectsGet,

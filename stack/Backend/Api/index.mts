@@ -12,6 +12,7 @@ export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
 
   photosGetFunction: lambda.IFunction;
+  photosProducerGetFunction: lambda.IFunction;
   photosToS3: lambda.IFunction;
 
   incomeGetFunction: lambda.IFunction;
@@ -35,6 +36,7 @@ class Api extends Construct {
     const {
       cognitoUserPools,
       photosGetFunction,
+      photosProducerGetFunction,
       photosToS3,
       incomeGetFunction,
       projectsGetFunction,
@@ -64,9 +66,40 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestModels: {
+          'application/json': models.getPhotosRequest,
+        },
         methodResponses: [
           {
             statusCode: '200',
+            responseModels: {
+              'application/json': models.getPhotosResponse,
+            },
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
+
+    const photosProducer = photos.addResource('producer');
+
+    photosProducer.addMethod(
+      'GET',
+      new apigateway.LambdaIntegration(photosProducerGetFunction),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestModels: {
+          'application/json': models.getPhotosProducerRequest,
+        },
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseModels: {
+              'application/json': models.getPhotosProducerResponse,
+            },
             responseParameters: {
               'method.response.header.access-control-allow-origin': true,
             },
