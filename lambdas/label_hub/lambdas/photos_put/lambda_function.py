@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/var/task/vendor")
+
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 import json
 import urllib.parse

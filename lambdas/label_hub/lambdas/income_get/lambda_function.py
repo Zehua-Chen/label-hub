@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/var/task/vendor")
+
 import boto3
 import json
 import requests
