@@ -48,7 +48,7 @@ def lambda_handler(event, context):
     labels = get_tokens(event)
 
     print("Labels")
-    print(labels)
+    labels = ['cat']
 
     # Search the photos OpenSearch index for results
     response = opensearch.query(labels,
@@ -58,4 +58,7 @@ def lambda_handler(event, context):
     print("Results")
     print(results)
 
-    return results
+    return {
+        'statusCode': 200,
+        'body': json.dumps(results)
+    }

@@ -80,4 +80,7 @@ def lambda_handler(event, context):
                               Key=prefix + file_name)
         return_url.append("https://%s.s3.amazonaws.com/%s%s" %
                           (destination_bucket_name, prefix, file_name))
-    return {'photosUrl': return_url}
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'photosUrl': return_url})
+    }

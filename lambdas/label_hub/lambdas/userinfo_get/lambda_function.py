@@ -17,8 +17,10 @@ def lambda_handler(event, context):
     user_id = 'asdf-hgd'
     try:
         data = client.get_item(TableName=tableName, Key={'id': {'S': user_id}})
-
-        return data['Item']
+        return {
+            'statusCode': 200,
+            'body': json.dumps(data['Item'])
+        }
     except Exception as e:
         print('User info does not exist')
         print(e)

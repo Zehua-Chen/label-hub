@@ -74,4 +74,7 @@ def lambda_handler(event, context):
         d['amount'] = doc['_source']['price']
         d['tags'] = doc['_source']['labels']
         return_obj.append(d)
-    return return_obj
+    return {
+        'statusCode': 200,
+        'body': json.dumps(return_obj)
+    }
