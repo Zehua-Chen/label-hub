@@ -6,6 +6,7 @@ import {
   aws_lambda as lambda,
   aws_s3 as s3,
 } from 'aws-cdk-lib';
+import Models from './Models.mjs';
 
 export interface ApiProps {
   cognitoUserPools: cognito.IUserPool[];
@@ -46,13 +47,7 @@ class Api extends Construct {
       binaryMediaTypes: ['application/octet-stream'],
     });
 
-    const photoModel = this.api.addModel('Photo', {
-      modelName: 'Photo',
-      schema: {
-        type: apigateway.JsonSchemaType.STRING,
-        format: 'binary',
-      },
-    });
+    const models = new Models(this.api);
 
     this.authorizer = new apigateway.CognitoUserPoolsAuthorizer(
       this,
@@ -94,7 +89,7 @@ class Api extends Construct {
         'method.request.header.access-token': true,
       },
       requestModels: {
-        'application/octet-stream': photoModel,
+        'application/json': models.putPhotoRequest,
       },
       methodResponses: [
         {
@@ -121,9 +116,15 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestModels: {
+          'application/json': models.getIncomeRequest,
+        },
         methodResponses: [
           {
             statusCode: '200',
+            responseModels: {
+              'application/json': models.getIncomeResponse,
+            },
             responseParameters: {
               'method.response.header.access-control-allow-origin': true,
             },

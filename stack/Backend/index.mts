@@ -5,7 +5,7 @@ import {
   aws_s3_notifications as s3n,
 } from 'aws-cdk-lib';
 import Authentication, { AuthenticationProps } from './Authentication.mjs';
-import Api from './Api.mjs';
+import Api from './Api/index.mjs';
 import Lambdas from './Lambdas.mjs';
 import Storage from './Storage.mjs';
 
