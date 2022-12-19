@@ -5,7 +5,7 @@ from requests_aws4auth import AWS4Auth
 import os
 import botocore
 import base64
-region = 'us-east-2'
+region = 'us-east-1'
 
 s3_client=boto3.client('s3')
 
