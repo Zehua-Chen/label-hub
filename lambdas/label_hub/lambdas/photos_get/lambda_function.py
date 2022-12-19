@@ -49,7 +49,7 @@ def lambda_handler(event, context):
     print(labels)
     
     # Search the photos OpenSearch index for results
-    response = opensearch.query(labels, os.environ['opensearchEndpoint'])
+    response = opensearch.query(labels, os.environ['opensearchEndpointProducer'])
         
     results = get_images(response)
     print("Results")

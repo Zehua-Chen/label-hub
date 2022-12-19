@@ -8,7 +8,7 @@ service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service,
 session_token=credentials.token)
-host = 'https://' + os.environ['opensearchEndpoint']
+host = 'https://' + os.environ['opensearchEndpointProducer']
 index = 'photos'
 url = host + '/' + index + '/_search'
 

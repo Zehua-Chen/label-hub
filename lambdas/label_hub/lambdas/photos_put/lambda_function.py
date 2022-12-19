@@ -37,7 +37,7 @@ def lambda_handler(event, context):
                     "labels": labels}
         
         # upload the data to opensearch
-        host = os.environ['opensearchEndpoint']
+        host = os.environ['opensearchEndpointProducer']
         region = 'us-east-1' 
         credentials = boto3.Session().get_credentials()
         auth = AWSV4SignerAuth(credentials, region)
