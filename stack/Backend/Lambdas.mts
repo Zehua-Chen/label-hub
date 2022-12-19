@@ -28,6 +28,7 @@ class Lambdas extends Construct {
   userInfoGet: LabelHubFunction;
   userInfoPut: LabelHubFunction;
   downloadGet: LabelHubFunction;
+  buyGet: LabelHubFunction;
 
   constructor(scope: Construct, id: string, props: LambdasProps) {
     super(scope, id);
@@ -145,6 +146,13 @@ class Lambdas extends Construct {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         s3Bucket_dest: download.bucketName,
       },
+    });
+
+    this.buyGet = new LabelHubFunction(this, 'BuyGet', {
+      module: 'buy_get',
+      memorySize: 1024,
+      timeout: Duration.seconds(30),
+      role: executeRole,
     });
   }
 }

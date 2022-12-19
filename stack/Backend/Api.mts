@@ -80,7 +80,7 @@ class Api extends Construct {
         path: `${photosBucket.bucketName}/{photo_id}`,
         integrationHttpMethod: 'PUT',
         options: {
-          credentialsRole: new iam.Role(this, 'Role', {
+          credentialsRole: new iam.Role(this, 'PhotosGetRole', {
             assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
           }),
           requestParameters: {
@@ -187,22 +187,18 @@ class Api extends Construct {
     // Buy API
     const buy = this.api.root.addResource('buy');
 
-    buy.addMethod(
-      'GET',
-      new apigateway.LambdaIntegration(buyGetFunction),
-      {
-        authorizer: this.authorizer,
-        authorizationType: apigateway.AuthorizationType.COGNITO,
-        methodResponses: [
-          {
-            statusCode: '200',
-            responseParameters: {
-              'method.response.header.access-control-allow-origin': true,
-            },
+    buy.addMethod('GET', new apigateway.LambdaIntegration(buyGetFunction), {
+      authorizer: this.authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.access-control-allow-origin': true,
           },
-        ],
-      }
-    );
+        },
+      ],
+    });
 
     buy.addCorsPreflight({
       allowOrigins: ['*'],
@@ -218,11 +214,12 @@ class Api extends Construct {
         path: `${photosBucket.bucketName}/{project_id}`,
         integrationHttpMethod: 'GET',
         options: {
-          credentialsRole: new iam.Role(this, 'Role', {
+          credentialsRole: new iam.Role(this, 'DownloadRole', {
             assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
           }),
           requestParameters: {
-            'integration.request.path.project_id': 'method.request.path.project_id',
+            'integration.request.path.project_id':
+              'method.request.path.project_id',
           },
           integrationResponses: [
             {
@@ -241,11 +238,6 @@ class Api extends Construct {
       allowMethods: ['GET'],
       allowHeaders: ['*'],
     });
-
-
-
-
-    
   }
 }
 
