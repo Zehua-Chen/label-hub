@@ -209,7 +209,7 @@ class Api extends Construct {
     });
 
     // Download API
-    const download = buy.addResource('download');
+    const download = this.api.root.addResource('download');
 
     download.addMethod(
       'GET',
