@@ -83,10 +83,16 @@ class Api extends Construct {
       }
     );
 
+    photos.addCorsPreflight({
+      allowOrigins: ['*'],
+      allowMethods: ['*'],
+      allowHeaders: ['*'],
+    });
+
     const photosProducer = photos.addResource('producer');
 
     photosProducer.addMethod(
-      'GET',
+      'PUT',
       new apigateway.LambdaIntegration(photosProducerGetFunction),
       {
         authorizer: this.authorizer,
@@ -108,35 +114,40 @@ class Api extends Construct {
       }
     );
 
-    photos.addCorsPreflight({
+    photosProducer.addCorsPreflight({
       allowOrigins: ['*'],
+      allowMethods: ['*'],
+      allowHeaders: ['*'],
     });
 
-    const photosId = photos.addResource('{photo_id}');
+    const photosUpload = photos.addResource('upload');
 
-    photosId.addMethod('PUT', new apigateway.LambdaIntegration(photosToS3), {
-      authorizer: this.authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-      requestParameters: {
-        'method.request.path.photo_id': true,
-        'method.request.header.access-token': true,
-      },
-      requestModels: {
-        'application/json': models.putPhotoRequest,
-      },
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.access-control-allow-origin': true,
-          },
+    photosUpload.addMethod(
+      'PUT',
+      new apigateway.LambdaIntegration(photosToS3),
+      {
+        authorizer: this.authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestModels: {
+          'application/json': models.putPhotoRequest,
         },
-      ],
-    });
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseModels: {
+              'application/json': models.putPhotoResponse,
+            },
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
 
-    photosId.addCorsPreflight({
+    photosUpload.addCorsPreflight({
       allowOrigins: ['*'],
-      allowMethods: ['PUT'],
+      allowMethods: ['*'],
       allowHeaders: ['*'],
     });
 

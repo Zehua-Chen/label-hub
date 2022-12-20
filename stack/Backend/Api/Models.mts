@@ -10,6 +10,7 @@ class Models {
   getPhotosProducerRequest: apigateway.Model;
   getPhotosProducerResponse: apigateway.Model;
   putPhotoRequest: apigateway.Model;
+  putPhotoResponse: apigateway.Model;
 
   constructor(api: apigateway.RestApi) {
     this.photo = api.addModel('Photo', {
@@ -125,7 +126,41 @@ class Models {
       },
     });
 
-    this.putPhotoRequest = api.addModel('PutPhotoRequest', { schema: {} });
+    this.putPhotoRequest = api.addModel('PutPhotoRequest', {
+      modelName: 'PutPhotoRequest',
+      schema: {
+        type: JsonSchemaType.OBJECT,
+        properties: {
+          file: {
+            type: JsonSchemaType.STRING,
+          },
+          filename: {
+            type: JsonSchemaType.STRING,
+          },
+          idtoken: {
+            type: JsonSchemaType.STRING,
+          },
+          labels: {
+            type: JsonSchemaType.ARRAY,
+            items: {
+              type: JsonSchemaType.STRING,
+            },
+          },
+        },
+      },
+    });
+
+    this.putPhotoResponse = api.addModel('PutPhotoResponse', {
+      modelName: 'PutPhotoResponse',
+      schema: {
+        type: JsonSchemaType.OBJECT,
+        properties: {
+          message: {
+            type: JsonSchemaType.STRING,
+          },
+        },
+      },
+    });
   }
 }
 
