@@ -324,6 +324,9 @@ class Api extends Construct {
         requestParameters: {
           'method.request.header.access-token': true,
         },
+        requestModels: {
+          'application/json': models.userInfoPutRequest,
+        },
         methodResponses: [
           {
             statusCode: '200',

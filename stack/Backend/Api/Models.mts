@@ -11,6 +11,7 @@ class Models {
   getPhotosProducerResponse: apigateway.Model;
   putPhotoRequest: apigateway.Model;
   putPhotoResponse: apigateway.Model;
+  userInfoPutRequest: apigateway.Model;
 
   constructor(api: apigateway.RestApi) {
     this.photo = api.addModel('Photo', {
@@ -156,6 +157,27 @@ class Models {
         type: JsonSchemaType.OBJECT,
         properties: {
           message: {
+            type: JsonSchemaType.STRING,
+          },
+        },
+      },
+    });
+
+    this.userInfoPutRequest = api.addModel('UserInfoPutRequest', {
+      modelName: 'UserInfoPutRequest',
+      schema: {
+        type: JsonSchemaType.OBJECT,
+        properties: {
+          first: {
+            type: JsonSchemaType.STRING,
+          },
+          last: {
+            type: JsonSchemaType.STRING,
+          },
+          title: {
+            type: JsonSchemaType.STRING,
+          },
+          aboutme: {
             type: JsonSchemaType.STRING,
           },
         },
