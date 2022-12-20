@@ -79,7 +79,6 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
     consumerID = cog.get_user(AccessToken=idtoken)['Username']
     projectID = body['projectID']
 
-
     results = open_search(projectID, consumerID)
     return {
         'statusCode': 200,

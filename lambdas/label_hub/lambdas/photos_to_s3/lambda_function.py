@@ -10,6 +10,7 @@ from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewa
 
 s3 = boto3.client('s3')
 
+
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
 
