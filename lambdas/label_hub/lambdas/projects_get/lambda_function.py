@@ -8,6 +8,7 @@ import os
 import boto3
 import requests
 from requests_aws4auth import AWS4Auth
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 OPENSEARCH_consumer = os.environ["opensearchEndpoint_consumer"]
 region = 'us-east-1'
@@ -69,7 +70,8 @@ def open_search(projectID, consumerID):
     return results
 
 
-def lambda_handler(event, context):
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
 
     body = json.loads(event)['header']
     idtoken = body['idtoken']
