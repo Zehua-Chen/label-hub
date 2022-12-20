@@ -16,41 +16,41 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetIncomeResponse
+ * @interface PutPhotoResponse
  */
-export interface GetIncomeResponse {
+export interface PutPhotoResponse {
     /**
      * 
-     * @type {number}
-     * @memberof GetIncomeResponse
+     * @type {string}
+     * @memberof PutPhotoResponse
      */
-    income?: number;
+    message?: string;
 }
 
 /**
- * Check if a given object implements the GetIncomeResponse interface.
+ * Check if a given object implements the PutPhotoResponse interface.
  */
-export function instanceOfGetIncomeResponse(value: object): boolean {
+export function instanceOfPutPhotoResponse(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function GetIncomeResponseFromJSON(json: any): GetIncomeResponse {
-    return GetIncomeResponseFromJSONTyped(json, false);
+export function PutPhotoResponseFromJSON(json: any): PutPhotoResponse {
+    return PutPhotoResponseFromJSONTyped(json, false);
 }
 
-export function GetIncomeResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetIncomeResponse {
+export function PutPhotoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PutPhotoResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'income': !exists(json, 'income') ? undefined : json['income'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
     };
 }
 
-export function GetIncomeResponseToJSON(value?: GetIncomeResponse | null): any {
+export function PutPhotoResponseToJSON(value?: PutPhotoResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -59,7 +59,7 @@ export function GetIncomeResponseToJSON(value?: GetIncomeResponse | null): any {
     }
     return {
         
-        'income': value.income,
+        'message': value.message,
     };
 }
 

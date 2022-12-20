@@ -6,28 +6,6 @@ import Checkbox from 'src/components/Checkbox';
 import { useApi } from 'src/services/api/utils';
 import { useAuth } from 'src/services/auth';
 
-interface Photo {
-  name: string;
-  date: string;
-  income: string;
-  tags: string[];
-}
-
-function useMockPhotos(): Photo[] {
-  const photos: Photo[] = [];
-
-  for (let i = 0; i < 30; i++) {
-    photos.push({
-      name: `upload-${i}.png`,
-      date: new Date().toDateString(),
-      income: `${i}`,
-      tags: ['test'],
-    });
-  }
-
-  return photos;
-}
-
 interface Tag {
   displayName: string;
 }
@@ -44,7 +22,6 @@ function useTags(): Tag[] {
 }
 
 function ProducerDashboard() {
-  const photos = useMockPhotos();
   const tags = useTags();
 
   const auth = useAuth();
@@ -55,6 +32,14 @@ function ProducerDashboard() {
     () =>
       api.incomePut({
         getIncomeRequest: { idtoken: auth.accessToken },
+      })
+  );
+
+  const { data: photos, isLoading: isPhotosLoading } = useSWR(
+    '/app/producer/photos',
+    () =>
+      api.photosProducerPut({
+        getPhotosProducerRequest: { idtoken: auth.accessToken },
       })
   );
 
@@ -125,14 +110,18 @@ function ProducerDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {photos.map((photo, index) => (
-                  <tr key={index}>
-                    <th scope='row'>{photo.name}</th>
-                    <td>{photo.date}</td>
-                    <td>{photo.income}</td>
-                    <td>{photo.tags.join(', ')}</td>
-                  </tr>
-                ))}
+                {isPhotosLoading ? (
+                  <tr></tr>
+                ) : (
+                  photos?.photosList!.map((photo, index) => (
+                    <tr key={index}>
+                      <th scope='row'>{photo.filename}</th>
+                      <td>{photo.time}</td>
+                      <td>{photo.amount}</td>
+                      <td>{photo.tags?.join(', ') ?? ''}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

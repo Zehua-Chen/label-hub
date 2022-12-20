@@ -8,5 +8,7 @@ models/GetPhotosProducerResponse.ts
 models/GetPhotosProducerResponsePhotosListInner.ts
 models/GetPhotosRequest.ts
 models/GetPhotosResponse.ts
+models/PutPhotoRequest.ts
+models/PutPhotoResponse.ts
 models/index.ts
 runtime.ts

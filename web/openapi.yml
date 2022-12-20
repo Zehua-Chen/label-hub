@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-19T23:50:28Z'
+  version: '2022-12-20T00:26:39Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -109,56 +109,6 @@ paths:
               schema:
                 type: 'string'
           content: {}
-  /photos/{photo_id}:
-    put:
-      parameters:
-        - name: 'photo_id'
-          in: 'path'
-          required: true
-          schema:
-            type: 'string'
-        - name: 'access-token'
-          in: 'header'
-          required: true
-          schema:
-            type: 'string'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeveloBackexzVcVyRuqsda'
-        required: true
-      responses:
-        '200':
-          description: '200 response'
-          headers:
-            access-control-allow-origin:
-              schema:
-                type: 'string'
-          content: {}
-      security:
-        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
-    options:
-      parameters:
-        - name: 'photo_id'
-          in: 'path'
-          required: true
-          schema:
-            type: 'string'
-      responses:
-        '204':
-          description: '204 response'
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: 'string'
-            Access-Control-Allow-Methods:
-              schema:
-                type: 'string'
-            Access-Control-Allow-Headers:
-              schema:
-                type: 'string'
-          content: {}
   /photos/producer:
     get:
       requestBody:
@@ -180,13 +130,12 @@ paths:
                 $ref: '#/components/schemas/GetPhotosProducerResponse'
       security:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
-  /income:
-    get:
+    put:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetIncomeRequest'
+              $ref: '#/components/schemas/GetPhotosProducerRequest'
         required: true
       responses:
         '200':
@@ -198,9 +147,61 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetIncomeResponse'
+                $ref: '#/components/schemas/GetPhotosProducerResponse'
       security:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /photos/upload:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutPhotoRequest'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutPhotoResponse'
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    options:
+      responses:
+        '204':
+          description: '204 response'
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Methods:
+              schema:
+                type: 'string'
+            Access-Control-Allow-Headers:
+              schema:
+                type: 'string'
+          content: {}
+  /income:
     put:
       requestBody:
         content:
@@ -280,13 +281,29 @@ components:
       properties:
         idtoken:
           type: 'string'
+    PutPhotoRequest:
+      type: 'object'
+      properties:
+        file:
+          type: 'string'
+        filename:
+          type: 'string'
+        idtoken:
+          type: 'string'
+        labels:
+          type: 'array'
+          items:
+            type: 'string'
     GetIncomeResponse:
       type: 'object'
       properties:
         income:
           type: 'number'
-    DeveloBackexzVcVyRuqsda:
+    PutPhotoResponse:
       type: 'object'
+      properties:
+        message:
+          type: 'string'
     GetPhotosRequest:
       type: 'object'
       properties:

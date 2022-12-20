@@ -7,3 +7,5 @@ export * from './GetPhotosProducerResponse';
 export * from './GetPhotosProducerResponsePhotosListInner';
 export * from './GetPhotosRequest';
 export * from './GetPhotosResponse';
+export * from './PutPhotoRequest';
+export * from './PutPhotoResponse';
