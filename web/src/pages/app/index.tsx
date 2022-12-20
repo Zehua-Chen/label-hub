@@ -14,7 +14,7 @@ async function ensureUserInfoExists(api: DefaultApi, auth: Auth) {
   } catch (e) {
     await api.userinfoPut({
       accessToken: auth.accessToken,
-      userInfoPutRequest: {
+      putUserInfoRequest: {
         projectID: uuid.v1(),
         first: '',
         last: '',

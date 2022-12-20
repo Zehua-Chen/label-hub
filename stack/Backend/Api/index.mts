@@ -294,6 +294,9 @@ class Api extends Construct {
         methodResponses: [
           {
             statusCode: '200',
+            responseModels: {
+              'application/json': models.getUserInfoResponse,
+            },
             responseParameters: {
               'method.response.header.access-control-allow-origin': true,
             },
@@ -310,7 +313,7 @@ class Api extends Construct {
           'method.request.header.access-token': true,
         },
         requestModels: {
-          'application/json': models.userInfoPutRequest,
+          'application/json': models.putUserInfoRequest,
         },
         methodResponses: [
           {

@@ -9,7 +9,8 @@ class Models {
   getPhotosProducerResponse: apigateway.Model;
   putPhotoRequest: apigateway.Model;
   putPhotoResponse: apigateway.Model;
-  userInfoPutRequest: apigateway.Model;
+  putUserInfoRequest: apigateway.Model;
+  getUserInfoResponse: apigateway.Model;
 
   constructor(api: apigateway.RestApi) {
     this.photo = api.addModel('Photo', {
@@ -120,8 +121,8 @@ class Models {
       },
     });
 
-    this.userInfoPutRequest = api.addModel('UserInfoPutRequest', {
-      modelName: 'UserInfoPutRequest',
+    this.putUserInfoRequest = api.addModel('PutUserInfoRequest', {
+      modelName: 'PutUserInfoRequest',
       schema: {
         type: JsonSchemaType.OBJECT,
         properties: {
@@ -129,6 +130,36 @@ class Models {
             type: JsonSchemaType.STRING,
           },
           last: {
+            type: JsonSchemaType.STRING,
+          },
+          title: {
+            type: JsonSchemaType.STRING,
+          },
+          email: {
+            type: JsonSchemaType.STRING,
+          },
+          aboutme: {
+            type: JsonSchemaType.STRING,
+          },
+          projectID: {
+            type: JsonSchemaType.STRING,
+          },
+        },
+      },
+    });
+
+    this.getUserInfoResponse = api.addModel('GetUserInfoResponse', {
+      modelName: 'GetUserInfoResponse',
+      schema: {
+        type: JsonSchemaType.OBJECT,
+        properties: {
+          first_name: {
+            type: JsonSchemaType.STRING,
+          },
+          last_name: {
+            type: JsonSchemaType.STRING,
+          },
+          id: {
             type: JsonSchemaType.STRING,
           },
           title: {

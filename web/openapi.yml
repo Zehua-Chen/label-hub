@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T06:46:06Z'
+  version: '2022-12-20T17:21:20Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -284,7 +284,10 @@ paths:
             access-control-allow-origin:
               schema:
                 type: 'string'
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserInfoResponse'
     put:
       parameters:
         - name: 'access-token'
@@ -296,7 +299,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserInfoPutRequest'
+              $ref: '#/components/schemas/PutUserInfoRequest'
         required: true
       responses:
         '200':
@@ -362,6 +365,21 @@ components:
           type: 'array'
           items:
             type: 'string'
+    PutUserInfoRequest:
+      type: 'object'
+      properties:
+        last:
+          type: 'string'
+        title:
+          type: 'string'
+        projectID:
+          type: 'string'
+        first:
+          type: 'string'
+        email:
+          type: 'string'
+        aboutme:
+          type: 'string'
     GetPhotosProducerResponse:
       type: 'array'
       items:
@@ -377,16 +395,18 @@ components:
             type: 'array'
             items:
               type: 'string'
-    UserInfoPutRequest:
+    GetUserInfoResponse:
       type: 'object'
       properties:
-        last:
+        last_name:
+          type: 'string'
+        id:
           type: 'string'
         title:
           type: 'string'
-        projectID:
+        first_name:
           type: 'string'
-        first:
+        projectID:
           type: 'string'
         email:
           type: 'string'
