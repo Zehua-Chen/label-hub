@@ -24,9 +24,16 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
                                Key={'id': {
                                    'S': user_id
                                }})
+        response = {}
+        response['first_name'] = data['Item']['firstname']['S']
+        response['last_name'] = data['Item']['lastname']['S']
+        response['id'] = data['Item']['id']['S']
+        response['title'] = data['Item']['title']['S']
+        response['about_me'] = data['Item']['aboutme']['S']
+        
         return {
             'statusCode': 200,
-            'body': json.dumps(data['Item']),
+            'body': json.dumps(response),
             'headers': {
                 'Access-Control-Allow-Origin': '*'
             },
