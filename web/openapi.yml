@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T18:15:53Z'
+  version: '2022-12-20T19:00:42Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -279,7 +279,10 @@ paths:
             access-control-allow-origin:
               schema:
                 type: 'string'
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDownloadResponse'
     options:
       responses:
         '204':
@@ -382,6 +385,10 @@ components:
       properties:
         message:
           type: 'string'
+    GetDownloadResponse:
+      type: 'array'
+      items:
+        type: 'string'
     GetPhotosResponse:
       type: 'object'
       properties:
