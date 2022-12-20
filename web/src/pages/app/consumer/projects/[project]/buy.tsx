@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { PageProps } from 'gatsby';
 import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
+import { GetPhotosResponse } from 'src/services/api';
 import { useApi } from 'src/services/api/utils';
 import { useAuth } from 'src/services/auth';
 
@@ -10,15 +11,12 @@ function Buy(props: PageProps) {
   const { project } = params;
   const api = useApi();
   const auth = useAuth();
+  const [label, setLabel] = useState('');
+  const [photos, setPhotos] = useState<GetPhotosResponse>();
 
   const { data: userInfo, isLoading: isUserInfoLoading } = useSWR(
     `/app/consumer/projects/${project}/project`,
     () => api.userinfoGet({ accessToken: auth.accessToken })
-  );
-
-  const { data: photos, isLoading: isPhotosLoading } = useSWR(
-    `/app/consumer/projects/${project}/photos`,
-    () => api.photosGet({ labels: 'xbox' })
   );
 
   async function buyPhoto(photoID: string) {
@@ -31,12 +29,34 @@ function Buy(props: PageProps) {
     });
   }
 
+  async function onSearchClick() {
+    const photos = await api.photosGet({ labels: label });
+    setPhotos(photos);
+  }
+
   return (
     <DashboardLayout mode='Consumer'>
       <div className='container'>
         <div className='row'>
           <div className='col'>
-            {isPhotosLoading ? null : (
+            <h1>Market Place</h1>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col'>
+            <input
+              placeholder='Label'
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+            ></input>
+            <button className='btn btn-primary' onClick={onSearchClick}>
+              Search
+            </button>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col'>
+            {!photos ? null : (
               <ul className='list-group'>
                 {photos?.results?.map((photo) => {
                   if (!photo.url) {
