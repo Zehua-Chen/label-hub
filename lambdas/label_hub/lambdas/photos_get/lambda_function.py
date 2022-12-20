@@ -60,19 +60,20 @@ def query(labels, endpoint):
         }
     }
     print(query)
-    
+
     r = requests.get(url, auth=awsauth, headers=headers, data=json.dumps(query))
     print(r.content)
     response = {
         "body" : json.loads(r.text)
     }
-    
+
     return response
 
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
+    assert event.query_string_parameters is not None
 
-    labels = [event['queryStringParameters']['labels']]
+    labels = [event.query_string_parameters['labels']]
 
     # Search the photos OpenSearch index for results
     response = query(labels, os.environ['opensearchEndpointProducer'])

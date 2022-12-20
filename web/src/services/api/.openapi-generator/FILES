@@ -3,8 +3,8 @@ apis/index.ts
 index.ts
 models/GetIncomeResponse.ts
 models/GetPhotosProducerResponseInner.ts
-models/GetPhotosRequest.ts
 models/GetPhotosResponse.ts
+models/GetPhotosResponseResultsInner.ts
 models/GetUserInfoResponse.ts
 models/PutPhotoRequest.ts
 models/PutPhotoResponse.ts

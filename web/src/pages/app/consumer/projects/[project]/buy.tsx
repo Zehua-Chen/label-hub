@@ -1,52 +1,48 @@
 import * as React from 'react';
-import { useId } from 'react';
 import { PageProps } from 'gatsby';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
-import Checkbox from 'src/components/Checkbox';
+import { useApi } from 'src/services/api/utils';
 
 function Buy(props: PageProps) {
   const { params } = props;
   const { project } = params;
-  const inputCountId = useId();
+  const api = useApi();
 
-  function onBuyClick(e: React.MouseEvent) {
-    e.preventDefault();
-  }
+  const { data: photos, isLoading: isPhotosLoading } = useSWR(
+    `/app/consumer/projects/${project}/photos`,
+    () => api.photosGet({ labels: 'xbox' })
+  );
+
+  function buyPhoto() {}
 
   return (
     <DashboardLayout mode='Consumer'>
       <div className='container'>
         <div className='row'>
           <div className='col'>
-            <h1>Buy For Project {project}</h1>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col'>
-            <form>
-              <div className='mb-3'>
-                <Checkbox label='Tag 1' />
-                <Checkbox label='Tag 2' />
-                <Checkbox label='Tag 3' />
-              </div>
-              <div className='mb-3'>
-                <label htmlFor={inputCountId} className='form-label'>
-                  Count
-                </label>
-                <input
-                  type='number'
-                  className='form-control'
-                  id={inputCountId}
-                />
-              </div>
-              <button
-                type='submit'
-                className='btn btn-primary'
-                onClick={onBuyClick}
-              >
-                Buy
-              </button>
-            </form>
+            {isPhotosLoading ? null : (
+              <ul className='list-group'>
+                {photos?.results?.map((photo) => {
+                  if (!photo.url) {
+                    return null;
+                  }
+
+                  const segments = photo.url.split('/');
+                  const photoId = segments[segments.length - 1];
+
+                  return (
+                    <li key={photo.url} className='list-group-item'>
+                      <div>{photoId}</div>
+                      <div>Labels {photo.labels}</div>
+                      <div>
+                        <button className='btn btn-primary'>Buy</button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         </div>
       </div>

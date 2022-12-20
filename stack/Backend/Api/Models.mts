@@ -4,7 +4,6 @@ import { JsonSchemaType } from 'aws-cdk-lib/aws-apigateway';
 class Models {
   photo: apigateway.Model;
   getIncomeResponse: apigateway.Model;
-  getPhotosRequest: apigateway.Model;
   getPhotosResponse: apigateway.Model;
   getPhotosProducerResponse: apigateway.Model;
   putPhotoRequest: apigateway.Model;
@@ -33,33 +32,23 @@ class Models {
       },
     });
 
-    this.getPhotosRequest = api.addModel('GetPhotosRequest', {
-      modelName: 'GetPhotosRequest',
-      schema: {
-        type: JsonSchemaType.OBJECT,
-        properties: {
-          labels: {
-            type: JsonSchemaType.ARRAY,
-            items: {
-              type: JsonSchemaType.STRING,
-            },
-          },
-        },
-      },
-    });
-
     this.getPhotosResponse = api.addModel('GetPhotosResponse', {
       modelName: 'GetPhotosResponse',
       schema: {
         type: JsonSchemaType.OBJECT,
         properties: {
-          url: {
-            type: JsonSchemaType.STRING,
-          },
-          labels: {
+          results: {
             type: JsonSchemaType.ARRAY,
             items: {
-              type: JsonSchemaType.STRING,
+              type: JsonSchemaType.OBJECT,
+              properties: {
+                url: {
+                  type: JsonSchemaType.STRING,
+                },
+                labels: {
+                  type: JsonSchemaType.STRING,
+                },
+              },
             },
           },
         },

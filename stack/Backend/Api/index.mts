@@ -72,8 +72,8 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
-        requestModels: {
-          'application/json': models.getPhotosRequest,
+        requestParameters: {
+          'method.request.querystring.labels': true,
         },
         methodResponses: [
           {

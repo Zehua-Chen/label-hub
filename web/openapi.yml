@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T17:21:20Z'
+  version: '2022-12-20T17:45:27Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -75,12 +75,12 @@ paths:
           content: {}
   /photos:
     get:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetPhotosRequest'
-        required: true
+      parameters:
+        - name: 'labels'
+          in: 'query'
+          required: true
+          schema:
+            type: 'string'
       responses:
         '200':
           description: '200 response'
@@ -349,22 +349,18 @@ components:
       properties:
         message:
           type: 'string'
-    GetPhotosRequest:
-      type: 'object'
-      properties:
-        labels:
-          type: 'array'
-          items:
-            type: 'string'
     GetPhotosResponse:
       type: 'object'
       properties:
-        url:
-          type: 'string'
-        labels:
+        results:
           type: 'array'
           items:
-            type: 'string'
+            type: 'object'
+            properties:
+              url:
+                type: 'string'
+              labels:
+                type: 'string'
     PutUserInfoRequest:
       type: 'object'
       properties:
