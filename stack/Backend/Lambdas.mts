@@ -99,6 +99,8 @@ class Lambdas extends Construct {
       timeout: Duration.seconds(30),
       environment: {
         s3BucketName: photos.bucketName,
+        POWERTOOLS_SERVICE_NAME: 'photos_to_s3',
+        LOG_LEVEL: 'INFO',
       },
       layers: [powertools],
     });
