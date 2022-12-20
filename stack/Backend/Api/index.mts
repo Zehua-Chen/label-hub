@@ -24,6 +24,7 @@ export interface ApiProps {
   buyGetFunction: lambda.IFunction;
   userInfoGetFunction: lambda.IFunction;
   userInfoPutFunction: lambda.IFunction;
+  downloadGetFunction: lambda.IFunction;
 
   photosBucket: s3.Bucket;
 }
@@ -46,6 +47,7 @@ class Api extends Construct {
       buyGetFunction,
       userInfoGetFunction,
       userInfoPutFunction,
+      downloadGetFunction,
       photosBucket,
     } = props;
 
@@ -254,35 +256,14 @@ class Api extends Construct {
 
     // Download API
     const download = this.api.root.addResource('download');
-    const downloadProject = download.addResource('{project_id}');
 
-    downloadProject.addMethod(
+    download.addMethod(
       'GET',
-      new apigateway.AwsIntegration({
-        service: 's3',
-        path: `${photosBucket.bucketName}/{project_id}`,
-        integrationHttpMethod: 'GET',
-        options: {
-          credentialsRole: new iam.Role(this, 'DownloadRole', {
-            assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-          }),
-          requestParameters: {
-            'integration.request.path.project_id':
-              'method.request.path.project_id',
-          },
-          integrationResponses: [
-            {
-              statusCode: '200',
-              responseParameters: {
-                'method.response.header.access-control-allow-origin': "'*'",
-              },
-            },
-          ],
-        },
-      }),
+      new apigateway.LambdaIntegration(downloadGetFunction),
       {
         requestParameters: {
-          'method.request.path.project_id': true,
+          'method.request.header.access-token': true,
+          'method.request.querystring.project-id': true,
         },
         methodResponses: [
           {
@@ -295,7 +276,7 @@ class Api extends Construct {
       }
     );
 
-    downloadProject.addCorsPreflight({
+    download.addCorsPreflight({
       allowOrigins: ['*'],
       allowMethods: ['GET'],
       allowHeaders: ['*'],

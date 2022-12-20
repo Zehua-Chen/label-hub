@@ -1,9 +1,12 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import boto3
 import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
-import botocore
 import base64
 from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
@@ -24,17 +27,16 @@ url = host + '/' + index + '/_search'
 s3 = boto3.resource('s3')
 
 destination_bucket_name = os.environ['s3Bucket_dest']
+cog = boto3.client("cognito-idp")
 
 
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
-    body = json.loads(event)['header']
-    idtoken = body['idtoken']
-    cog = boto3.client("cognito-idp", region_name=region)
-    consumerID = cog.get_user(AccessToken=idtoken)['Username']
-    projectID = body['projectID']
+    access_token = event.headers['access-token']
+    consumer_id = cog.get_user(AccessToken=access_token)['Username']
+    project_id = event.query_string_parameters['project-id']
 
-    prefix = projectID + '/'
+    prefix = project_id + '/'
     query = {
         "query": {
             "bool": {
@@ -42,14 +44,14 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
                     {
                         "term": {
                             "projectID.keyword": {
-                                "value": projectID
+                                "value": project_id
                             }
                         }
                     },
                     {
                         "term": {
                             "consumerID.keyword": {
-                                "value": consumerID
+                                "value": consumer_id
                             }
                         }
                     },
