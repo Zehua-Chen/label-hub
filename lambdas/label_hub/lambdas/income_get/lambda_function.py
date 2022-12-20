@@ -24,11 +24,10 @@ url = host + '/' + index + '/_search'
 
 
 def lambda_handler(event, context):
-    idtoken = 'string'
+    idtoken = json.loads(event['body']['idtoken'])
     #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerid = cog.get_user(AccessToken=idtoken)['Username']
-    producerID = 'dfsdfds111111'
+    cog = boto3.client("cognito-idp", region_name=region)
+    producerID = cog.get_user(AccessToken=idtoken)['Username']
     query = {
         "query": {
             "bool": {
