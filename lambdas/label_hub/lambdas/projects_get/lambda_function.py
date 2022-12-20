@@ -70,13 +70,13 @@ def open_search(projectID, consumerID):
 
 
 def lambda_handler(event, context):
-    # TODO implement
-    projectID = 'projectID-123'
-    idtoken = 'string'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerID = cog.get_user(AccessToken=idtoken)['Username']
-    consumerID = '8765-4321'
+
+    body = json.loads(event)['header']
+    idtoken = body['idtoken']
+    cog = boto3.client("cognito-idp", region_name=region)
+    consumerID = cog.get_user(AccessToken=idtoken)['Username']
+    projectID = body['projectID']
+
 
     results = open_search(projectID, consumerID)
     return {

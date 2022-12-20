@@ -12,7 +12,7 @@ tableName = host = os.environ['dynamodb_tableName']
 
 
 def lambda_handler(event, context):
-    body = json.loads(event['body'])
+    body = json.loads(event)['header']
     idtoken = body['idtoken']
     cog = boto3.client("cognito-idp", region_name=region)
     user_id = cog.get_user(AccessToken=idtoken)['Username']

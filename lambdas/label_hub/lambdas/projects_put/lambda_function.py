@@ -74,15 +74,15 @@ def valid_purchase(key):
 
 
 def lambda_handler(event, context):
-    # TODO implement
-    idtoken = 'string'
-    projectID = 'projectID-123'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # consumerid = cog.get_user(AccessToken=idtoken)['Username']
-    consumerID = '8765-4321'
-    #key = 'asdakdfasd' #photoID
-    PhotoID = 'wallup-259665.jpg'
+    
+    body = json.loads(event)['header']
+    idtoken = body['idtoken']
+    cog = boto3.client("cognito-idp", region_name=region)
+    consumerID = cog.get_user(AccessToken=idtoken)['Username']
+
+    PhotoID = body['photoID']
+    projectID = body['projectID']
+
     key = consumerID + "-" + PhotoID
 
     query = {"query": {"term": {"objectKey.keyword": {"value": PhotoID}}}}

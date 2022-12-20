@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     #get userid
     # cog = boto3.client("cognito-idp", region_name=region)
     # user_id = cog.get_user(AccessToken=idtoken)['Username']
-    body = json.loads(event['body'])
+    body = json.loads(event)['header']
     idtoken = body['idtoken']
     cog = boto3.client("cognito-idp", region_name=region)
     user_id = cog.get_user(AccessToken=idtoken)['Username']
