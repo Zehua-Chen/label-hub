@@ -72,7 +72,7 @@ def query(labels, endpoint):
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
 
-    labels = [event['queryStringParameters']['labels']]
+    labels = [json.loads(event)['queryStringParameters']['labels']]
 
     # Search the photos OpenSearch index for results
     response = query(labels, os.environ['opensearchEndpointProducer'])
