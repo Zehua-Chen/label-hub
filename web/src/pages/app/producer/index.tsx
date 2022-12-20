@@ -118,7 +118,7 @@ function ProducerDashboard() {
                       <th scope='row'>{photo.filename}</th>
                       <td>{photo.time}</td>
                       <td>{photo.amount}</td>
-                      <td>{photo.tags?.join(', ') ?? ''}</td>
+                      <td>{photo.tags}</td>
                     </tr>
                   ))
                 )}
