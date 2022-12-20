@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T03:43:21Z'
+  version: '2022-12-20T06:46:06Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -233,11 +233,16 @@ paths:
               schema:
                 type: 'string'
           content: {}
-  /download/{project_id}:
+  /download:
     get:
       parameters:
-        - name: 'project_id'
-          in: 'path'
+        - name: 'project-id'
+          in: 'query'
+          required: true
+          schema:
+            type: 'string'
+        - name: 'access-token'
+          in: 'header'
           required: true
           schema:
             type: 'string'
@@ -250,12 +255,6 @@ paths:
                 type: 'string'
           content: {}
     options:
-      parameters:
-        - name: 'project_id'
-          in: 'path'
-          required: true
-          schema:
-            type: 'string'
       responses:
         '204':
           description: '204 response'
@@ -385,7 +384,11 @@ components:
           type: 'string'
         title:
           type: 'string'
+        projectID:
+          type: 'string'
         first:
+          type: 'string'
+        email:
           type: 'string'
         aboutme:
           type: 'string'
