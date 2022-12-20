@@ -25,54 +25,16 @@ class Backend extends Construct {
 
     const { region } = props;
 
-    const executeRole = new iam.Role(this, 'LambdaRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-    });
-
-    executeRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess')
-    );
-
-    executeRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonRekognitionFullAccess')
-    );
-
-    executeRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName(
-        'AmazonOpenSearchServiceFullAccess'
-      )
-    );
-
-    executeRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonDynamoDBFullAccess')
-    );
-
-    executeRole.addToPolicy(
-      new iam.PolicyStatement({
-        resources: ['*'],
-        actions: [
-          'logs:CreateLogGroup',
-          'logs:CreateLogStream',
-          'logs:PutLogEvents',
-          'logs:PutRetentionPolicy',
-          'logs:DeleteRetentionPolicy',
-        ],
-      })
-    );
-
     this.authentication = new Authentication(
       this,
       'Authentication',
       props.authentication
     );
 
-    this.storage = new Storage(this, 'Storage', {
-      opensearchMasterUser: executeRole,
-    });
+    this.storage = new Storage(this, 'Storage', {});
 
     this.lambdas = new Lambdas(this, 'Lambdas', {
       region,
-      executeRole,
       photos: this.storage.photos,
       download: this.storage.download,
       producer: this.storage.producer,

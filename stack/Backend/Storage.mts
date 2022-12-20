@@ -7,9 +7,7 @@ import {
   aws_opensearchservice as opensearch,
 } from 'aws-cdk-lib';
 
-export interface StorageProps {
-  opensearchMasterUser: iam.Role;
-}
+export interface StorageProps {}
 
 class Storage extends Construct {
   photos: s3.Bucket;
@@ -20,8 +18,6 @@ class Storage extends Construct {
 
   constructor(scope: Construct, id: string, props: StorageProps) {
     super(scope, id);
-
-    const { opensearchMasterUser } = props;
 
     this.photos = new s3.Bucket(this, 'Photos', {
       versioned: true,
@@ -43,32 +39,18 @@ class Storage extends Construct {
     this.producer = new opensearch.Domain(this, 'Producer', {
       version: opensearch.EngineVersion.OPENSEARCH_1_0,
       removalPolicy: RemovalPolicy.DESTROY,
-      enforceHttps: true,
-      nodeToNodeEncryption: true,
-      encryptionAtRest: {
-        enabled: true,
-      },
-      fineGrainedAccessControl: {
-        masterUserArn: opensearchMasterUser.roleArn,
-      },
       capacity: {
-        masterNodeInstanceType: 't3.small.search',
+        dataNodeInstanceType: 't3.small.search',
+        dataNodes: 1,
       },
     });
 
     this.consumer = new opensearch.Domain(this, 'Consumer', {
       version: opensearch.EngineVersion.OPENSEARCH_1_0,
       removalPolicy: RemovalPolicy.DESTROY,
-      enforceHttps: true,
-      nodeToNodeEncryption: true,
-      encryptionAtRest: {
-        enabled: true,
-      },
-      fineGrainedAccessControl: {
-        masterUserArn: opensearchMasterUser.roleArn,
-      },
       capacity: {
-        masterNodeInstanceType: 't3.small.search',
+        dataNodeInstanceType: 't3.small.search',
+        dataNodes: 1,
       },
     });
   }
