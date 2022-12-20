@@ -1,10 +1,15 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import json
 import boto3
 import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
-
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
+cog = boto3.client("cognito-idp")
 OPENSEARCH_consumer = os.environ['opensearchEndpoint_consumer']
 OPENSEARCH_producer = os.environ['opensearchEndpoint_producer']
 region = 'us-east-1'
@@ -69,16 +74,19 @@ def valid_purchase(key):
         return False
 
 
-def lambda_handler(event, context):
-    # TODO implement
-    idtoken = 'string'
-    projectID = 'projectID-123'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # consumerid = cog.get_user(AccessToken=idtoken)['Username']
-    consumerID = '8765-4321'
-    #key = 'asdakdfasd' #photoID
-    PhotoID = 'wallup-259665.jpg'
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+
+    assert event.body is not None
+
+    body = json.loads(event.body)
+
+    access_token = event.headers["access-token"]
+    consumerID = cog.get_user(AccessToken=access_token)['Username']
+
+    PhotoID = body['photoID']
+    projectID = body['projectID']
+
     key = consumerID + "-" + PhotoID
 
     query = {"query": {"term": {"objectKey.keyword": {"value": PhotoID}}}}
@@ -130,5 +138,8 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('New Photo added to Project: ' + key)
+        'body': json.dumps('New Photo added to Project: ' + key),
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
     }

@@ -1,27 +1,18 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
-
-interface Project {
-  name: string;
-  id: string;
-}
-
-function useProjects(): Project[] {
-  const photos: Project[] = [];
-
-  for (let i = 0; i < 5; i++) {
-    photos.push({
-      name: `Project ${i}`,
-      id: `${i}`,
-    });
-  }
-
-  return photos;
-}
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 function ProducerDashboard() {
-  const projects = useProjects();
+  const api = useApi();
+  const auth = useAuth();
+
+  const { data: project, isLoading: isProjectLoading } = useSWR(
+    '/app/consumer/project',
+    () => api.userinfoGet({ accessToken: auth.accessToken })
+  );
 
   return (
     <DashboardLayout
@@ -36,22 +27,18 @@ function ProducerDashboard() {
             </div>
           </div>
           <div className='row mt-2'>
-            <div className='col d-grid'>
-              <div className='btn btn-primary'>New Project</div>
-            </div>
-          </div>
-          <div className='row mt-2'>
             <div className='col'>
               <ul className='list-group'>
-                {projects.map((project) => (
+                {isProjectLoading ? (
+                  <li>...</li>
+                ) : (
                   <Link
                     className='list-group-item'
-                    to={`/app/consumer/projects/${project.id}`}
-                    key={project.id}
+                    to={`/app/consumer/projects/${project?.projectID}`}
                   >
-                    {project.name}
+                    Project
                   </Link>
-                ))}
+                )}
               </ul>
             </div>
           </div>
@@ -60,11 +47,7 @@ function ProducerDashboard() {
     >
       <div className='container'>
         <div className='row'>
-          <div className='col'>
-            <h1>Balance $100</h1>
-            <h2>100 photos purchased</h2>
-            <h3>$100 spent</h3>
-          </div>
+          <div className='col'></div>
         </div>
       </div>
     </DashboardLayout>

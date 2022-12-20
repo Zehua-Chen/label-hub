@@ -1,29 +1,10 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
 import Checkbox from 'src/components/Checkbox';
-
-interface Photo {
-  name: string;
-  date: string;
-  income: string;
-  tags: string[];
-}
-
-function useMockPhotos(): Photo[] {
-  const photos: Photo[] = [];
-
-  for (let i = 0; i < 30; i++) {
-    photos.push({
-      name: `upload-${i}.png`,
-      date: new Date().toDateString(),
-      income: `${i}`,
-      tags: ['test'],
-    });
-  }
-
-  return photos;
-}
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 interface Tag {
   displayName: string;
@@ -31,18 +12,36 @@ interface Tag {
 
 function useTags(): Tag[] {
   return [
-    {
-      displayName: 'Cat',
-    },
-    {
-      displayName: 'Dog',
-    },
+    // {
+    //   displayName: 'Cat',
+    // },
+    // {
+    //   displayName: 'Dog',
+    // },
   ];
 }
 
 function ProducerDashboard() {
-  const photos = useMockPhotos();
   const tags = useTags();
+
+  const auth = useAuth();
+  const api = useApi();
+
+  const { data: income, isLoading: isIncomeLoading } = useSWR(
+    '/app/producer/income',
+    () =>
+      api.incomeGet({
+        accessToken: auth.accessToken,
+      })
+  );
+
+  const { data: photos, isLoading: isPhotosLoading } = useSWR(
+    '/app/producer/photos',
+    () =>
+      api.photosProducerGet({
+        accessToken: auth.accessToken,
+      })
+  );
 
   return (
     <DashboardLayout
@@ -75,7 +74,7 @@ function ProducerDashboard() {
             <div className='row'>
               <div className='col'>
                 <label className='form-label'>Labels</label>
-                {tags.map((tag, index) => (
+                {tags.map((tag) => (
                   <Checkbox
                     key={tag.displayName}
                     label={tag.displayName}
@@ -91,11 +90,11 @@ function ProducerDashboard() {
         <div className='row pt-3'>
           <div className='col-10'>
             <h1>Income</h1>
-            <h2>$32.68</h2>
+            {isIncomeLoading ? <h2>...</h2> : <h2>${income?.income}</h2>}
           </div>
           <div className='col'>
             <Link className='btn btn-primary' to='/app/producer/upload'>
-              Upload
+              Upload Image
             </Link>
           </div>
         </div>
@@ -111,14 +110,18 @@ function ProducerDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {photos.map((photo, index) => (
-                  <tr key={index}>
-                    <th scope='row'>{photo.name}</th>
-                    <td>{photo.date}</td>
-                    <td>{photo.income}</td>
-                    <td>{photo.tags.join(', ')}</td>
-                  </tr>
-                ))}
+                {isPhotosLoading ? (
+                  <tr></tr>
+                ) : (
+                  photos?.map((photo, index) => (
+                    <tr key={index}>
+                      <th scope='row'>{photo.filename}</th>
+                      <td>{photo.time}</td>
+                      <td>{photo.amount}</td>
+                      <td>{photo.tags}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

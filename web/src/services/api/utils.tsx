@@ -12,7 +12,7 @@ export function ApiProvider(props: PropsWithChildren<unknown>) {
       value={
         new DefaultApi(
           new Configuration({
-            apiKey: auth.token,
+            apiKey: auth.idToken,
             basePath: process.env.API_BASE_PATH,
           })
         )

@@ -1,4 +1,16 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
+models/GetIncomeResponse.ts
+models/GetPhotosProducerResponseInner.ts
+models/GetPhotosResponse.ts
+models/GetPhotosResponseResultsInner.ts
+models/GetProjectsResponse.ts
+models/GetProjectsResponsePhotosInner.ts
+models/GetUserInfoResponse.ts
+models/PutPhotoRequest.ts
+models/PutPhotoResponse.ts
+models/PutProjectsRequest.ts
+models/PutUserInfoRequest.ts
+models/index.ts
 runtime.ts

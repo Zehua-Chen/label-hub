@@ -1,5 +1,6 @@
 import { Construct } from 'constructs';
 import { Function, FunctionProps, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export interface LabelHubLambdaProps
   extends Omit<FunctionProps, 'runtime' | 'code' | 'handler'> {
@@ -22,6 +23,7 @@ export class LabelHubFunction extends Function {
       runtime: Runtime.PYTHON_3_9,
       code: Code.fromAsset('lambdas', { exclude: ['__pycache__'] }),
       handler: `label_hub.lambdas.${module}.handler`,
+      logRetention: RetentionDays.THREE_DAYS,
       ...others,
     });
   }

@@ -1,10 +1,15 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import json
 import os
 
 import boto3
 import requests
 from requests_aws4auth import AWS4Auth
-
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
+cog = boto3.client("cognito-idp")
 OPENSEARCH_consumer = os.environ["opensearchEndpoint_consumer"]
 region = 'us-east-1'
 credentials = boto3.Session().get_credentials()
@@ -53,6 +58,7 @@ def open_search(projectID, consumerID):
                 d['tags'] = photo['_source']['labels']
                 d['consumerID'] = photo['_source']['consumerID']
                 d['producerID'] = photo['_source']['producerID']
+                d['projectID'] = photo['_source']['projectID']
                 results['photos'].append(d)
     except Exception as e:
         print("Error finding open search hits")
@@ -64,14 +70,20 @@ def open_search(projectID, consumerID):
     return results
 
 
-def lambda_handler(event, context):
-    # TODO implement
-    projectID = 'projectID-123'
-    idtoken = 'string'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerID = cog.get_user(AccessToken=idtoken)['Username']
-    consumerID = '8765-4321'
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+
+    assert event.query_string_parameters is not None
+
+    access_token = event.headers["access-token"]
+    consumerID = cog.get_user(AccessToken=access_token)['Username']
+    projectID = event.query_string_parameters['project-id']
 
     results = open_search(projectID, consumerID)
-    return {'statusCode': 200, 'body': json.dumps(results)}
+    return {
+        'statusCode': 200,
+        'body': json.dumps(results),
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
+    }

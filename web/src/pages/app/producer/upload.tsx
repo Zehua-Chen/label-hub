@@ -2,12 +2,15 @@ import * as React from 'react';
 import { useState, useEffect, MouseEvent, useReducer } from 'react';
 import { navigate } from 'gatsby';
 import produce from 'immer';
+import * as uuid from 'uuid';
 import Layout from 'src/components/Layout';
 import Navbar from 'src/components/Navbar';
 import UploadButton from 'src/components/UploadButton';
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 interface TagsState {
-  readonly tags: readonly string[];
+  readonly tags: string[];
   readonly newTag: string;
 }
 
@@ -64,9 +67,32 @@ function tagsReducer(state: TagsState, action: TagsAction): TagsState {
   }
 }
 
+function toBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        reject('result is not string');
+        return;
+      }
+
+      resolve(btoa(reader.result));
+    };
+
+    reader.readAsBinaryString(file);
+  });
+}
+
 function Upload(): JSX.Element {
   const [image, setImage] = useState<File | null>(null);
   const [imageURL, setImageURL] = useState('');
+  const api = useApi();
+  const auth = useAuth();
 
   const [tagsState, tagsDispatch] = useReducer(tagsReducer, {
     tags: [],
@@ -81,9 +107,6 @@ function Upload(): JSX.Element {
     const url = URL.createObjectURL(image);
     setImageURL(url);
 
-    // TODO: use tags from backend for production
-    tagsDispatch({ type: 'setTags', tags: ['tag1', 'tag2'] });
-
     return () => URL.revokeObjectURL(url);
   }, [image]);
 
@@ -91,8 +114,22 @@ function Upload(): JSX.Element {
     setImage(file);
   }
 
-  function onSaveClick(event: MouseEvent) {
+  async function onSaveClick(event: MouseEvent) {
     event.preventDefault();
+
+    if (!image) {
+      return;
+    }
+
+    await api.photosUploadPut({
+      putPhotoRequest: {
+        file: await toBase64(image),
+        filename: uuid.v1(),
+        idToken: auth.accessToken,
+        labels: tagsState.tags,
+      },
+    });
+
     navigate('/app/producer/');
   }
 
@@ -109,6 +146,11 @@ function Upload(): JSX.Element {
   return (
     <Layout navigation={<Navbar title='Upload'></Navbar>}>
       <form className='container-fluid'>
+        <div className='row'>
+          <div className='col'>
+            <h1>Image Editor</h1>
+          </div>
+        </div>
         <div className='row'>
           <div className='col-8'>
             <img className='img-fluid' src={imageURL} />

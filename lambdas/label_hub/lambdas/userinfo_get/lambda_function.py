@@ -1,21 +1,45 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import json
 import boto3
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
+region = 'us-east-1'
 client = boto3.client('dynamodb')
-tableName = host = os.environ['dynamodb_tableName']
+table_name = host = os.environ['dynamodb_tableName']
 
 
-def lambda_handler(event, context):
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # user_id = cog.get_user(AccessToken=idtoken)['Username']
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+    access_token = event.headers['access-token']
 
-    user_id = 'asdf-hgd'
+    cog = boto3.client("cognito-idp", region_name=region)
+    user_id = cog.get_user(AccessToken=access_token)['Username']
+
     try:
-        data = client.get_item(TableName=tableName, Key={'id': {'S': user_id}})
-
-        return data['Item']
+        data = client.get_item(TableName=table_name,
+                               Key={'id': {
+                                   'S': user_id
+                               }})
+        response = {}
+        response['first_name'] = data['Item']['firstname']['S']
+        response['last_name'] = data['Item']['lastname']['S']
+        response['id'] = data['Item']['id']['S']
+        response['title'] = data['Item']['title']['S']
+        response['email'] = data['Item']['email']['S']
+        response['aboutme'] = data['Item']['aboutme']['S']
+        response['projectID'] = data['Item']['projectID']['S']
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps(response),
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
+        }
     except Exception as e:
         print('User info does not exist')
         print(e)

@@ -1,33 +1,35 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { PageProps, Link } from 'gatsby';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
-
-interface TagInfo {
-  tag: string;
-  count: number;
-}
-
-function useTagInfos(): TagInfo[] {
-  return [
-    {
-      tag: 'Cat',
-      count: 100,
-    },
-    {
-      tag: 'Dogs',
-      count: 100,
-    },
-    {
-      tag: 'Coffee',
-      count: 100,
-    },
-  ];
-}
+import Download, { DownloadContent } from 'src/components/Download';
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 function Project(props: PageProps): JSX.Element {
   const { params } = props;
   const { project } = params;
-  const tags = useTagInfos();
+  const api = useApi();
+  const auth = useAuth();
+  const [files, setFiles] = useState([] as DownloadContent[]);
+
+  const { data: photos, isLoading: isPhotosLoading } = useSWR(
+    `/app/consumer/projects/${project}/projects`,
+    () => api.projectsGet({ accessToken: auth.accessToken, projectId: project })
+  );
+
+  async function onDownloadClick() {
+    console.log(auth.accessToken);
+    console.log(project);
+
+    const responseFiles = await api.downloadGet({
+      accessToken: auth.accessToken,
+      projectId: project,
+    });
+
+    setFiles(responseFiles.map((file) => new DownloadContent(file)));
+  }
 
   return (
     <DashboardLayout mode='Consumer'>
@@ -42,18 +44,22 @@ function Project(props: PageProps): JSX.Element {
             <table className='table'>
               <thead>
                 <tr>
-                  <th scope='col'>Tag</th>
-                  <th scope='col'># of Photos</th>
+                  <th scope='col'>Photo</th>
+                  <th scope='col'>Amount</th>
+                  <th scope='col'>Time</th>
                 </tr>
               </thead>
-              <tbody>
-                {tags.map((tag) => (
-                  <tr key={tag.tag}>
-                    <th scope='row'>{tag.tag}</th>
-                    <td>{tag.count}</td>
-                  </tr>
-                ))}
-              </tbody>
+              {isPhotosLoading ? null : (
+                <tbody>
+                  {photos?.photos?.map((photo) => (
+                    <tr key={photo.filename}>
+                      <th scope='row'>{photo.filename}</th>
+                      <td>{photo.amount}</td>
+                      <td>{photo.time}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           </div>
           <div className='row'>
@@ -61,8 +67,19 @@ function Project(props: PageProps): JSX.Element {
               <Link className='btn btn-primary' to='buy'>
                 Buy
               </Link>
-              <button className='btn btn-primary'>Download</button>
+              <button className='btn btn-primary' onClick={onDownloadClick}>
+                Download
+              </button>
             </div>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col'>
+            <ul className='list-group'>
+              {files.map((file, index) => (
+                <Download key={index} content={file}></Download>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

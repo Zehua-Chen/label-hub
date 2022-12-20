@@ -3,7 +3,8 @@ import { createContext, useContext, PropsWithChildren } from 'react';
 import { navigate } from 'gatsby';
 
 export interface Auth {
-  token: string;
+  idToken: string;
+  accessToken: string;
   /**
    * Milliseconds
    */
@@ -15,7 +16,12 @@ export interface Auth {
 }
 
 const LOCALSTORAGE_AUTH_KEY = 'AUTH';
-const INVALID_AUTH: Auth = { token: 'invalid', created: 0, expiresIn: 0 };
+const INVALID_AUTH: Auth = {
+  idToken: 'invalid',
+  accessToken: 'invalid',
+  created: 0,
+  expiresIn: 0,
+};
 
 export const AuthContext = createContext<Auth>(INVALID_AUTH);
 
@@ -67,7 +73,8 @@ export function parseAuth(options: ParseAuthOptions = {}): Auth | null {
       }, {} as Record<string, string>);
 
     const auth: Auth = {
-      token: queries['id_token'],
+      idToken: queries['id_token'],
+      accessToken: queries['access_token'],
       created: Date.now(),
       expiresIn: Number.parseInt(queries['expires_in']) * 1000,
     };

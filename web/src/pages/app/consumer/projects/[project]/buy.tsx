@@ -1,16 +1,37 @@
-import * as React from 'react';
-import { useId } from 'react';
+import React, { useState } from 'react';
 import { PageProps } from 'gatsby';
+import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
-import Checkbox from 'src/components/Checkbox';
+import { GetPhotosResponse } from 'src/services/api';
+import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 function Buy(props: PageProps) {
   const { params } = props;
   const { project } = params;
-  const inputCountId = useId();
+  const api = useApi();
+  const auth = useAuth();
+  const [label, setLabel] = useState('');
+  const [photos, setPhotos] = useState<GetPhotosResponse>();
 
-  function onBuyClick(e: React.MouseEvent) {
-    e.preventDefault();
+  const { data: userInfo, isLoading: isUserInfoLoading } = useSWR(
+    `/app/consumer/projects/${project}/project`,
+    () => api.userinfoGet({ accessToken: auth.accessToken })
+  );
+
+  async function buyPhoto(photoID: string) {
+    await api.projectsPut({
+      accessToken: auth.accessToken,
+      putProjectsRequest: {
+        projectID: userInfo?.projectID,
+        photoID,
+      },
+    });
+  }
+
+  async function onSearchClick() {
+    const photos = await api.photosGet({ labels: label });
+    setPhotos(photos);
   }
 
   return (
@@ -18,35 +39,51 @@ function Buy(props: PageProps) {
       <div className='container'>
         <div className='row'>
           <div className='col'>
-            <h1>Buy For Project {project}</h1>
+            <h1>Image Marketplace</h1>
           </div>
         </div>
         <div className='row'>
           <div className='col'>
-            <form>
-              <div className='mb-3'>
-                <Checkbox label='Tag 1' />
-                <Checkbox label='Tag 2' />
-                <Checkbox label='Tag 3' />
-              </div>
-              <div className='mb-3'>
-                <label htmlFor={inputCountId} className='form-label'>
-                  Count
-                </label>
-                <input
-                  type='number'
-                  className='form-control'
-                  id={inputCountId}
-                />
-              </div>
-              <button
-                type='submit'
-                className='btn btn-primary'
-                onClick={onBuyClick}
-              >
-                Buy
-              </button>
-            </form>
+            <input
+              placeholder='Label'
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+            ></input>
+            <button className='btn btn-primary' onClick={onSearchClick}>
+              Search
+            </button>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col'>
+            {!photos ? null : (
+              <ul className='list-group'>
+                {photos?.results?.map((photo) => {
+                  if (!photo.url) {
+                    return null;
+                  }
+
+                  const segments = photo.url.split('/');
+                  const photoId = segments[segments.length - 1];
+
+                  return (
+                    <li key={photo.url} className='list-group-item'>
+                      <div>{photoId}</div>
+                      <div>Labels {photo.labels}</div>
+                      <div>
+                        <button
+                          className='btn btn-primary'
+                          disabled={isUserInfoLoading}
+                          onClick={() => buyPhoto(photoId)}
+                        >
+                          Buy
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         </div>
       </div>

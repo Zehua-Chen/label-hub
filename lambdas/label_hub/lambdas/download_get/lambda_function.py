@@ -1,10 +1,18 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import boto3
 import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
+import base64
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
+from aws_lambda_powertools.logging import Logger
 
 region = 'us-east-1'
+logger = Logger()
 
 s3_client = boto3.client('s3')
 
@@ -18,18 +26,22 @@ awsauth = AWS4Auth(credentials.access_key,
 host = 'https://' + os.environ['opensearchEndpoint_consumer']
 index = 'projects'
 url = host + '/' + index + '/_search'
+s3 = boto3.resource('s3')
 
 destination_bucket_name = os.environ['s3Bucket_dest']
+cog = boto3.client("cognito-idp")
 
 
-def lambda_handler(event, context):
-    idtoken = 'string'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerid = cog.get_user(AccessToken=idtoken)['Username']
-    projectID = 'projectID-123'
-    consumerID = '8765-4321'
-    prefix = projectID + '/'
+@logger.inject_lambda_context
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+    assert event.query_string_parameters is not None
+
+    access_token = event.headers['access-token']
+    consumer_id = cog.get_user(AccessToken=access_token)['Username']
+    project_id = event.query_string_parameters['project-id']
+
+    prefix = project_id + '/'
     query = {
         "query": {
             "bool": {
@@ -37,14 +49,14 @@ def lambda_handler(event, context):
                     {
                         "term": {
                             "projectID.keyword": {
-                                "value": projectID
+                                "value": project_id
                             }
                         }
                     },
                     {
                         "term": {
                             "consumerID.keyword": {
-                                "value": consumerID
+                                "value": consumer_id
                             }
                         }
                     },
@@ -53,8 +65,9 @@ def lambda_handler(event, context):
         }
     }
     headers = {"Content-Type": "application/json"}
+
     try:
-        print(url)
+        url = host + '/' + index + '/_search'
         r = requests.get(url,
                          auth=awsauth,
                          headers=headers,
@@ -64,17 +77,33 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         print("Unable to Connect with Consumer Open Search Enpoint")
+        raise
 
-    return_url = []
+    return_obj = []
+
     for doc in response:
         print(doc)
         source_bucket_name = doc['_source']['bucket']
         file_name = doc['_source']['photoID']
-
+        key = prefix + file_name
         copy_object = {'Bucket': source_bucket_name, 'Key': file_name}
         s3_client.copy_object(CopySource=copy_object,
                               Bucket=destination_bucket_name,
-                              Key=prefix + file_name)
-        return_url.append("https://%s.s3.amazonaws.com/%s%s" %
-                          (destination_bucket_name, prefix, file_name))
-    return {'photosUrl': return_url}
+                              Key=key)
+        response = s3_client.get_object(Bucket=destination_bucket_name,
+                                        Key=key)
+        print("Response from s3 : ", response)
+        image_file_to_be_downloaded = response['Body'].read()
+        return_obj.append(base64.b64encode(image_file_to_be_downloaded).decode('utf-8'))
+
+    logger.info(return_obj)
+
+    #location = s3_client.get_bucket_location(Bucket=destination_bucket_name)['LocationConstraint']
+    #url = "https://s3-%s.amazonaws.com/%s/%s" % (location, destination_bucket_name, prefix)
+    return {
+        'statusCode': 200,
+        'body': json.dumps(return_obj),
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
+    }

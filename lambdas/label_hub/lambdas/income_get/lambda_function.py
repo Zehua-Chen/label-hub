@@ -1,8 +1,14 @@
+import sys
+
+sys.path.append("/var/task/vendor")
+
 import boto3
 import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
+cog = boto3.client("cognito-idp")
 
 region = 'us-east-1'
 service = 'es'
@@ -17,21 +23,22 @@ awsauth = AWS4Auth(
 host = 'https://' + os.environ['opensearchEndpoint_consumer']
 index = 'projects'
 url = host + '/' + index + '/_search'
+cog = boto3.client("cognito-idp")
 
 
-def lambda_handler(event, context):
-    idtoken = 'string'
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+    access_token = event.headers["access-token"]
     #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerid = cog.get_user(AccessToken=idtoken)['Username']
-    producerID = 'dfsdfds111111'
+
+    producer_id = cog.get_user(AccessToken=access_token)['Username']
     query = {
         "query": {
             "bool": {
                 "must": [{
                     "term": {
                         "producerID.keyword": {
-                            "value": producerID
+                            "value": producer_id
                         }
                     }
                 }]
@@ -40,6 +47,7 @@ def lambda_handler(event, context):
     }
     headers = {"Content-Type": "application/json"}
     income = 0
+
     try:
         r = requests.get(
             url,
@@ -56,4 +64,10 @@ def lambda_handler(event, context):
         print("Unable to connect to Open Search Consumer Instance")
         print(e)
 
-    return {'income': income}
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps({'income': income})
+    }

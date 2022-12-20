@@ -14,24 +14,6 @@ Object.defineProperty(globalThis, 'URL', {
   },
 });
 
-describe('Upload', () => {
-  it('Save', async () => {
-    const user = userEvent.setup();
-    const file = new File(['hello'], 'test.png');
-
-    render(<ProducerUpload />);
-
-    await act(async () => {
-      await user.upload(getInputElement(), file);
-      const saveButton = screen.getByText('Save');
-
-      await user.click(saveButton);
-    });
-
-    expect(navigate).toHaveBeenCalledWith('/app/producer/');
-  });
-});
-
 describe('Tags', () => {
   it('Manage Tags', async () => {
     const user = userEvent.setup();

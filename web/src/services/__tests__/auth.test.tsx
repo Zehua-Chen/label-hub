@@ -13,7 +13,8 @@ describe('parseAuth', () => {
       url: 'http://localhost:8000/app/#id_token=id&access_token=access&expires_in=3600&token_type=Bearer',
     });
 
-    expect(auth?.token).toBe('id');
+    expect(auth?.idToken).toBe('id');
+    expect(auth?.accessToken).toBe('access');
     expect(auth?.expiresIn).toBe(3600000);
     expect(auth?.created).toBeGreaterThan(0);
   });
@@ -22,7 +23,8 @@ describe('parseAuth', () => {
 describe('hasAuthExpired', () => {
   it('expired', () => {
     const expired = hasAuthExpired({
-      token: '',
+      idToken: '',
+      accessToken: '',
       created: 0,
       expiresIn: 0,
     });
@@ -35,12 +37,17 @@ describe('useAuth', () => {
   it('default', () => {
     function TestComponent() {
       const auth = useAuth();
-      return <div aria-label='token'>{auth.token}</div>;
+      return <div aria-label='token'>{auth.idToken}</div>;
     }
 
     render(
       <AuthContext.Provider
-        value={{ token: 'test token', created: 1, expiresIn: 2 }}
+        value={{
+          idToken: 'test token',
+          accessToken: 'test token',
+          created: 1,
+          expiresIn: 2,
+        }}
       >
         <TestComponent />
       </AuthContext.Provider>
