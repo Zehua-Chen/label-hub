@@ -57,6 +57,7 @@ def open_search(projectID, consumerID):
                 d['tags'] = photo['_source']['labels']
                 d['consumerID'] = photo['_source']['consumerID']
                 d['producerID'] = photo['_source']['producerID']
+                d['projectID'] = photo['_source']['projectID']
                 results['photos'].append(d)
     except Exception as e:
         print("Error finding open search hits")

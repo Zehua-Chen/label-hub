@@ -20,6 +20,7 @@ def lambda_handler(event, context):
     last = 'dantsoho'
     title = 'web dev'
     aboutme = 'this is a description'
+    projectID = '1223-4734'
     try:
         data = client.put_item(TableName=tableName,
                                Item={
@@ -40,6 +41,9 @@ def lambda_handler(event, context):
                                    },
                                    'aboutme': {
                                        'S': aboutme
+                                   },
+                                   'projectID':{
+                                        'S': projectID
                                    }
                                })
 
