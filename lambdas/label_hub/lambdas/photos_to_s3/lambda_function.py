@@ -13,7 +13,7 @@ s3 = boto3.client('s3')
 def lambda_handler(event, context):
 
     if event['httpMethod'] == 'PUT':
-        data = json.loads(event['body'])
+        data = json.loads(event)['body']
 
         image = data['file']
 
@@ -25,7 +25,7 @@ def lambda_handler(event, context):
         producerid = cog.get_user(AccessToken=data['id_token'])['Username']
 
         s3.put_object(Bucket=os.environ['s3BucketName'], Key=data['filename'], \
-            Body=dec, Metadata={'labels':str(data['labels']), 'producerid': producerid})
+            Body=dec, Metadata={'labels':data['labels'], 'producerid': producerid})
         return {
             'statusCode': 200,
             'body': json.dumps({'message': 'successful lambda function call'}),

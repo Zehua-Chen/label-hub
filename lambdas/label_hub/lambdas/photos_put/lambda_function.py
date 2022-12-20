@@ -10,8 +10,7 @@ from datetime import datetime
 import os
 
 s3 = boto3.client('s3')
-USERID = 'dfsdfds111111'
-PRICE = 100
+PRICE = 1
 
 
 def lambda_handler(event, context):
@@ -20,19 +19,14 @@ def lambda_handler(event, context):
                                     encoding='utf-8')
     try:
 
-        response = s3.get_object(Bucket=bucket, Key=key)
-        rekog_labels = detect_labels(key, bucket)
-        labels = []
-        for label in rekog_labels:
-            labels.append(label['Name'])
+        # response = s3.get_object(Bucket=bucket, Key=key)
+        # rekog_labels = detect_labels(key, bucket)
+
         metadata = s3.head_object(Bucket=bucket, Key=key)
-        if 'x-amz-meta-customlabels' in metadata['ResponseMetadata'][
-                'HTTPHeaders']:
-            customlabel = metadata['ResponseMetadata']['HTTPHeaders'][
-                'x-amz-meta-customlabels']
-            list_customlabel = customlabel.split(', ')
-            for e in list_customlabel:
-                labels.append(e)
+        producerid = metadata['Metadata']['producerid']
+        labels = metadata['Metadata']['labels']
+        # for label in rekog_labels:
+        #     labels.append(label['Name'])
         timestamp = metadata['LastModified'].strftime("%Y-%m-%dT%H:%M:%S")
         json_obj = {
             "objectKey": key,
@@ -41,7 +35,7 @@ def lambda_handler(event, context):
             "year": metadata['LastModified'].strftime("%Y"),
             "month": metadata['LastModified'].strftime("%m"),
             "day": metadata['LastModified'].strftime("%d"),
-            "producerID": USERID,
+            "producerID": producerid,
             "price": PRICE,
             "labels": labels
         }
