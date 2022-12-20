@@ -7,32 +7,9 @@ import Download, { DownloadContent } from 'src/components/Download';
 import { useApi } from 'src/services/api/utils';
 import { useAuth } from 'src/services/auth';
 
-interface TagInfo {
-  tag: string;
-  count: number;
-}
-
-function useTagInfos(): TagInfo[] {
-  return [
-    {
-      tag: 'Cat',
-      count: 100,
-    },
-    {
-      tag: 'Dogs',
-      count: 100,
-    },
-    {
-      tag: 'Coffee',
-      count: 100,
-    },
-  ];
-}
-
 function Project(props: PageProps): JSX.Element {
   const { params } = props;
   const { project } = params;
-  const tags = useTagInfos();
   const api = useApi();
   const auth = useAuth();
   const [files, setFiles] = useState([] as DownloadContent[]);

@@ -74,7 +74,7 @@ function ProducerDashboard() {
             <div className='row'>
               <div className='col'>
                 <label className='form-label'>Labels</label>
-                {tags.map((tag, index) => (
+                {tags.map((tag) => (
                   <Checkbox
                     key={tag.displayName}
                     label={tag.displayName}
