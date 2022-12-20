@@ -73,13 +73,11 @@ def open_search(projectID, consumerID):
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
 
-    assert event.body is not None
-
-    body = json.loads(event.body)
+    assert event.query_string_parameters is not None
 
     access_token = event.headers["access-token"]
     consumerID = cog.get_user(AccessToken=access_token)['Username']
-    projectID = body['projectID']
+    projectID = event.query_string_parameters['project-id']
 
     results = open_search(projectID, consumerID)
     return {

@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T18:00:18Z'
+  version: '2022-12-20T18:15:53Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -10,6 +10,17 @@ servers:
 paths:
   /projects:
     get:
+      parameters:
+        - name: 'project-id'
+          in: 'query'
+          required: true
+          schema:
+            type: 'string'
+        - name: 'access-token'
+          in: 'header'
+          required: true
+          schema:
+            type: 'string'
       responses:
         '200':
           description: '200 response'
@@ -17,7 +28,10 @@ paths:
             access-control-allow-origin:
               schema:
                 type: 'string'
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectsResponse'
       security:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
     put:
@@ -395,6 +409,30 @@ components:
           type: 'string'
         aboutme:
           type: 'string'
+    GetProjectsResponse:
+      type: 'object'
+      properties:
+        photos:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              amount:
+                type: 'number'
+              filename:
+                type: 'string'
+              consumerID:
+                type: 'string'
+              purchaseID:
+                type: 'string'
+              time:
+                type: 'string'
+              producerID:
+                type: 'string'
+              projectID:
+                type: 'string'
+              tags:
+                type: 'string'
     GetPhotosProducerResponse:
       type: 'array'
       items:

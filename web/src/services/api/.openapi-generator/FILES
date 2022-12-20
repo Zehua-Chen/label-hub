@@ -5,6 +5,8 @@ models/GetIncomeResponse.ts
 models/GetPhotosProducerResponseInner.ts
 models/GetPhotosResponse.ts
 models/GetPhotosResponseResultsInner.ts
+models/GetProjectsResponse.ts
+models/GetProjectsResponsePhotosInner.ts
 models/GetUserInfoResponse.ts
 models/PutPhotoRequest.ts
 models/PutPhotoResponse.ts

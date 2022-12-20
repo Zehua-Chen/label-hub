@@ -202,9 +202,16 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestParameters: {
+          'method.request.header.access-token': true,
+          'method.request.querystring.project-id': true,
+        },
         methodResponses: [
           {
             statusCode: '200',
+            responseModels: {
+              'application/json': models.getProjectsResponse,
+            },
             responseParameters: {
               'method.response.header.access-control-allow-origin': true,
             },
