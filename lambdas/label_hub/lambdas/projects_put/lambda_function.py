@@ -8,6 +8,7 @@ import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 OPENSEARCH_consumer = os.environ['opensearchEndpoint_consumer']
 OPENSEARCH_producer = os.environ['opensearchEndpoint_producer']
@@ -73,8 +74,9 @@ def valid_purchase(key):
         return False
 
 
-def lambda_handler(event, context):
-    
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+
     body = json.loads(event)['header']
     idtoken = body['idtoken']
     cog = boto3.client("cognito-idp", region_name=region)
