@@ -8,12 +8,14 @@ import urllib.parse
 import boto3
 from datetime import datetime
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 s3 = boto3.client('s3')
 PRICE = 1
 
 
-def lambda_handler(event, context):
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'],
                                     encoding='utf-8')

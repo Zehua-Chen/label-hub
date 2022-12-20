@@ -5,6 +5,7 @@ from requests_aws4auth import AWS4Auth
 import os
 import botocore
 import base64
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 region = 'us-east-1'
 
@@ -25,13 +26,14 @@ s3 = boto3.resource('s3')
 destination_bucket_name = os.environ['s3Bucket_dest']
 
 
-def lambda_handler(event, context):
-    idtoken = 'string'
-    #get userid
-    # cog = boto3.client("cognito-idp", region_name=region)
-    # producerid = cog.get_user(AccessToken=idtoken)['Username']
-    projectID = 'projectID-123'
-    consumerID = '8765-4321'
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
+    body = json.loads(event)['header']
+    idtoken = body['idtoken']
+    cog = boto3.client("cognito-idp", region_name=region)
+    consumerID = cog.get_user(AccessToken=idtoken)['Username']
+    projectID = body['projectID']
+
     prefix = projectID + '/'
     query = {
         "query": {

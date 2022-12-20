@@ -7,6 +7,7 @@ import json
 import requests
 from requests_aws4auth import AWS4Auth
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 region = 'us-east-1'
 service = 'es'
@@ -21,7 +22,8 @@ index = 'photos'
 url = host + '/' + index + '/_search'
 
 
-def lambda_handler(event, context):
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
     idtoken = 'string'
     #get userid
     # cog = boto3.client("cognito-idp", region_name=region)

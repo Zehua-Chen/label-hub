@@ -6,11 +6,13 @@ import os
 import json
 import boto3
 import base64
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 s3 = boto3.client('s3')
 
 
-def lambda_handler(event, context):
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
 
     if event['httpMethod'] == 'PUT':
         data = json.loads(event)['body']

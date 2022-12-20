@@ -7,6 +7,7 @@ import boto3
 from opensearch import opensearch
 import urllib
 import os
+from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
 
 BUCKET_URL = "https://s3.us-east-1.amazonaws.com"
 
@@ -43,7 +44,8 @@ def get_tokens(event: dict) -> str:
     return t.split(" ")
 
 
-def lambda_handler(event, context):
+@event_source(data_class=APIGatewayProxyEvent)
+def lambda_handler(event: APIGatewayProxyEvent, context):
     print(event)
 
     labels = get_tokens(event)
