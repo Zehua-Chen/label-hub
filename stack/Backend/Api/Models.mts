@@ -12,6 +12,7 @@ class Models {
   getUserInfoResponse: apigateway.Model;
   putProjectsRequest: apigateway.Model;
   getProjectsResponse: apigateway.Model;
+  getDownloadResponse: apigateway.Model;
 
   constructor(api: apigateway.RestApi) {
     this.photo = api.addModel('Photo', {
@@ -221,6 +222,16 @@ class Models {
               },
             },
           },
+        },
+      },
+    });
+
+    this.getDownloadResponse = api.addModel('GetDownloadResponse', {
+      modelName: 'GetDownloadResponse',
+      schema: {
+        type: JsonSchemaType.ARRAY,
+        items: {
+          type: JsonSchemaType.STRING,
         },
       },
     });

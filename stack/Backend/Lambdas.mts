@@ -191,6 +191,8 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         s3Bucket_dest: download.bucketName,
+        POWERTOOLS_SERVICE_NAME: 'download_get',
+        LOG_LEVEL: 'INFO',
       },
       layers: [powertools],
     });

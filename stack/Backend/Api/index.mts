@@ -283,6 +283,9 @@ class Api extends Construct {
         methodResponses: [
           {
             statusCode: '200',
+            responseModels: {
+              'application/json': models.getDownloadResponse,
+            },
             responseParameters: {
               'method.response.header.access-control-allow-origin': true,
             },
