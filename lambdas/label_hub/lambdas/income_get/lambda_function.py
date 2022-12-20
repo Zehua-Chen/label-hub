@@ -8,6 +8,7 @@ import requests
 from requests_aws4auth import AWS4Auth
 import os
 from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
+cog = boto3.client("cognito-idp")
 
 region = 'us-east-1'
 service = 'es'
@@ -26,10 +27,9 @@ url = host + '/' + index + '/_search'
 
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
-    idtoken = json.loads(event)['body']['idtoken']
-    #get userid
-    cog = boto3.client("cognito-idp", region_name=region)
-    producerID = cog.get_user(AccessToken=idtoken)['Username']
+
+    access_token = event.headers["access-token"]
+    producerID = cog.get_user(AccessToken=access_token)['Username']
     query = {
         "query": {
             "bool": {

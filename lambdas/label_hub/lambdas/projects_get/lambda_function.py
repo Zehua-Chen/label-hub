@@ -9,7 +9,7 @@ import boto3
 import requests
 from requests_aws4auth import AWS4Auth
 from aws_lambda_powertools.utilities.data_classes import event_source, APIGatewayProxyEvent
-
+cog = boto3.client("cognito-idp")
 OPENSEARCH_consumer = os.environ["opensearchEndpoint_consumer"]
 region = 'us-east-1'
 credentials = boto3.Session().get_credentials()
@@ -73,10 +73,12 @@ def open_search(projectID, consumerID):
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
 
-    body = json.loads(event)['header']
-    idtoken = body['idtoken']
-    cog = boto3.client("cognito-idp", region_name=region)
-    consumerID = cog.get_user(AccessToken=idtoken)['Username']
+    assert event.body is not None
+
+    body = json.loads(event.body)
+
+    access_token = event.headers["access-token"]
+    consumerID = cog.get_user(AccessToken=access_token)['Username']
     projectID = body['projectID']
 
     results = open_search(projectID, consumerID)
