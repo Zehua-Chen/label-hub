@@ -47,6 +47,19 @@ class Backend extends Construct {
       iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonDynamoDBFullAccess')
     );
 
+    executeRole.addToPolicy(
+      new iam.PolicyStatement({
+        resources: ['*'],
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents',
+          'logs:PutRetentionPolicy',
+          'logs:DeleteRetentionPolicy',
+        ],
+      })
+    );
+
     this.authentication = new Authentication(
       this,
       'Authentication',
