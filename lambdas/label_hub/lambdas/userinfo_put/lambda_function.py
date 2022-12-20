@@ -29,7 +29,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
     title = body['title']
     email = body['email']
     aboutme = body['aboutme']
-    projectID = body['ProjectID']
+    projectID = body['projectID']
 
     try:
         data = client.put_item(
