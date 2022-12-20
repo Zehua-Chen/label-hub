@@ -134,7 +134,13 @@ class Models {
           title: {
             type: JsonSchemaType.STRING,
           },
+          email: {
+            type: JsonSchemaType.STRING,
+          },
           aboutme: {
+            type: JsonSchemaType.STRING,
+          },
+          projectID: {
             type: JsonSchemaType.STRING,
           },
         },
