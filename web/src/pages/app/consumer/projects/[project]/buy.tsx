@@ -39,7 +39,7 @@ function Buy(props: PageProps) {
       <div className='container'>
         <div className='row'>
           <div className='col'>
-            <h1>Market Place</h1>
+            <h1>Image Marketplace</h1>
           </div>
         </div>
         <div className='row'>

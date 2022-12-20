@@ -94,7 +94,7 @@ function ProducerDashboard() {
           </div>
           <div className='col'>
             <Link className='btn btn-primary' to='/app/producer/upload'>
-              Upload
+              Upload Image
             </Link>
           </div>
         </div>

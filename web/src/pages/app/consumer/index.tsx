@@ -47,11 +47,7 @@ function ProducerDashboard() {
     >
       <div className='container'>
         <div className='row'>
-          <div className='col'>
-            <h1>Balance $100</h1>
-            <h2>100 photos purchased</h2>
-            <h3>$100 spent</h3>
-          </div>
+          <div className='col'></div>
         </div>
       </div>
     </DashboardLayout>

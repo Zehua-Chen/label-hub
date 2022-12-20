@@ -147,6 +147,11 @@ function Upload(): JSX.Element {
     <Layout navigation={<Navbar title='Upload'></Navbar>}>
       <form className='container-fluid'>
         <div className='row'>
+          <div className='col'>
+            <h1>Image Editor</h1>
+          </div>
+        </div>
+        <div className='row'>
           <div className='col-8'>
             <img className='img-fluid' src={imageURL} />
           </div>
