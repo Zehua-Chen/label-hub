@@ -30,16 +30,16 @@ function ProducerDashboard() {
   const { data: income, isLoading: isIncomeLoading } = useSWR(
     '/app/producer/income',
     () =>
-      api.incomePut({
-        getIncomeRequest: { idtoken: auth.accessToken },
+      api.incomeGet({
+        accessToken: auth.accessToken,
       })
   );
 
   const { data: photos, isLoading: isPhotosLoading } = useSWR(
     '/app/producer/photos',
     () =>
-      api.photosProducerPut({
-        getPhotosProducerRequest: { idtoken: auth.accessToken },
+      api.photosProducerGet({
+        accessToken: auth.accessToken,
       })
   );
 
@@ -113,7 +113,7 @@ function ProducerDashboard() {
                 {isPhotosLoading ? (
                   <tr></tr>
                 ) : (
-                  photos?.photosList!.map((photo, index) => (
+                  photos?.map((photo, index) => (
                     <tr key={index}>
                       <th scope='row'>{photo.filename}</th>
                       <td>{photo.time}</td>

@@ -1,14 +1,12 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
-models/GetIncomeRequest.ts
 models/GetIncomeResponse.ts
-models/GetPhotosProducerRequest.ts
-models/GetPhotosProducerResponse.ts
-models/GetPhotosProducerResponsePhotosListInner.ts
+models/GetPhotosProducerResponseInner.ts
 models/GetPhotosRequest.ts
 models/GetPhotosResponse.ts
 models/PutPhotoRequest.ts
 models/PutPhotoResponse.ts
+models/UserInfoPutRequest.ts
 models/index.ts
 runtime.ts

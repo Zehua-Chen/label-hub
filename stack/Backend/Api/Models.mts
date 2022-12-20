@@ -68,21 +68,16 @@ class Models {
     this.getPhotosProducerResponse = api.addModel('GetPhotosProducerResponse', {
       modelName: 'GetPhotosProducerResponse',
       schema: {
-        type: JsonSchemaType.OBJECT,
-        properties: {
-          photos_list: {
-            type: JsonSchemaType.ARRAY,
-            items: {
-              type: JsonSchemaType.OBJECT,
-              properties: {
-                filename: { type: JsonSchemaType.STRING },
-                time: { type: JsonSchemaType.STRING },
-                amount: { type: JsonSchemaType.NUMBER },
-                tags: {
-                  type: JsonSchemaType.ARRAY,
-                  items: { type: JsonSchemaType.STRING },
-                },
-              },
+        type: JsonSchemaType.ARRAY,
+        items: {
+          type: JsonSchemaType.OBJECT,
+          properties: {
+            filename: { type: JsonSchemaType.STRING },
+            time: { type: JsonSchemaType.STRING },
+            amount: { type: JsonSchemaType.NUMBER },
+            tags: {
+              type: JsonSchemaType.ARRAY,
+              items: { type: JsonSchemaType.STRING },
             },
           },
         },
