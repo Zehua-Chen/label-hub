@@ -137,7 +137,7 @@ class Models {
           filename: {
             type: JsonSchemaType.STRING,
           },
-          idtoken: {
+          id_token: {
             type: JsonSchemaType.STRING,
           },
           labels: {

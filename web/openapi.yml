@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T00:26:39Z'
+  version: '2022-12-20T01:31:50Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -110,26 +110,6 @@ paths:
                 type: 'string'
           content: {}
   /photos/producer:
-    get:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetPhotosProducerRequest'
-        required: true
-      responses:
-        '200':
-          description: '200 response'
-          headers:
-            access-control-allow-origin:
-              schema:
-                type: 'string'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetPhotosProducerResponse'
-      security:
-        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
     put:
       requestBody:
         content:
@@ -288,7 +268,7 @@ components:
           type: 'string'
         filename:
           type: 'string'
-        idtoken:
+        id_token:
           type: 'string'
         labels:
           type: 'array'
