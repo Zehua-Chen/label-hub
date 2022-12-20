@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("/var/task/vendor")
 
 import boto3
@@ -76,5 +77,8 @@ def lambda_handler(event, context):
         return_obj.append(d)
     return {
         'statusCode': 200,
-        'body': json.dumps(return_obj)
+        'body': json.dumps(return_obj),
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
     }

@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("/var/task/vendor")
 
 import json

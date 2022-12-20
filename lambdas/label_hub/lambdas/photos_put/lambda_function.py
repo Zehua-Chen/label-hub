@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("/var/task/vendor")
 
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
@@ -64,10 +65,7 @@ def lambda_handler(event, context):
                                 body=json_obj,
                                 id=key,
                                 refresh=True)
-        return {
-            'statusCode': 200,
-            'body': json.dumps(json_obj)
-        }
+        return {'statusCode': 200, 'body': json.dumps(json_obj)}
     except Exception as e:
         print(e)
         print(

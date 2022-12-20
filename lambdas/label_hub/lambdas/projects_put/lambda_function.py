@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("/var/task/vendor")
 
 import json
@@ -133,5 +134,8 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('New Photo added to Project: ' + key)
+        'body': json.dumps('New Photo added to Project: ' + key),
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
     }
