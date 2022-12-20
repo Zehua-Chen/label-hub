@@ -50,23 +50,13 @@ function ProducerDashboard() {
   const auth = useAuth();
   const api = useApi();
 
-  const {
-    data: income,
-    error,
-    isLoading: isIncomeLoading,
-  } = useSWR('/app/producer/income', () =>
-    api.incomeGet({
-      getIncomeRequest: { idtoken: auth.accessToken },
-    })
+  const { data: income, isLoading: isIncomeLoading } = useSWR(
+    '/app/producer/income',
+    () =>
+      api.incomePut({
+        getIncomeRequest: { idtoken: auth.accessToken },
+      })
   );
-
-  React.useEffect(() => {
-    api.incomeGet({
-      getIncomeRequest: { idtoken: auth.accessToken },
-    });
-  }, []);
-
-  console.log(error);
 
   return (
     <DashboardLayout

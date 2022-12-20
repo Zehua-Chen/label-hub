@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-19T22:15:23Z'
+  version: '2022-12-19T23:50:28Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -182,6 +182,26 @@ paths:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
   /income:
     get:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetIncomeRequest'
+        required: true
+      responses:
+        '200':
+          description: '200 response'
+          headers:
+            access-control-allow-origin:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIncomeResponse'
+      security:
+        - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
+    put:
       requestBody:
         content:
           application/json:

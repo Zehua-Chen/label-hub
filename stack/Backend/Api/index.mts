@@ -144,7 +144,7 @@ class Api extends Construct {
     const income = this.api.root.addResource('income');
 
     income.addMethod(
-      'GET',
+      'PUT',
       new apigateway.LambdaIntegration(incomeGetFunction),
       {
         authorizer: this.authorizer,
@@ -168,7 +168,7 @@ class Api extends Construct {
 
     income.addCorsPreflight({
       allowOrigins: ['*'],
-      allowMethods: ['GET'],
+      allowMethods: ['*'],
       allowHeaders: ['*'],
     });
 
