@@ -22,6 +22,8 @@ export interface ApiProps {
   projectsPutFunction: lambda.IFunction;
 
   buyGetFunction: lambda.IFunction;
+  userInfoGetFunction: lambda.IFunction;
+  userInfoPutFunction: lambda.IFunction;
 
   photosBucket: s3.Bucket;
 }
@@ -42,6 +44,8 @@ class Api extends Construct {
       projectsGetFunction,
       projectsPutFunction,
       buyGetFunction,
+      userInfoGetFunction,
+      userInfoPutFunction,
       photosBucket,
     } = props;
 
@@ -290,6 +294,50 @@ class Api extends Construct {
     downloadProject.addCorsPreflight({
       allowOrigins: ['*'],
       allowMethods: ['GET'],
+      allowHeaders: ['*'],
+    });
+
+    const userInfo = this.api.root.addResource('userinfo');
+
+    userInfo.addMethod(
+      'GET',
+      new apigateway.LambdaIntegration(userInfoGetFunction),
+      {
+        requestParameters: {
+          'method.request.header.access-token': true,
+        },
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
+
+    userInfo.addMethod(
+      'PUT',
+      new apigateway.LambdaIntegration(userInfoPutFunction),
+      {
+        requestParameters: {
+          'method.request.header.access-token': true,
+        },
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: {
+              'method.response.header.access-control-allow-origin': true,
+            },
+          },
+        ],
+      }
+    );
+
+    userInfo.addCorsPreflight({
+      allowOrigins: ['*'],
+      allowMethods: ['*'],
       allowHeaders: ['*'],
     });
   }

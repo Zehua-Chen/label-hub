@@ -77,6 +77,8 @@ class Backend extends Construct {
       projectsGetFunction: this.lambdas.projectsGet,
       projectsPutFunction: this.lambdas.projectsPut,
       buyGetFunction: this.lambdas.buyGet,
+      userInfoGetFunction: this.lambdas.userInfoGet,
+      userInfoPutFunction: this.lambdas.userInfoPut,
       photosBucket: this.storage.photos,
     });
   }
