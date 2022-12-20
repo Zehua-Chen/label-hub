@@ -23,20 +23,22 @@ awsauth = AWS4Auth(
 host = 'https://' + os.environ['opensearchEndpoint_consumer']
 index = 'projects'
 url = host + '/' + index + '/_search'
+cog = boto3.client("cognito-idp")
 
 
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context):
-
     access_token = event.headers["access-token"]
-    producerID = cog.get_user(AccessToken=access_token)['Username']
+    #get userid
+
+    producer_id = cog.get_user(AccessToken=access_token)['Username']
     query = {
         "query": {
             "bool": {
                 "must": [{
                     "term": {
                         "producerID.keyword": {
-                            "value": producerID
+                            "value": producer_id
                         }
                     }
                 }]
@@ -45,6 +47,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
     }
     headers = {"Content-Type": "application/json"}
     income = 0
+
     try:
         r = requests.get(
             url,

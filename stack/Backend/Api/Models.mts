@@ -3,7 +3,6 @@ import { JsonSchemaType } from 'aws-cdk-lib/aws-apigateway';
 
 class Models {
   photo: apigateway.Model;
-  getIncomeRequest: apigateway.Model;
   getIncomeResponse: apigateway.Model;
   getPhotosRequest: apigateway.Model;
   getPhotosResponse: apigateway.Model;
@@ -19,18 +18,6 @@ class Models {
       schema: {
         type: JsonSchemaType.STRING,
         format: 'binary',
-      },
-    });
-
-    this.getIncomeRequest = api.addModel('GetIncomeRequest', {
-      modelName: 'GetIncomeRequest',
-      schema: {
-        type: JsonSchemaType.OBJECT,
-        properties: {
-          idtoken: {
-            type: JsonSchemaType.STRING,
-          },
-        },
       },
     });
 

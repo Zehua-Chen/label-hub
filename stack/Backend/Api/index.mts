@@ -159,13 +159,13 @@ class Api extends Construct {
     const income = this.api.root.addResource('income');
 
     income.addMethod(
-      'PUT',
+      'GET',
       new apigateway.LambdaIntegration(incomeGetFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
-        requestModels: {
-          'application/json': models.getIncomeRequest,
+        requestParameters: {
+          'method.request.header.access-token': true,
         },
         methodResponses: [
           {
