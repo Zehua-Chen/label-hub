@@ -3,18 +3,33 @@ import { PageProps } from 'gatsby';
 import useSWR from 'swr';
 import DashboardLayout from 'src/components/DashboardLayout';
 import { useApi } from 'src/services/api/utils';
+import { useAuth } from 'src/services/auth';
 
 function Buy(props: PageProps) {
   const { params } = props;
   const { project } = params;
   const api = useApi();
+  const auth = useAuth();
+
+  const { data: userInfo, isLoading: isUserInfoLoading } = useSWR(
+    `/app/consumer/projects/${project}/project`,
+    () => api.userinfoGet({ accessToken: auth.accessToken })
+  );
 
   const { data: photos, isLoading: isPhotosLoading } = useSWR(
     `/app/consumer/projects/${project}/photos`,
     () => api.photosGet({ labels: 'xbox' })
   );
 
-  function buyPhoto() {}
+  async function buyPhoto(photoID: string) {
+    await api.projectsPut({
+      accessToken: auth.accessToken,
+      putProjectsRequest: {
+        projectID: userInfo?.projectID,
+        photoID,
+      },
+    });
+  }
 
   return (
     <DashboardLayout mode='Consumer'>
@@ -36,7 +51,13 @@ function Buy(props: PageProps) {
                       <div>{photoId}</div>
                       <div>Labels {photo.labels}</div>
                       <div>
-                        <button className='btn btn-primary'>Buy</button>
+                        <button
+                          className='btn btn-primary'
+                          disabled={isUserInfoLoading}
+                          onClick={() => buyPhoto(photoId)}
+                        >
+                          Buy
+                        </button>
                       </div>
                     </li>
                   );

@@ -8,6 +8,7 @@ models/GetPhotosResponseResultsInner.ts
 models/GetUserInfoResponse.ts
 models/PutPhotoRequest.ts
 models/PutPhotoResponse.ts
+models/PutProjectsRequest.ts
 models/PutUserInfoRequest.ts
 models/index.ts
 runtime.ts

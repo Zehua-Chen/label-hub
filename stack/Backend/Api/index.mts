@@ -219,6 +219,12 @@ class Api extends Construct {
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
+        requestModels: {
+          'application/json': models.putProjectsRequest,
+        },
+        requestParameters: {
+          'method.request.header.access-token': true,
+        },
         methodResponses: [
           {
             statusCode: '200',
@@ -232,6 +238,8 @@ class Api extends Construct {
 
     projects.addCorsPreflight({
       allowOrigins: ['*'],
+      allowMethods: ['*'],
+      allowHeaders: ['*'],
     });
 
     // Buy API

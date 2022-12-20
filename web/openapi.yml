@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: 'Api'
-  version: '2022-12-20T17:45:27Z'
+  version: '2022-12-20T18:00:18Z'
 servers:
   - url: 'https://gwdg53v8m4.execute-api.us-east-1.amazonaws.com/{basePath}'
     variables:
@@ -21,6 +21,18 @@ paths:
       security:
         - DevelopmentLabelHubBackendApiAuthorizerF478BBAE: []
     put:
+      parameters:
+        - name: 'access-token'
+          in: 'header'
+          required: true
+          schema:
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutProjectsRequest'
+        required: true
       responses:
         '200':
           description: '200 response'
@@ -339,6 +351,13 @@ components:
           type: 'array'
           items:
             type: 'string'
+    PutProjectsRequest:
+      type: 'object'
+      properties:
+        photoID:
+          type: 'string'
+        projectID:
+          type: 'string'
     GetIncomeResponse:
       type: 'object'
       properties:

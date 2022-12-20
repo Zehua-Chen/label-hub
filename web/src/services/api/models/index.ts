@@ -7,4 +7,5 @@ export * from './GetPhotosResponseResultsInner';
 export * from './GetUserInfoResponse';
 export * from './PutPhotoRequest';
 export * from './PutPhotoResponse';
+export * from './PutProjectsRequest';
 export * from './PutUserInfoRequest';
