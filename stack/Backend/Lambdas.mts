@@ -5,10 +5,12 @@ import {
   aws_s3 as s3,
   aws_opensearchservice as opensearch,
   aws_dynamodb as dynamodb,
+  aws_lambda as lambda,
 } from 'aws-cdk-lib';
 import { LabelHubFunction } from '../utils.mjs';
 
 export interface LambdasProps {
+  region: string;
   photos: s3.Bucket;
   download: s3.Bucket;
   producer: opensearch.Domain;
@@ -34,6 +36,7 @@ class Lambdas extends Construct {
     super(scope, id);
 
     const {
+      region,
       executeRole,
       photos,
       download,
@@ -41,6 +44,12 @@ class Lambdas extends Construct {
       consumer,
       userInfo: table,
     } = props;
+
+    const powertools = lambda.LayerVersion.fromLayerVersionArn(
+      this,
+      'PowerTools',
+      `arn:aws:lambda:${region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16`
+    );
 
     this.photosGet = new LabelHubFunction(this, 'PhotosGet', {
       module: 'photos_get',
@@ -50,6 +59,7 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpointProducer: producer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.photosPut = new LabelHubFunction(this, 'PhotosPut', {
@@ -60,6 +70,7 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpointProducer: producer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.photosToS3 = new LabelHubFunction(this, 'PhotosToS3', {
@@ -70,6 +81,7 @@ class Lambdas extends Construct {
       environment: {
         s3BucketName: photos.bucketName,
       },
+      layers: [powertools],
     });
 
     this.incomeGet = new LabelHubFunction(this, 'IncomeGet', {
@@ -80,6 +92,7 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.projectsGet = new LabelHubFunction(this, 'ProjectsGet', {
@@ -90,6 +103,7 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.projectsPut = new LabelHubFunction(this, 'ProjectsPut', {
@@ -101,6 +115,7 @@ class Lambdas extends Construct {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         opensearchEndpoint_producer: producer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.photosProducerGet = new LabelHubFunction(this, 'PhotosProducerGet', {
@@ -111,6 +126,7 @@ class Lambdas extends Construct {
       environment: {
         opensearchEndpointProducer: producer.domainEndpoint,
       },
+      layers: [powertools],
     });
 
     this.userInfoGet = new LabelHubFunction(this, 'UserInfoGet', {
@@ -123,6 +139,7 @@ class Lambdas extends Construct {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         dynamodb_tableName: table.tableName,
       },
+      layers: [powertools],
     });
 
     this.userInfoPut = new LabelHubFunction(this, 'UserInfoPut', {
@@ -135,6 +152,7 @@ class Lambdas extends Construct {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         dynamodb_tableName: table.tableName,
       },
+      layers: [powertools],
     });
 
     this.downloadGet = new LabelHubFunction(this, 'DownloadGet', {
@@ -146,6 +164,7 @@ class Lambdas extends Construct {
         opensearchEndpoint_consumer: consumer.domainEndpoint,
         s3Bucket_dest: download.bucketName,
       },
+      layers: [powertools],
     });
 
     this.buyGet = new LabelHubFunction(this, 'BuyGet', {
@@ -153,6 +172,7 @@ class Lambdas extends Construct {
       memorySize: 1024,
       timeout: Duration.seconds(30),
       role: executeRole,
+      layers: [powertools],
     });
   }
 }

@@ -10,6 +10,7 @@ import Lambdas from './Lambdas.mjs';
 import Storage from './Storage.mjs';
 
 export interface BackendProps {
+  region: string;
   authentication: AuthenticationProps;
 }
 
@@ -21,6 +22,8 @@ class Backend extends Construct {
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);
+
+    const { region } = props;
 
     const executeRole = new iam.Role(this, 'LambdaRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -55,6 +58,7 @@ class Backend extends Construct {
     });
 
     this.lambdas = new Lambdas(this, 'Lambdas', {
+      region,
       executeRole,
       photos: this.storage.photos,
       download: this.storage.download,
