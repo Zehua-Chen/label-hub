@@ -30,7 +30,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
         response['id'] = data['Item']['id']['S']
         response['title'] = data['Item']['title']['S']
         response['email'] = data['Item']['email']['S']
-        response['about_me'] = data['Item']['aboutme']['S']
+        response['aboutme'] = data['Item']['aboutme']['S']
         response['projectID'] = data['Item']['projectID']['S']
         
         return {
