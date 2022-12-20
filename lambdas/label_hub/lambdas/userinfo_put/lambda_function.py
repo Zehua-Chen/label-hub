@@ -27,6 +27,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
     first = body['first']
     last = body['last']
     title = body['title']
+    email = body['email']
     aboutme = body['aboutme']
     projectID = body['ProjectID']
 
@@ -47,7 +48,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context):
                     'S': title
                 },
                 'email': {
-                    'S': title
+                    'S': email
                 },
                 'aboutme': {
                     'S': aboutme
