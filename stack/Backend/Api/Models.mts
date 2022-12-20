@@ -6,7 +6,6 @@ class Models {
   getIncomeResponse: apigateway.Model;
   getPhotosRequest: apigateway.Model;
   getPhotosResponse: apigateway.Model;
-  getPhotosProducerRequest: apigateway.Model;
   getPhotosProducerResponse: apigateway.Model;
   putPhotoRequest: apigateway.Model;
   putPhotoResponse: apigateway.Model;
@@ -61,30 +60,6 @@ class Models {
             items: {
               type: JsonSchemaType.STRING,
             },
-          },
-        },
-      },
-    });
-
-    this.getPhotosProducerRequest = api.addModel('GetPhotosProducerRequest', {
-      modelName: 'GetPhotosProducerRequest',
-      schema: {
-        type: JsonSchemaType.OBJECT,
-        properties: {
-          idtoken: {
-            type: JsonSchemaType.STRING,
-          },
-          filter_month: {
-            type: JsonSchemaType.STRING,
-          },
-          filter_label: {
-            type: JsonSchemaType.STRING,
-          },
-          amount_high: {
-            type: JsonSchemaType.NUMBER,
-          },
-          amount_low: {
-            type: JsonSchemaType.NUMBER,
           },
         },
       },

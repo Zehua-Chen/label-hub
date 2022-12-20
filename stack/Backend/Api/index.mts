@@ -96,13 +96,17 @@ class Api extends Construct {
     const photosProducer = photos.addResource('producer');
 
     photosProducer.addMethod(
-      'PUT',
+      'GET',
       new apigateway.LambdaIntegration(photosProducerGetFunction),
       {
         authorizer: this.authorizer,
         authorizationType: apigateway.AuthorizationType.COGNITO,
-        requestModels: {
-          'application/json': models.getPhotosProducerRequest,
+        requestParameters: {
+          'method.request.header.access-token': true,
+          'method.request.querystring.month': false,
+          'method.request.querystring.label': false,
+          'method.request.querystring.amount-low': false,
+          'method.request.querystring.amount-high': false,
         },
         methodResponses: [
           {
